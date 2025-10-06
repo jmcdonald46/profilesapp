@@ -20,6 +20,13 @@ Amplify.configure(outputs);
 const client = generateClient({
     authMode: "userPool",
 });
+const Navigation = () => (
+    <div className='app'>
+        <h1> Portfolio </h1>
+        <Navigation />
+        <Main />
+    </div>
+);
 export default function App() {
     const [userprofiles, setUserProfiles] = useState([]);
     const { signOut } = useAuthenticator((context) => [context.user]);
