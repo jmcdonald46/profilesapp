@@ -40,10 +40,13 @@ function App() {
                 <div class="box-main">
                     <div class="firstHalf">
                         <h1 class="text-big">
-                            Meet Riley
+                            Jordan McDonald
                         </h1>
                         <p class="text-small">
-                            
+                            Hello! Welcome to my page, my name is Jordan McDonald and I am B.S. Major of Cybersecurity looking for my next chance
+                            to dive deep into solving problems and invent new solutions to deliver customer results. I pride myself on being 
+                            a motivated, persistent, natural leader and I am ready to apply a great work ethic to find new ways to innovate for
+                            all stakeholders. Thank you for visiting my page!
                         </p>
                     </div>
                 </div>
