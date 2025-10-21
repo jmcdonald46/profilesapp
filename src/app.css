@@ -145,3 +145,14 @@
     justify-content: center;
     color: #fff;
 }
+.column {
+    float: left;
+}
+.coulumnleft {
+    float: left;
+    width: 25%;
+}
+.coulmnright {
+    float: right;
+    width: 75%;
+}
