@@ -6,98 +6,60 @@ import logo from './pictures/photo.jpg'
 
 function App() {
     return (
-        <div>
-            <nav class="navbar background">
-                <ul class="nav-list">
-                    <div class="logo">
-                        <img src={logo} alt="logo"/>
-                    </div>
-                    <li>
-                        <a href="#home">Home</a>
-                    </li>
-                    <li>
-                        <a href="#about">About</a>
-                    </li>
-                    <li>
-                        <a href="services">Portfolio</a>
-                    </li>
-                </ul>
+        <body>
 
-                <div class="rightNav">
-                    <input
-                        type="text"
-                        name="search"
-                        id="search"
-                    />
-                    <button class="btn btn-sm">
-                        Search
-                    </button>
-                </div>
-            </nav>
+            { /*<!-- Note -->*/}
+            <div style="background:yellow;padding:5px;text-align:center;">
+                <h4>Resize the browser window to see the responsive effect.</h4>
+            </div>
 
-            <section class="section">
-                <div class="box-main">
-                        <h1 class="text-big">
-                            Resume 
-                        </h1>
-                        <div class="row">
-                            <div class="columnleft"></div>
-                                <div class="row">
-                                <h2 class="text-big">
-                                    Jordan McDonald
-                                </h2>
-                                </div>
-                            <div class="columnright"></div>
-                            <div class="row">
-                                <h2 class="text-big">
-                                    Objective - Cyber Security Student
-                                </h2>
-                            </div>
-                        </div>
-                </div>
-            </section>
-            <section class="section">
-                <div class="box-main">
-                    <div class="secondHalf">
-                        <h1 class="text-big" id="program">
-                            
-                        </h1>
-                        <p class="text-small">
-                            
-                        </p>
+            { /*<!-- Header --> */}
+            <header>
+                <h1>My Website</h1>
+                <p>With a <b>flexible</b> layout.</p>
+            </header>
+
+            { /*<!-- Navigation Bar --> */}
+            <div class="navbar">
+                <a href="#">Link</a>
+                <a href="#">Link</a>
+                <a href="#">Link</a>
+                <a href="#">Link</a>
+            </div>
+
+            { /*<!-- Content Container --> */}
+            <div class="container">
+                <div class="side">
+                    <h2>About Me</h2>
+                    <h5>Photo of me:</h5>
+                    <div class="fakeimg" style="height:200px;">Image</div>
+                    <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
+                    <h3>More Text</h3>
+                    <p>Lorem ipsum dolor sit ame.</p>
+                    <div class="fakeimg" style="height:60px;">Image</div><br />
+                        <div class="fakeimg" style="height:60px;">Image</div><br />
+                            <div class="fakeimg" style="height:60px;">Image</div>
+               </div>
+                    <div class="main">
+                        <h2>TITLE HEADING</h2>
+                            <h5>Title description, Oct 7, 2025</h5>
+                            <div class="fakeimg" style="height:200px;">Image</div>
+                            <p>Some text..</p>
+                            <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+                            <br />
+                                <h2>TITLE HEADING</h2>
+                                <h5>Title description, Sep 2, 2025</h5>
+                                <div class="fakeimg" style="height:200px;">Image</div>
+                                <p>Some text..</p>
+                                <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
                     </div>
-                </div>
-            </section>
-            <section class="section">
-                <div class="box-main">
-                    <div class="secondHalf">
-                        <h1 class="text-big" id="program">
-                            
-                        </h1>
-                        <p class="text-small">
-                            
-                        </p>
-                    </div>
-                </div>
-            </section>
-            <section class="section">
-                <div class="box-main">
-                    <div class="secondHalf">
-                        <h1 class="text-big" id="program">
-                            
-                        </h1>
-                        <p class="text-small">
-                            
-                        </p>
-                    </div>
-                </div>
-            </section>
-            <footer className="footer">
-                <p className="text-footer">
-                    Copyright ©-All rights are reserved
-                </p>
-            </footer>
-        </div>
+            </div>
+                {/*<!-- Footer -->*/}
+                <footer>
+                    <h2>Footer</h2>
+                </footer>
+
+           </body>
     );
 }
 
