@@ -2,6 +2,7 @@
 
 import React from "react";
 import "./app.css";
+import logo from './pictures/photo.jpg'
 
 function App() {
     return (
@@ -9,21 +10,22 @@ function App() {
             <nav class="navbar background">
                 <ul class="nav-list">
                     <div class="logo">
-                        <img src=
-"https://media.geeksforgeeks.org/wp-content/cdn-uploads/20210420155809/gfg-new-logo.png"
-                        />
+                        <img src={logo} alt="logo"/>
                     </div>
                     <li>
-                        <a href="#courses">Courses</a>
+                        <a href="#home">Home</a>
                     </li>
                     <li>
-                        <a href="#tutorials">Tutorials</a>
+                        <a href="#about">About</a>
                     </li>
                     <li>
-                        <a href="#jobs">Jobs</a>
+                        <a href="services">Services</a>
                     </li>
                     <li>
-                        <a href="#student">Student</a>
+                        <a href="#info">Info</a>
+                    </li>
+                    <li>
+                        <a href="Book">Ready to Book?</a>
                     </li>
                 </ul>
 
