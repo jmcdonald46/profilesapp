@@ -37,7 +37,6 @@ function App() {
 
             <section class="section">
                 <div class="box-main">
-                    <div class="firstHalf">
                         <h1 class="text-big">
                             Resume 
                         </h1>
@@ -55,7 +54,6 @@ function App() {
                                 </h2>
                             </div>
                         </div>
-                    </div>
                 </div>
             </section>
             <section class="section">

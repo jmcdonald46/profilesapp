@@ -149,10 +149,8 @@
     float: left;
 }
 .coulumnleft {
-    float: left;
-    width: 25%;
+    flex: 25%;
 }
 .coulmnright {
-    float: right;
-    width: 75%;
+    flex: 75%;
 }
