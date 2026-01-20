@@ -1,6 +1,9 @@
 /*Filename - App.css*/
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #3b82f6;
+  --font-family-display: "Inter", sans-serif;
+}
 
