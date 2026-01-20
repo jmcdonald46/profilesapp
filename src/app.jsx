@@ -39,15 +39,25 @@ function App() {
             <section class="section">
                 <div class="box-main">
                     <div class="firstHalf">
-                        <h1 class="text-big">
+                        <h1 class="text-big" style={{paddingTop: '500px'}}>
                             Jordan McDonald
                         </h1>
-                        <p class="text-small">
+                        <div class="flex-container">
+                            <div class= "column">
+                              <p class="text-small" style={{ paddingTop: '50px', paddingBottom: '15px' }} >
                             Hello! Welcome to my page, my name is Jordan McDonald and I am B.S. Major of Cybersecurity looking for my next chance
                             to dive deep into solving problems and invent new solutions to deliver customer results. I pride myself on being 
                             a motivated, persistent, natural leader and I am ready to apply a great work ethic to find new ways to innovate for
                             all stakeholders. Thank you for visiting my page!
-                        </p>
+                              </p>
+                            </div>
+                        
+                        <div class="column">
+                            <div class="logo">
+                                <img src={logo} alt="logo" />
+                            </div>
+                        </div>
+                        </div>
                     </div>
                 </div>
             </section>
