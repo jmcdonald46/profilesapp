@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Github, Linkedin, Mail, ArrowRight, Code, Palette, Zap } from 'lucide-react';
 
-export default function PortfolioHomepage() {
+export default function App() {
     const [scrollY, setScrollY] = useState(0);
 
     useEffect(() => {
@@ -163,7 +163,7 @@ export default function PortfolioHomepage() {
             {/* Footer */}
             <footer className="py-8 px-6 border-t border-slate-700/50">
                 <div className="max-w-6xl mx-auto text-center text-slate-400">
-                    <p>© 2025 YourName. Built with React & Tailwind CSS.</p>
+                    <p>© 2025 YourName. Built with React 19 & Tailwind CSS v4.</p>
                 </div>
             </footer>
         </div>
