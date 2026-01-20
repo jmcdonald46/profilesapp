@@ -12,29 +12,29 @@ export default function App() {
 
     const projects = [
         {
-            title: "E-Commerce Platform",
-            description: "Full-stack online store with payment integration",
-            tech: ["React", "Node.js", "MongoDB"],
+            title: "Resume",
+            description: "View My Resume Here",
+            tech: [""],
             gradient: "from-blue-500 to-cyan-500"
         },
         {
-            title: "Task Management App",
-            description: "Collaborative productivity tool with real-time updates",
-            tech: ["React", "Firebase", "Tailwind"],
+            title: "Work In Progress",
+            description: "",
+            tech: [""],
             gradient: "from-purple-500 to-pink-500"
         },
         {
-            title: "Weather Dashboard",
-            description: "Interactive weather forecasting application",
-            tech: ["React", "API Integration", "Charts"],
+            title: "Work In Progress",
+            description: "",
+            tech: [""],
             gradient: "from-orange-500 to-red-500"
         }
     ];
 
     const skills = [
-        { name: "Frontend Development", icon: Code, color: "text-blue-500" },
-        { name: "UI/UX Design", icon: Palette, color: "text-purple-500" },
-        { name: "Performance Optimization", icon: Zap, color: "text-yellow-500" }
+        { name: "AWS Cloud Certified", icon: Code, color: "text-blue-500" },
+        { name: "B.S. Cybersecurity", icon: Palette, color: "text-purple-500" },
+        { name: "Web Development w ReactJs", icon: Zap, color: "text-yellow-500" }
     ];
 
     return (
@@ -43,7 +43,7 @@ export default function App() {
             <nav className="fixed top-0 w-full bg-slate-900/80 backdrop-blur-md z-50 border-b border-slate-700/50">
                 <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
                     <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-                        YourName
+                        Jordan McDonald
                     </h1>
                     <div className="flex gap-6">
                         <a href="#about" className="hover:text-cyan-400 transition-colors">About</a>
@@ -64,19 +64,33 @@ export default function App() {
                         }}
                     >
                         <h2 className="text-6xl md:text-7xl font-bold mb-4 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
-                            Full Stack Developer
+                            Aspiring Cloud Engineer
                         </h2>
                         <p className="text-xl md:text-2xl text-slate-300 mb-8">
-                            Building beautiful, functional web experiences
+                            Staying Curious, Adapting to Change, Relentlessly Driven
                         </p>
                         <div className="flex gap-4 justify-center mb-8">
-                            <a href="#" className="p-3 bg-slate-800 rounded-full hover:bg-slate-700 transition-all hover:scale-110">
+                            <a
+                                href="https://github.com/jmcdonald46"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="p-3 bg-slate-800 rounded-full hover:bg-slate-700 transition-all hover:scale-110"
+                            >
                                 <Github className="w-6 h-6" />
                             </a>
-                            <a href="#" className="p-3 bg-slate-800 rounded-full hover:bg-slate-700 transition-all hover:scale-110">
+
+                            <a
+                                href="https://linkedin.com/in/jmcdonald46"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="p-3 bg-slate-800 rounded-full hover:bg-slate-700 transition-all hover:scale-110"
+                            >
                                 <Linkedin className="w-6 h-6" />
                             </a>
-                            <a href="#" className="p-3 bg-slate-800 rounded-full hover:bg-slate-700 transition-all hover:scale-110">
+                            <a
+                                href="mailto:mcdonaldjordan4860@gmail.com"
+                                className="p-3 bg-slate-800 rounded-full hover:bg-slate-700 transition-all hover:scale-110"
+                            >
                                 <Mail className="w-6 h-6" />
                             </a>
                         </div>
@@ -151,7 +165,7 @@ export default function App() {
                         Have a project in mind? I'd love to hear about it.
                     </p>
                     <a
-                        href="mailto:your.email@example.com"
+                        href="mailto:mcdonaldjordan4860@gmail.com"
                         className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full font-semibold hover:shadow-lg hover:shadow-cyan-500/50 transition-all hover:scale-105"
                     >
                         Get In Touch
@@ -163,7 +177,7 @@ export default function App() {
             {/* Footer */}
             <footer className="py-8 px-6 border-t border-slate-700/50">
                 <div className="max-w-6xl mx-auto text-center text-slate-400">
-                    <p>© 2025 YourName. Built with React 19 & Tailwind CSS v4.</p>
+                    <p>© 2025 Jordan McDonald. Built with React 19 & Tailwind CSS v4.</p>
                 </div>
             </footer>
         </div>
