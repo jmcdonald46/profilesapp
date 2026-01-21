@@ -6,9 +6,11 @@ export default function App() {
     const [showDocument, setShowDocument] = useState(false);
     const [pdfError, setPdfError] = useState(false);
 
-    // Use absolute path from root
-    const documentUrl = `https://drive.google.com/file/d/1L7QnVHeVyMD6w9E5lS_MuRoc3Fns5ru7/view?usp=drive_link{encodeURIComponent(window.location.origin + '/resume.pdf')}&embedded=true`;
+    // Your Google Drive sharing link
+    const googleDocUrl = 'https://drive.google.com/file/d/1L7QnVHeVyMD6w9E5lS_MuRoc3Fns5ru7/view?usp=sharing';
 
+    // Convert to embeddable URL for iframe
+    const documentUrl = googleDocUrl.replace('/view?usp=sharing', '/preview');
 
     useEffect(() => {
         const handleScroll = () => setScrollY(window.scrollY);
@@ -86,6 +88,7 @@ export default function App() {
                                 className="w-full h-full"
                                 title="PDF Viewer"
                                 onError={() => setPdfError(true)}
+                                allow="autoplay"
                             />
                         ) : (
                             <div className="w-full h-full flex flex-col items-center justify-center p-8 text-center">
@@ -95,24 +98,26 @@ export default function App() {
                                     Your browser may not support inline PDF viewing. Please download the PDF to view it.
                                 </p>
                                 <a
-                                    href={documentUrl}
-                                    download="Jordan_McDonald_Resume.pdf"
+                                    href={googleDocUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                     className="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold px-8 py-4 rounded-lg transition shadow-lg hover:shadow-cyan-500/50 inline-flex items-center gap-2"
                                 >
-                                    <ArrowRight className="w-5 h-5 rotate-90" />
-                                    Download PDF
+                                    <ArrowRight className="w-5 h-5" />
+                                    Open in Google Docs
                                 </a>
                             </div>
                         )}
                         {!pdfError && (
                             <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2">
                                 <a
-                                    href={documentUrl}
-                                    download="Jordan_McDonald_Resume.pdf"
+                                    href={googleDocUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                     className="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold px-6 py-3 rounded-lg transition shadow-lg hover:shadow-cyan-500/50 inline-flex items-center gap-2"
                                 >
-                                    <ArrowRight className="w-5 h-5 rotate-90" />
-                                    Download PDF
+                                    <ArrowRight className="w-5 h-5" />
+                                    Open in Google Docs
                                 </a>
                             </div>
                         )}
