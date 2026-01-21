@@ -1,0 +1,5 @@
+# Serve PDF files with correct MIME type
+/*.pdf   /resume.pdf   200
+
+# SPA fallback - must be last
+/*    /index.html   200

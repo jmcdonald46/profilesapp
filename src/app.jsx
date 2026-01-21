@@ -4,7 +4,9 @@ import { Github, Linkedin, Mail, ArrowRight, Code, Palette, Zap, X } from 'lucid
 export default function App() {
     const [scrollY, setScrollY] = useState(0);
     const [showDocument, setShowDocument] = useState(false);
-    const documentUrl = './src/myfiles/resume.pdf'; // Fixed path - make sure file is in public/myfiles/
+
+    // FIX 1: Change the path - put PDF in public folder
+    const documentUrl = './public/resume.pdf';
 
     useEffect(() => {
         const handleScroll = () => setScrollY(window.scrollY);
@@ -76,17 +78,17 @@ export default function App() {
                         Close Resumé
                     </button>
                     <div className="relative w-full max-w-6xl h-full max-h-screen bg-slate-800 rounded-lg overflow-hidden">
+                        {/* FIX 2: Add proper iframe attributes for cross-browser support */}
                         <iframe
-                            src={documentUrl}
+                            src={`${documentUrl}#toolbar=1&navpanes=1&scrollbar=1`}
                             className="w-full h-full"
                             title="PDF Viewer"
+                            type="application/pdf"
                         />
                         <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2">
                             <a
                                 href={documentUrl}
                                 download="Jordan_McDonald_Resume.pdf"
-                                target="_blank"
-                                rel="noopener noreferrer"
                                 className="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold px-6 py-3 rounded-lg transition shadow-lg hover:shadow-cyan-500/50 inline-flex items-center gap-2"
                             >
                                 <ArrowRight className="w-5 h-5 rotate-90" />
