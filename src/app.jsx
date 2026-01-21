@@ -7,7 +7,8 @@ export default function App() {
     const [pdfError, setPdfError] = useState(false);
 
     // Use absolute path from root
-    const documentUrl = '/resume.pdf';
+    const documentUrl = `https://drive.google.com/file/d/1L7QnVHeVyMD6w9E5lS_MuRoc3Fns5ru7/view?usp=drive_link{encodeURIComponent(window.location.origin + '/resume.pdf')}&embedded=true`;
+
 
     useEffect(() => {
         const handleScroll = () => setScrollY(window.scrollY);
