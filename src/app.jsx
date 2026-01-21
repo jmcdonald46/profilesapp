@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Github, Linkedin, Mail, ArrowRight, Code, Palette, Zap } from 'lucide-react';
+import { Github, Linkedin, Mail, ArrowRight, Code, Palette, Zap, X } from 'lucide-react';
 
 export default function App() {
     const [scrollY, setScrollY] = useState(0);
+    const [showDocument, setShowDocument] = useState(false);
+    const documentUrl = './src/myfiles/resume.pdf'; 
 
     useEffect(() => {
         const handleScroll = () => setScrollY(window.scrollY);
@@ -12,10 +14,19 @@ export default function App() {
 
     const projects = [
         {
-            title: "Resume",
-            description: "View My Resume Here",
-            tech: [""],
-            gradient: "from-blue-500 to-cyan-500"
+            title: "Jordan McDonald Resumé",
+            description: "View My Resumé Here",
+            tech: ["1.5yrs Amazon L4", "Leadership Role", "Cyber Degree"],
+            gradient: "from-blue-500 to-cyan-500",
+            showPreview: true,
+            button: (
+                <button
+                    onClick={() => setShowDocument(true)}
+                    className="px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full font-semibold hover:shadow-lg hover:shadow-cyan-500/50 transition-all hover:scale-105"
+                >
+                    View Resumé
+                </button>
+            )
         },
         {
             title: "Work In Progress",
@@ -32,13 +43,48 @@ export default function App() {
     ];
 
     const skills = [
-        { name: "AWS Cloud Certified", icon: Code, color: "text-blue-500" },
-        { name: "B.S. Cybersecurity", icon: Palette, color: "text-purple-500" },
-        { name: "Web Development w ReactJs", icon: Zap, color: "text-yellow-500" }
+        {
+            name: "AWS Cloud Certified",
+            icon: Code,
+            color: "text-blue-500",
+            description: "Working to obtain AWS Cloud certifications with emphasis on security and AI focused specialties."
+        },
+        {
+            name: "B.S. Cybersecurity",
+            icon: Palette,
+            color: "text-purple-500",
+            description: "Bachelor's degree in Cybersecurity with focus on network security, threat analysis, and secure system design."
+        },
+        {
+            name: "Web Development w ReactJs",
+            icon: Zap,
+            color: "text-yellow-500",
+            description: "Building modern, responsive web applications using React, JavaScript, and contemporary development practices."
+        }
     ];
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
+            {/* Document Modal Overlay */}
+            {showDocument && (
+                <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4">
+                    <button
+                        onClick={() => setShowDocument(false)}
+                        className="fixed top-24 left-24 z-[60] bg-cyan-500 hover:bg-cyan-600 text-white font-semibold px-6 py-3 rounded-lg transition shadow-lg hover:shadow-cyan-500/50 flex items-center gap-2"
+                    >
+                        <X className="w-5 h-5" />
+                        Close Resumé
+                    </button>
+                    <div className="relative w-full max-w-6xl h-full max-h-screen bg-slate-800 rounded-lg overflow-hidden">
+                        <iframe
+                            src={documentUrl}
+                            className="w-full h-full"
+                            title="PDF Viewer"
+                        />
+                    </div>
+                </div>
+            )}
+
             {/* Navigation */}
             <nav className="fixed top-0 w-full bg-slate-900/80 backdrop-blur-md z-50 border-b border-slate-700/50">
                 <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
@@ -63,7 +109,7 @@ export default function App() {
                             transform: `translateY(${scrollY * 0.3}px)`
                         }}
                     >
-                        <h2 className="text-6xl md:text-7xl font-bold mb-4 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
+                        <h2 className="text-6xl md:text-7xl font-bold mb-4 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent leading-tight pb-2">
                             Aspiring Cloud Engineer
                         </h2>
                         <p className="text-xl md:text-2xl text-slate-300 mb-8">
@@ -120,7 +166,7 @@ export default function App() {
                                     <Icon className={`w-12 h-12 mb-4 ${skill.color}`} />
                                     <h4 className="text-xl font-semibold mb-2">{skill.name}</h4>
                                     <p className="text-slate-400">
-                                        Creating innovative solutions with modern technologies and best practices.
+                                        {skill.description}
                                     </p>
                                 </div>
                             );
@@ -132,24 +178,36 @@ export default function App() {
             {/* Projects Section */}
             <section id="projects" className="py-20 px-6 bg-slate-800/30">
                 <div className="max-w-6xl mx-auto">
-                    <h3 className="text-4xl font-bold text-center mb-12">Featured Projects</h3>
+                    <h3 className="text-4xl font-bold text-center mb-12">Featured</h3>
                     <div className="grid md:grid-cols-3 gap-8">
                         {projects.map((project, index) => (
                             <div
                                 key={index}
                                 className="bg-slate-800/50 backdrop-blur-sm rounded-2xl overflow-hidden border border-slate-700/50 hover:border-slate-600 transition-all hover:transform hover:scale-105 group"
                             >
-                                <div className={`h-48 bg-gradient-to-br ${project.gradient} opacity-80 group-hover:opacity-100 transition-opacity`}></div>
+                                {project.showPreview ? (
+                                    <div className="h-48 overflow-hidden bg-slate-900 flex items-center justify-center">
+                                        <div className="text-center p-6">
+                                            <Code className="w-16 h-16 mx-auto mb-2 text-cyan-400" />
+                                            <p className="text-slate-300 font-semibold">Jordan McDonald Resumé</p>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className={`h-48 bg-gradient-to-br ${project.gradient} opacity-80 group-hover:opacity-100 transition-opacity`}></div>
+                                )}
                                 <div className="p-6">
                                     <h4 className="text-xl font-semibold mb-2">{project.title}</h4>
                                     <p className="text-slate-400 mb-4">{project.description}</p>
-                                    <div className="flex flex-wrap gap-2">
-                                        {project.tech.map((tech, i) => (
-                                            <span key={i} className="px-3 py-1 bg-slate-700 rounded-full text-sm">
-                                                {tech}
-                                            </span>
-                                        ))}
-                                    </div>
+                                    {project.button && project.button}
+                                    {project.tech[0] !== "" && (
+                                        <div className="flex flex-wrap gap-2 mt-4">
+                                            {project.tech.map((tech, i) => (
+                                                <span key={i} className="px-3 py-1 bg-slate-700 rounded-full text-sm">
+                                                    {tech}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         ))}
@@ -160,9 +218,9 @@ export default function App() {
             {/* Contact Section */}
             <section id="contact" className="py-20 px-6">
                 <div className="max-w-4xl mx-auto text-center">
-                    <h3 className="text-4xl font-bold mb-6">Let's Work Together</h3>
+                    <h3 className="text-4xl font-bold mb-6">Let's Get In Touch!</h3>
                     <p className="text-xl text-slate-300 mb-8">
-                        Have a project in mind? I'd love to hear about it.
+                        Shoot me an email with thoughts, ideas, or if you want to catch up!
                     </p>
                     <a
                         href="mailto:mcdonaldjordan4860@gmail.com"
