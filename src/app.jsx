@@ -4,9 +4,10 @@ import { Github, Linkedin, Mail, ArrowRight, Code, Palette, Zap, X } from 'lucid
 export default function App() {
     const [scrollY, setScrollY] = useState(0);
     const [showDocument, setShowDocument] = useState(false);
+    const [pdfError, setPdfError] = useState(false);
 
-    // FIX 1: Change the path - put PDF in public folder
-    const documentUrl = './public/resume.pdf';
+    // Use absolute path from root
+    const documentUrl = '/resume.pdf';
 
     useEffect(() => {
         const handleScroll = () => setScrollY(window.scrollY);
@@ -78,23 +79,42 @@ export default function App() {
                         Close Resumé
                     </button>
                     <div className="relative w-full max-w-6xl h-full max-h-screen bg-slate-800 rounded-lg overflow-hidden">
-                        {/* FIX 2: Add proper iframe attributes for cross-browser support */}
-                        <iframe
-                            src={`${documentUrl}#toolbar=1&navpanes=1&scrollbar=1`}
-                            className="w-full h-full"
-                            title="PDF Viewer"
-                            type="application/pdf"
-                        />
-                        <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2">
-                            <a
-                                href={documentUrl}
-                                download="Jordan_McDonald_Resume.pdf"
-                                className="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold px-6 py-3 rounded-lg transition shadow-lg hover:shadow-cyan-500/50 inline-flex items-center gap-2"
-                            >
-                                <ArrowRight className="w-5 h-5 rotate-90" />
-                                Download PDF
-                            </a>
-                        </div>
+                        {!pdfError ? (
+                            <iframe
+                                src={documentUrl}
+                                className="w-full h-full"
+                                title="PDF Viewer"
+                                onError={() => setPdfError(true)}
+                            />
+                        ) : (
+                            <div className="w-full h-full flex flex-col items-center justify-center p-8 text-center">
+                                <Code className="w-20 h-20 text-cyan-400 mb-6" />
+                                <h3 className="text-2xl font-bold mb-4">Unable to Display PDF</h3>
+                                <p className="text-slate-300 mb-8 max-w-md">
+                                    Your browser may not support inline PDF viewing. Please download the PDF to view it.
+                                </p>
+                                <a
+                                    href={documentUrl}
+                                    download="Jordan_McDonald_Resume.pdf"
+                                    className="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold px-8 py-4 rounded-lg transition shadow-lg hover:shadow-cyan-500/50 inline-flex items-center gap-2"
+                                >
+                                    <ArrowRight className="w-5 h-5 rotate-90" />
+                                    Download PDF
+                                </a>
+                            </div>
+                        )}
+                        {!pdfError && (
+                            <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2">
+                                <a
+                                    href={documentUrl}
+                                    download="Jordan_McDonald_Resume.pdf"
+                                    className="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold px-6 py-3 rounded-lg transition shadow-lg hover:shadow-cyan-500/50 inline-flex items-center gap-2"
+                                >
+                                    <ArrowRight className="w-5 h-5 rotate-90" />
+                                    Download PDF
+                                </a>
+                            </div>
+                        )}
                     </div>
                 </div>
             )}
