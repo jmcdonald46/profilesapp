@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Github, Linkedin, Mail, ArrowRight, Code, CloudCheck, GraduationCap, Palette, Zap, X } from 'lucide-react';
-import profileImage from '/IMGpfp.jpeg';
+import profileImage from '/public/IMGpfp.jpeg';
 
 export default function App() {
     const [scrollY, setScrollY] = useState(0);
