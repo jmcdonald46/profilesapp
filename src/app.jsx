@@ -73,50 +73,50 @@ export default function App() {
         <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
             {/* Document Modal Overlay */}
             {showDocument && (
-                <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4">
+                <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex flex-col pt-20 md:pt-24 p-4 md:p-6">
                     <button
                         onClick={() => setShowDocument(false)}
-                        className="fixed top-24 left-24 z-[60] bg-cyan-500 hover:bg-cyan-600 text-white font-semibold px-6 py-3 rounded-lg transition shadow-lg hover:shadow-cyan-500/50 flex items-center gap-2"
+                        className="mb-4 self-start z-[60] bg-cyan-500 hover:bg-cyan-600 text-white font-semibold px-4 py-2 md:px-6 md:py-3 rounded-lg transition shadow-lg hover:shadow-cyan-500/50 flex items-center gap-2"
                     >
-                        <X className="w-5 h-5" />
+                        <X className="w-4 h-4 md:w-5 md:h-5" />
                         Close Resumé
                     </button>
-                    <div className="relative w-full max-w-6xl h-full max-h-screen bg-slate-800 rounded-lg overflow-hidden">
+                    <div className="relative w-full max-w-6xl mx-auto flex-1 bg-slate-800 rounded-lg overflow-hidden flex flex-col">
                         {!pdfError ? (
                             <iframe
                                 src={documentUrl}
-                                className="w-full h-full"
+                                className="w-full flex-1"
                                 title="PDF Viewer"
                                 onError={() => setPdfError(true)}
                                 allow="autoplay"
                             />
                         ) : (
-                            <div className="w-full h-full flex flex-col items-center justify-center p-8 text-center">
-                                <Code className="w-20 h-20 text-cyan-400 mb-6" />
-                                <h3 className="text-2xl font-bold mb-4">Unable to Display PDF</h3>
-                                <p className="text-slate-300 mb-8 max-w-md">
+                            <div className="w-full flex-1 flex flex-col items-center justify-center p-4 md:p-8 text-center">
+                                <Code className="w-16 h-16 md:w-20 md:h-20 text-cyan-400 mb-4 md:mb-6" />
+                                <h3 className="text-xl md:text-2xl font-bold mb-3 md:mb-4">Unable to Display PDF</h3>
+                                <p className="text-sm md:text-base text-slate-300 mb-6 md:mb-8 max-w-md">
                                     Your browser may not support inline PDF viewing. Please download the PDF to view it.
                                 </p>
                                 <a
                                     href={googleDocUrl}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold px-8 py-4 rounded-lg transition shadow-lg hover:shadow-cyan-500/50 inline-flex items-center gap-2"
+                                    className="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold px-6 py-3 md:px-8 md:py-4 rounded-lg transition shadow-lg hover:shadow-cyan-500/50 inline-flex items-center gap-2 text-sm md:text-base"
                                 >
-                                    <ArrowRight className="w-5 h-5" />
+                                    <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
                                     Open in Google Docs
                                 </a>
                             </div>
                         )}
                         {!pdfError && (
-                            <div className="absolute bottom-6 left-1/10 transform -translate-x-1/2">
+                            <div className="p-4 md:p-6 border-t border-slate-700">
                                 <a
                                     href={googleDocUrl}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold px-6 py-3 rounded-lg transition shadow-lg hover:shadow-cyan-500/50 inline-flex items-center gap-2"
+                                    className="w-full md:w-auto mx-auto bg-cyan-500 hover:bg-cyan-600 text-white font-semibold px-6 py-3 rounded-lg transition shadow-lg hover:shadow-cyan-500/50 inline-flex items-center justify-center gap-2 text-sm md:text-base"
                                 >
-                                    <ArrowRight className="w-5 h-5" />
+                                    <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
                                     Open in Google Docs
                                 </a>
                             </div>
