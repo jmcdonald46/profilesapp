@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Github, Linkedin, Mail, ArrowRight, Code, CloudCheck, GraduationCap, Palette, Zap, X } from 'lucide-react';
+import profileImage from '/IMGpfp.jpeg';
 
 export default function App() {
     const [scrollY, setScrollY] = useState(0);
@@ -227,7 +228,7 @@ export default function App() {
                             <div className="relative w-full aspect-square max-w-md mx-auto">
                                 <div className="w-full h-full rounded-2xl bg-gradient-to-br from-cyan-500/20 via-blue-500/20 to-purple-600/20 backdrop-blur-sm border border-slate-700/50 flex items-center justify-center overflow-hidden">
                                     <img
-                                        src="/IMGpfp.jpeg"
+                                        src={profileImage}
                                         alt="Jordan McDonald"
                                         className="w-full h-full object-cover"
                                     />
