@@ -109,7 +109,7 @@ export default function App() {
                             </div>
                         )}
                         {!pdfError && (
-                            <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2">
+                            <div className="absolute bottom-6 left-1/10 transform -translate-x-1/2">
                                 <a
                                     href={googleDocUrl}
                                     target="_blank"
