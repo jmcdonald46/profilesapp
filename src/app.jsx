@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Github, Linkedin, Mail, ArrowRight, Code, CloudCheck, GraduationCap, Palette, Zap, X } from 'lucide-react';
-import profileImage from '/public/IMGpfp.jpeg';
 
 export default function App() {
     const [scrollY, setScrollY] = useState(0);
     const [showDocument, setShowDocument] = useState(false);
     const [pdfError, setPdfError] = useState(false);
-    const [isMobile, setIsMobile] = useState(false);
 
     // Your Google Drive sharing link
     const googleDocUrl = 'https://drive.google.com/file/d/1L7QnVHeVyMD6w9E5lS_MuRoc3Fns5ru7/view?usp=sharing';
@@ -17,13 +15,6 @@ export default function App() {
     useEffect(() => {
         const handleScroll = () => setScrollY(window.scrollY);
         window.addEventListener('scroll', handleScroll);
-
-        // Detect mobile device
-        const checkMobile = () => {
-            setIsMobile(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
-        };
-        checkMobile();
-
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
@@ -91,24 +82,7 @@ export default function App() {
                         Close Resumé
                     </button>
                     <div className="relative w-full max-w-6xl mx-auto flex-1 bg-slate-800 rounded-lg overflow-hidden flex flex-col">
-                        {isMobile ? (
-                            <div className="w-full flex-1 flex flex-col items-center justify-center p-4 md:p-8 text-center">
-                                <Code className="w-16 h-16 md:w-20 md:h-20 text-cyan-400 mb-4 md:mb-6" />
-                                <h3 className="text-xl md:text-2xl font-bold mb-3 md:mb-4">View Resume</h3>
-                                <p className="text-sm md:text-base text-slate-300 mb-6 md:mb-8 max-w-md">
-                                    For the best viewing experience on mobile, please open the resume in a new tab.
-                                </p>
-                                <a
-                                    href={googleDocUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold px-6 py-3 md:px-8 md:py-4 rounded-lg transition shadow-lg hover:shadow-cyan-500/50 inline-flex items-center gap-2 text-sm md:text-base"
-                                >
-                                    <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
-                                    Open Resume
-                                </a>
-                            </div>
-                        ) : !pdfError ? (
+                        {!pdfError ? (
                             <iframe
                                 src={documentUrl}
                                 className="w-full flex-1"
@@ -134,7 +108,7 @@ export default function App() {
                                 </a>
                             </div>
                         )}
-                        {!isMobile && !pdfError && (
+                        {!pdfError && (
                             <div className="p-4 md:p-6 border-t border-slate-700">
                                 <a
                                     href={googleDocUrl}
@@ -143,7 +117,7 @@ export default function App() {
                                     className="w-full md:w-auto mx-auto bg-cyan-500 hover:bg-cyan-600 text-white font-semibold px-6 py-3 rounded-lg transition shadow-lg hover:shadow-cyan-500/50 inline-flex items-center justify-center gap-2 text-sm md:text-base"
                                 >
                                     <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
-                                    Open in Google Docs
+                                    Open in Google Docs 
                                 </a>
                             </div>
                         )}
@@ -167,75 +141,52 @@ export default function App() {
 
             {/* Hero Section */}
             <section className="min-h-screen flex items-center justify-center px-6 pt-20">
-                <div className="max-w-6xl mx-auto w-full">
-                    <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-                        {/* Left Column - Text Content */}
-                        <div
-                            className="transition-all duration-700"
-                            style={{
-                                opacity: 1 - scrollY / 500,
-                                transform: `translateY(${scrollY * 0.3}px)`
-                            }}
-                        >
-                            <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-4 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent leading-tight pb-2">
-                                Aspiring Cloud Engineer
-                            </h2>
-                            <p className="text-lg md:text-xl lg:text-2xl text-slate-300 mb-8">
-                                Staying Curious, Adapting to Change, Relentlessly Driven
-                            </p>
-                            <div className="flex gap-4 mb-8">
-                                <a
-                                    href="https://github.com/jmcdonald46"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="p-3 bg-slate-800 rounded-full hover:bg-slate-700 transition-all hover:scale-110"
-                                >
-                                    <Github className="w-6 h-6" />
-                                </a>
-
-                                <a
-                                    href="https://linkedin.com/in/jmcdonald46"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="p-3 bg-slate-800 rounded-full hover:bg-slate-700 transition-all hover:scale-110"
-                                >
-                                    <Linkedin className="w-6 h-6" />
-                                </a>
-                                <a
-                                    href="mailto:mcdonaldjordan4860@gmail.com"
-                                    className="p-3 bg-slate-800 rounded-full hover:bg-slate-700 transition-all hover:scale-110"
-                                >
-                                    <Mail className="w-6 h-6" />
-                                </a>
-                            </div>
+                <div className="max-w-4xl mx-auto text-center">
+                    <div
+                        className="mb-6 transition-all duration-700"
+                        style={{
+                            opacity: 1 - scrollY / 500,
+                            transform: `translateY(${scrollY * 0.3}px)`
+                        }}
+                    >
+                        <h2 className="text-6xl md:text-7xl font-bold mb-4 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent leading-tight pb-2">
+                            Aspiring Cloud Engineer
+                        </h2>
+                        <p className="text-xl md:text-2xl text-slate-300 mb-8">
+                            Staying Curious, Adapting to Change, Relentlessly Driven
+                        </p>
+                        <div className="flex gap-4 justify-center mb-8">
                             <a
-                                href="#projects"
-                                className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full font-semibold hover:shadow-lg hover:shadow-cyan-500/50 transition-all hover:scale-105"
+                                href="https://github.com/jmcdonald46"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="p-3 bg-slate-800 rounded-full hover:bg-slate-700 transition-all hover:scale-110"
                             >
-                                View My Work
-                                <ArrowRight className="w-5 h-5" />
+                                <Github className="w-6 h-6" />
+                            </a>
+
+                            <a
+                                href="https://linkedin.com/in/jmcdonald46"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="p-3 bg-slate-800 rounded-full hover:bg-slate-700 transition-all hover:scale-110"
+                            >
+                                <Linkedin className="w-6 h-6" />
+                            </a>
+                            <a
+                                href="mailto:mcdonaldjordan4860@gmail.com"
+                                className="p-3 bg-slate-800 rounded-full hover:bg-slate-700 transition-all hover:scale-110"
+                            >
+                                <Mail className="w-6 h-6" />
                             </a>
                         </div>
-
-                        {/* Right Column - Image */}
-                        <div
-                            className="transition-all duration-700"
-                            style={{
-                                opacity: 1 - scrollY / 500,
-                                transform: `translateY(${scrollY * 0.3}px)`
-                            }}
+                        <a
+                            href="#projects"
+                            className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full font-semibold hover:shadow-lg hover:shadow-cyan-500/50 transition-all hover:scale-105"
                         >
-                            <div className="relative w-full aspect-square max-w-md mx-auto">
-                                <div className="w-full h-full rounded-2xl bg-gradient-to-br from-cyan-500/20 via-blue-500/20 to-purple-600/20 backdrop-blur-sm border border-slate-700/50 flex items-center justify-center overflow-hidden">
-                                    <img
-                                        src={profileImage}
-                                        alt="Jordan McDonald"
-                                        className="w-full h-full object-cover"
-                                    />
-                                </div>
-                                <div className="absolute -inset-4 bg-gradient-to-r from-cyan-500/10 to-purple-600/10 rounded-2xl blur-2xl -z-10"></div>
-                            </div>
-                        </div>
+                            View My Work
+                            <ArrowRight className="w-5 h-5" />
+                        </a>
                     </div>
                 </div>
             </section>
