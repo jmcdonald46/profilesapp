@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Github, Linkedin, Mail, ArrowRight, Code, Cloud, GraduationCap, Camera, X, RefreshCw } from 'lucide-react';
+import { Github, Linkedin, Mail, ArrowRight, Code, Cloud, GraduationCap, Camera, X, RefreshCw, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function App() {
     const [scrollY, setScrollY] = useState(0);
@@ -13,8 +13,11 @@ export default function App() {
     const [galleryError, setGalleryError] = useState(null);
     const [selectedImage, setSelectedImage] = useState(null);
 
-    // API Configuration - Replace with your actual API Gateway endpoint
-    // You'll get this URL after deploying the Lambda function
+    // Pagination state
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(0);
+    const [totalImages, setTotalImages] = useState(0);
+    const imagesPerPage = 5; // 5 images per page for faster loading with large files
 
     const googleDocUrl = 'https://drive.google.com/file/d/1L7QnVHeVyMD6w9E5lS_MuRoc3Fns5ru7/view?usp=sharing';
     const documentUrl = googleDocUrl.replace('/view?usp=sharing', '/preview');
@@ -25,14 +28,12 @@ export default function App() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    const fetchImages = async () => {
+    const fetchImages = async (page = 1) => {
         try {
             setGalleryLoading(true);
             setGalleryError(null);
 
-            // Call your Lambda/API Gateway endpoint
-            // Replace with your actual API Gateway URL
-            const API_ENDPOINT = 'https://qwf487bnge.execute-api.us-east-2.amazonaws.com';
+            const API_ENDPOINT = `https://lzgtwdx5ii.execute-api.us-east-2.amazonaws.com/prod/images?page=${page}&limit=${imagesPerPage}`;
 
             const response = await fetch(API_ENDPOINT);
 
@@ -42,6 +43,12 @@ export default function App() {
 
             const data = await response.json();
             setImages(data.images || []);
+
+            if (data.pagination) {
+                setCurrentPage(data.pagination.currentPage);
+                setTotalPages(data.pagination.totalPages);
+                setTotalImages(data.pagination.totalImages);
+            }
 
         } catch (err) {
             console.error('Error fetching images:', err);
@@ -54,7 +61,18 @@ export default function App() {
     const handleOpenGallery = () => {
         setShowGallery(true);
         if (images.length === 0) {
-            fetchImages();
+            fetchImages(1);
+        }
+    };
+
+    const handlePageChange = (newPage) => {
+        if (newPage >= 1 && newPage <= totalPages) {
+            fetchImages(newPage);
+            // Scroll to top of gallery content
+            const galleryContainer = document.querySelector('.gallery-container');
+            if (galleryContainer) {
+                galleryContainer.scrollTop = 0;
+            }
         }
     };
 
@@ -185,7 +203,7 @@ export default function App() {
 
             {/* Gallery Modal */}
             {showGallery && (
-                <div className="fixed inset-0 bg-black bg-opacity-95 z-50 overflow-y-auto">
+                <div className="fixed inset-0 bg-black bg-opacity-95 z-50 overflow-y-auto gallery-container">
                     <div className="min-h-screen py-20 md:py-24 px-4 md:px-6">
                         <div className="max-w-7xl mx-auto">
                             <div className="flex justify-between items-center mb-6">
@@ -215,7 +233,7 @@ export default function App() {
                                     <h3 className="text-red-400 font-semibold mb-2">Error</h3>
                                     <p className="text-red-300 mb-4">{galleryError}</p>
                                     <button
-                                        onClick={fetchImages}
+                                        onClick={() => fetchImages(currentPage)}
                                         className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition flex items-center gap-2"
                                     >
                                         <RefreshCw className="w-4 h-4" />
@@ -227,22 +245,31 @@ export default function App() {
                             {!galleryLoading && !galleryError && images.length === 0 && (
                                 <div className="text-center py-20">
                                     <Camera className="w-24 h-24 mx-auto text-slate-600 mb-4" />
-                                    <h3 className="text-xl font-medium text-slate-400 mb-2">No photos configured</h3>
-                                    <p className="text-slate-500 max-w-md mx-auto">Add your S3 image URLs to the imageUrls array in the code to display your photos</p>
+                                    <h3 className="text-xl font-medium text-slate-400 mb-2">No photos found</h3>
+                                    <p className="text-slate-500 max-w-md mx-auto">Upload some images to your S3 bucket to get started</p>
                                 </div>
                             )}
 
                             {!galleryLoading && !galleryError && images.length > 0 && (
                                 <>
-                                    <p className="text-slate-400 mb-6">{images.length} {images.length === 1 ? 'photo' : 'photos'}</p>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                    <div className="flex justify-between items-center mb-6">
+                                        <p className="text-slate-400">
+                                            Showing {((currentPage - 1) * imagesPerPage) + 1}-{Math.min(currentPage * imagesPerPage, totalImages)} of {totalImages} photos
+                                        </p>
+                                        <p className="text-slate-500 text-sm">
+                                            Page {currentPage} of {totalPages}
+                                        </p>
+                                    </div>
+
+                                    {/* Grid - optimized for 5 images: 2-2-1 layout on desktop, 1 column on mobile */}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
                                         {images.map((image) => (
                                             <div
                                                 key={image.key}
-                                                className="group relative bg-slate-800 rounded-lg shadow-lg overflow-hidden cursor-pointer transform transition hover:scale-105 hover:shadow-xl hover:shadow-purple-500/30"
+                                                className="group relative bg-slate-800 rounded-lg shadow-lg overflow-hidden cursor-pointer transform transition hover:scale-[1.02] hover:shadow-xl hover:shadow-purple-500/30"
                                                 onClick={() => setSelectedImage(image)}
                                             >
-                                                <div className="aspect-square overflow-hidden bg-slate-900">
+                                                <div className="aspect-video overflow-hidden bg-slate-900">
                                                     <img
                                                         src={image.url}
                                                         alt={image.key}
@@ -250,15 +277,69 @@ export default function App() {
                                                         loading="lazy"
                                                     />
                                                 </div>
-                                                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3 opacity-0 group-hover:opacity-100 transition">
-                                                    <p className="text-white text-sm truncate">{image.key}</p>
+                                                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 opacity-0 group-hover:opacity-100 transition">
+                                                    <p className="text-white text-sm font-medium truncate">{image.key}</p>
                                                     {image.size > 0 && (
-                                                        <p className="text-white/80 text-xs">{formatFileSize(image.size)}</p>
+                                                        <p className="text-white/80 text-xs mt-1">{formatFileSize(image.size)}</p>
                                                     )}
                                                 </div>
                                             </div>
                                         ))}
                                     </div>
+
+                                    {/* Pagination Controls */}
+                                    {totalPages > 1 && (
+                                        <div className="flex justify-center items-center gap-3 flex-wrap">
+                                            <button
+                                                onClick={() => handlePageChange(currentPage - 1)}
+                                                disabled={currentPage === 1}
+                                                className="px-4 py-2 bg-purple-600 hover:bg-purple-700 disabled:bg-slate-700 disabled:cursor-not-allowed rounded-lg transition flex items-center gap-2 text-sm md:text-base"
+                                            >
+                                                <ChevronLeft className="w-4 h-4" />
+                                                <span className="hidden sm:inline">Previous</span>
+                                            </button>
+
+                                            <div className="flex gap-2">
+                                                {[...Array(totalPages)].map((_, idx) => {
+                                                    const pageNum = idx + 1;
+                                                    // Show first page, last page, current page, and pages around current
+                                                    if (
+                                                        pageNum === 1 ||
+                                                        pageNum === totalPages ||
+                                                        (pageNum >= currentPage - 1 && pageNum <= currentPage + 1)
+                                                    ) {
+                                                        return (
+                                                            <button
+                                                                key={pageNum}
+                                                                onClick={() => handlePageChange(pageNum)}
+                                                                className={`px-3 md:px-4 py-2 rounded-lg transition text-sm md:text-base ${currentPage === pageNum
+                                                                        ? 'bg-purple-600 text-white font-semibold'
+                                                                        : 'bg-slate-700 hover:bg-slate-600'
+                                                                    }`}
+                                                            >
+                                                                {pageNum}
+                                                            </button>
+                                                        );
+                                                    } else if (
+                                                        pageNum === currentPage - 2 ||
+                                                        pageNum === currentPage + 2
+                                                    ) {
+                                                        return <span key={pageNum} className="px-2 py-2 text-slate-500">...</span>;
+                                                    }
+                                                    return null;
+                                                })}
+                                            </div>
+
+                                            <button
+                                                onClick={() => handlePageChange(currentPage + 1)}
+                                                disabled={currentPage === totalPages}
+                                                className="px-4 py-2 bg-purple-600 hover:bg-purple-700 disabled:bg-slate-700 disabled:cursor-not-allowed rounded-lg transition flex items-center gap-2 text-sm md:text-base"
+                                            >
+                                                <span className="hidden sm:inline">Next</span>
+                                                <ChevronRight className="w-4 h-4" />
+                                            </button>
+                                        </div>
+                                    )}
                                 </>
                             )}
                         </div>
