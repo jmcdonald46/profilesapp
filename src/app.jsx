@@ -1,15 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Github, Linkedin, Mail, ArrowRight, Code, CloudCheck, GraduationCap, Palette, Zap, X } from 'lucide-react';
+import { Github, Linkedin, Mail, ArrowRight, Code, Cloud, GraduationCap, Camera, X, RefreshCw } from 'lucide-react';
 
 export default function App() {
     const [scrollY, setScrollY] = useState(0);
     const [showDocument, setShowDocument] = useState(false);
+    const [showGallery, setShowGallery] = useState(false);
     const [pdfError, setPdfError] = useState(false);
 
-    // Your Google Drive sharing link
-    const googleDocUrl = 'https://drive.google.com/file/d/1L7QnVHeVyMD6w9E5lS_MuRoc3Fns5ru7/view?usp=sharing';
+    // Gallery state
+    const [images, setImages] = useState([]);
+    const [galleryLoading, setGalleryLoading] = useState(false);
+    const [galleryError, setGalleryError] = useState(null);
+    const [selectedImage, setSelectedImage] = useState(null);
 
-    // Convert to embeddable URL for iframe
+    // API Configuration - Replace with your actual API Gateway endpoint
+    // You'll get this URL after deploying the Lambda function
+
+    const googleDocUrl = 'https://drive.google.com/file/d/1L7QnVHeVyMD6w9E5lS_MuRoc3Fns5ru7/view?usp=sharing';
     const documentUrl = googleDocUrl.replace('/view?usp=sharing', '/preview');
 
     useEffect(() => {
@@ -18,6 +25,46 @@ export default function App() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    const fetchImages = async () => {
+        try {
+            setGalleryLoading(true);
+            setGalleryError(null);
+
+            // Call your Lambda/API Gateway endpoint
+            // Replace with your actual API Gateway URL
+            const API_ENDPOINT = 'https://qwf487bnge.execute-api.us-east-2.amazonaws.com';
+
+            const response = await fetch(API_ENDPOINT);
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch images from API');
+            }
+
+            const data = await response.json();
+            setImages(data.images || []);
+
+        } catch (err) {
+            console.error('Error fetching images:', err);
+            setGalleryError('Failed to load images. Please check your API configuration.');
+        } finally {
+            setGalleryLoading(false);
+        }
+    };
+
+    const handleOpenGallery = () => {
+        setShowGallery(true);
+        if (images.length === 0) {
+            fetchImages();
+        }
+    };
+
+    const formatFileSize = (bytes) => {
+        if (bytes === 0) return 'Unknown';
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+        return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+    };
+
     const projects = [
         {
             title: "Jordan McDonald Resumé",
@@ -25,6 +72,7 @@ export default function App() {
             tech: ["1.5yrs Amazon L4", "Leadership Role", "Cyber Degree"],
             gradient: "from-blue-500 to-cyan-500",
             showPreview: true,
+            icon: Code,
             button: (
                 <button
                     onClick={() => setShowDocument(true)}
@@ -35,10 +83,20 @@ export default function App() {
             )
         },
         {
-            title: "Work In Progress",
-            description: "",
-            tech: [""],
-            gradient: "from-purple-500 to-pink-500"
+            title: "Photo Gallery",
+            description: "AWS S3 powered photo gallery with cloud storage",
+            tech: ["AWS S3", "React", "REST API"],
+            gradient: "from-purple-500 to-pink-500",
+            showPreview: true,
+            icon: Camera,
+            button: (
+                <button
+                    onClick={handleOpenGallery}
+                    className="px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition-all hover:scale-105"
+                >
+                    View Gallery
+                </button>
+            )
         },
         {
             title: "Work In Progress",
@@ -51,7 +109,7 @@ export default function App() {
     const skills = [
         {
             name: "AWS Cloud Certified",
-            icon: CloudCheck,
+            icon: Cloud,
             color: "text-blue-500",
             description: "Working to obtain AWS Cloud certifications with emphasis on security and AI focused specialties."
         },
@@ -71,7 +129,7 @@ export default function App() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
-            {/* Document Modal Overlay */}
+            {/* Document Modal */}
             {showDocument && (
                 <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex flex-col pt-20 md:pt-24 p-4 md:p-6">
                     <button
@@ -117,10 +175,124 @@ export default function App() {
                                     className="w-full md:w-auto mx-auto bg-cyan-500 hover:bg-cyan-600 text-white font-semibold px-6 py-3 rounded-lg transition shadow-lg hover:shadow-cyan-500/50 inline-flex items-center justify-center gap-2 text-sm md:text-base"
                                 >
                                     <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
-                                    Open in Google Docs 
+                                    Open in Google Docs
                                 </a>
                             </div>
                         )}
+                    </div>
+                </div>
+            )}
+
+            {/* Gallery Modal */}
+            {showGallery && (
+                <div className="fixed inset-0 bg-black bg-opacity-95 z-50 overflow-y-auto">
+                    <div className="min-h-screen py-20 md:py-24 px-4 md:px-6">
+                        <div className="max-w-7xl mx-auto">
+                            <div className="flex justify-between items-center mb-6">
+                                <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
+                                    Photo Gallery
+                                </h2>
+                                <button
+                                    onClick={() => setShowGallery(false)}
+                                    className="bg-purple-500 hover:bg-purple-600 text-white font-semibold px-4 py-2 md:px-6 md:py-3 rounded-lg transition shadow-lg hover:shadow-purple-500/50 flex items-center gap-2"
+                                >
+                                    <X className="w-4 h-4 md:w-5 md:h-5" />
+                                    Close Gallery
+                                </button>
+                            </div>
+
+                            {galleryLoading && (
+                                <div className="flex items-center justify-center py-20">
+                                    <div className="text-center">
+                                        <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                                        <p className="text-slate-300">Loading images...</p>
+                                    </div>
+                                </div>
+                            )}
+
+                            {galleryError && (
+                                <div className="bg-red-900/30 border border-red-500/50 rounded-lg p-6 max-w-md mx-auto">
+                                    <h3 className="text-red-400 font-semibold mb-2">Error</h3>
+                                    <p className="text-red-300 mb-4">{galleryError}</p>
+                                    <button
+                                        onClick={fetchImages}
+                                        className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition flex items-center gap-2"
+                                    >
+                                        <RefreshCw className="w-4 h-4" />
+                                        Retry
+                                    </button>
+                                </div>
+                            )}
+
+                            {!galleryLoading && !galleryError && images.length === 0 && (
+                                <div className="text-center py-20">
+                                    <Camera className="w-24 h-24 mx-auto text-slate-600 mb-4" />
+                                    <h3 className="text-xl font-medium text-slate-400 mb-2">No photos configured</h3>
+                                    <p className="text-slate-500 max-w-md mx-auto">Add your S3 image URLs to the imageUrls array in the code to display your photos</p>
+                                </div>
+                            )}
+
+                            {!galleryLoading && !galleryError && images.length > 0 && (
+                                <>
+                                    <p className="text-slate-400 mb-6">{images.length} {images.length === 1 ? 'photo' : 'photos'}</p>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                        {images.map((image) => (
+                                            <div
+                                                key={image.key}
+                                                className="group relative bg-slate-800 rounded-lg shadow-lg overflow-hidden cursor-pointer transform transition hover:scale-105 hover:shadow-xl hover:shadow-purple-500/30"
+                                                onClick={() => setSelectedImage(image)}
+                                            >
+                                                <div className="aspect-square overflow-hidden bg-slate-900">
+                                                    <img
+                                                        src={image.url}
+                                                        alt={image.key}
+                                                        className="w-full h-full object-cover"
+                                                        loading="lazy"
+                                                    />
+                                                </div>
+                                                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3 opacity-0 group-hover:opacity-100 transition">
+                                                    <p className="text-white text-sm truncate">{image.key}</p>
+                                                    {image.size > 0 && (
+                                                        <p className="text-white/80 text-xs">{formatFileSize(image.size)}</p>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Full Image Modal */}
+            {selectedImage && (
+                <div
+                    className="fixed inset-0 bg-black/95 z-[60] flex items-center justify-center p-4"
+                    onClick={() => setSelectedImage(null)}
+                >
+                    <button
+                        className="absolute top-4 right-4 text-white hover:text-purple-400 transition"
+                        onClick={() => setSelectedImage(null)}
+                    >
+                        <X className="w-8 h-8" />
+                    </button>
+                    <div className="max-w-5xl max-h-full">
+                        <img
+                            src={selectedImage.url}
+                            alt={selectedImage.key}
+                            className="max-w-full max-h-[90vh] object-contain rounded-lg"
+                            onClick={(e) => e.stopPropagation()}
+                        />
+                        <div className="text-white text-center mt-4">
+                            <p className="font-medium">{selectedImage.key}</p>
+                            {selectedImage.size > 0 && (
+                                <p className="text-sm text-slate-300 mt-1">
+                                    {formatFileSize(selectedImage.size)} • {new Date(selectedImage.lastModified).toLocaleDateString()}
+                                </p>
+                            )}
+                        </div>
                     </div>
                 </div>
             )}
@@ -164,7 +336,6 @@ export default function App() {
                             >
                                 <Github className="w-6 h-6" />
                             </a>
-
                             <a
                                 href="https://linkedin.com/in/jmcdonald46"
                                 target="_blank"
@@ -220,37 +391,40 @@ export default function App() {
                 <div className="max-w-6xl mx-auto">
                     <h3 className="text-4xl font-bold text-center mb-12">Featured</h3>
                     <div className="grid md:grid-cols-3 gap-8">
-                        {projects.map((project, index) => (
-                            <div
-                                key={index}
-                                className="bg-slate-800/50 backdrop-blur-sm rounded-2xl overflow-hidden border border-slate-700/50 hover:border-slate-600 transition-all hover:transform hover:scale-105 group"
-                            >
-                                {project.showPreview ? (
-                                    <div className="h-48 overflow-hidden bg-slate-900 flex items-center justify-center">
-                                        <div className="text-center p-6">
-                                            <Code className="w-16 h-16 mx-auto mb-2 text-cyan-400" />
-                                            <p className="text-slate-300 font-semibold">Jordan McDonald Resumé</p>
+                        {projects.map((project, index) => {
+                            const IconComponent = project.icon;
+                            return (
+                                <div
+                                    key={index}
+                                    className="bg-slate-800/50 backdrop-blur-sm rounded-2xl overflow-hidden border border-slate-700/50 hover:border-slate-600 transition-all hover:transform hover:scale-105 group"
+                                >
+                                    {project.showPreview ? (
+                                        <div className="h-48 overflow-hidden bg-slate-900 flex items-center justify-center">
+                                            <div className="text-center p-6">
+                                                {IconComponent && <IconComponent className="w-16 h-16 mx-auto mb-2 text-cyan-400" />}
+                                                <p className="text-slate-300 font-semibold">{project.title}</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                ) : (
-                                    <div className={`h-48 bg-gradient-to-br ${project.gradient} opacity-80 group-hover:opacity-100 transition-opacity`}></div>
-                                )}
-                                <div className="p-6">
-                                    <h4 className="text-xl font-semibold mb-2">{project.title}</h4>
-                                    <p className="text-slate-400 mb-4">{project.description}</p>
-                                    {project.button && project.button}
-                                    {project.tech[0] !== "" && (
-                                        <div className="flex flex-wrap gap-2 mt-4">
-                                            {project.tech.map((tech, i) => (
-                                                <span key={i} className="px-3 py-1 bg-slate-700 rounded-full text-sm">
-                                                    {tech}
-                                                </span>
-                                            ))}
-                                        </div>
+                                    ) : (
+                                        <div className={`h-48 bg-gradient-to-br ${project.gradient} opacity-80 group-hover:opacity-100 transition-opacity`}></div>
                                     )}
+                                    <div className="p-6">
+                                        <h4 className="text-xl font-semibold mb-2">{project.title}</h4>
+                                        <p className="text-slate-400 mb-4">{project.description}</p>
+                                        {project.button && project.button}
+                                        {project.tech[0] !== "" && (
+                                            <div className="flex flex-wrap gap-2 mt-4">
+                                                {project.tech.map((tech, i) => (
+                                                    <span key={i} className="px-3 py-1 bg-slate-700 rounded-full text-sm">
+                                                        {tech}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 </div>
             </section>
