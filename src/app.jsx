@@ -101,22 +101,6 @@ export default function App() {
             )
         },
         {
-            title: "Photo Gallery",
-            description: "AWS S3 powered photo gallery with cloud storage",
-            tech: ["AWS S3", "React", "REST API"],
-            gradient: "from-purple-500 to-pink-500",
-            showPreview: true,
-            icon: Camera,
-            button: (
-                <button
-                    onClick={handleOpenGallery}
-                    className="px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition-all hover:scale-105"
-                >
-                    View Gallery
-                </button>
-            )
-        },
-        {
             title: "Tech Stack & Architecture",
             description: "Explore the AWS services and technologies powering this portfolio",
             tech: ["AWS S3", "API Gateway", "Lambda", "React"],
@@ -129,6 +113,22 @@ export default function App() {
                     className="px-8 py-3 bg-gradient-to-r from-orange-500 to-red-600 rounded-full font-semibold hover:shadow-lg hover:shadow-orange-500/50 transition-all hover:scale-105"
                 >
                     View Architecture
+                </button>
+            )
+        },
+        {
+            title: "Photo Gallery",
+            description: "AWS S3 powered photo gallery with cloud storage",
+            tech: ["AWS S3", "React", "REST API"],
+            gradient: "from-purple-500 to-pink-500",
+            showPreview: true,
+            icon: Camera,
+            button: (
+                <button
+                    onClick={handleOpenGallery}
+                    className="px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition-all hover:scale-105"
+                >
+                    View Gallery
                 </button>
             )
         }
