@@ -13,6 +13,8 @@ export default function App() {
     const [galleryLoading, setGalleryLoading] = useState(false);
     const [galleryError, setGalleryError] = useState(null);
     const [selectedImage, setSelectedImage] = useState(null);
+    const [profileImageUrl, setProfileImageUrl] = useState('');
+
 
     // Pagination state
     const [currentPage, setCurrentPage] = useState(1);
@@ -23,13 +25,29 @@ export default function App() {
     const googleDocUrl = 'https://drive.google.com/file/d/1L7QnVHeVyMD6w9E5lS_MuRoc3Fns5ru7/view?usp=sharing';
     const documentUrl = googleDocUrl.replace('/view?usp=sharing', '/preview');
 
-    // Profile image URL from S3 or CloudFront
-    const profileImageUrl = 'https://amzn-s3-photo-gallery-35mm.s3.us-east-2.amazonaws.com/minoltax370/IMG_5770.jpeg'; // Replace with your actual image URL
+  
 
     useEffect(() => {
         const handleScroll = () => setScrollY(window.scrollY);
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    useEffect(() => {
+        // Fetch profile image on component mount
+        const fetchProfileImage = async () => {
+            try {
+                const API_ENDPOINT = 'https://lzgtwdx5ii.execute-api.us-east-2.amazonaws.com/prod/images?profile=true';
+                const response = await fetch(API_ENDPOINT);
+                if (response.ok) {
+                    const data = await response.json();
+                    setProfileImageUrl(data.url);
+                }
+            } catch (err) {
+                console.error('Error fetching profile image:', err);
+            }
+        };
+        fetchProfileImage();
     }, []);
 
     const fetchImages = async (page = 1) => {
