@@ -526,7 +526,7 @@ export default function App() {
                             </div>
 
                             {/* Architecture Flow */}
-                            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 md:p-8">
+                            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 md:p-8 mb-6">
                                 <h3 className="text-2xl font-bold mb-6">Data Flow Architecture</h3>
                                 <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                                     <div className="bg-cyan-500/10 border-2 border-cyan-500 rounded-lg p-4 text-center flex-1">
@@ -551,6 +551,72 @@ export default function App() {
                                         <Camera className="w-8 h-8 mx-auto mb-2 text-blue-400" />
                                         <p className="font-semibold">S3 Storage</p>
                                         <p className="text-xs text-slate-400 mt-1">Image Assets</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Future Projects Section */}
+                            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 md:p-8">
+                                <div className="flex items-center gap-3 mb-6">
+                                    <ArrowRight className="w-8 h-8 text-green-400" />
+                                    <h3 className="text-2xl font-bold">Future Enhancements</h3>
+                                </div>
+                                <div className="grid md:grid-cols-3 gap-6">
+                                    <div className="bg-gradient-to-br from-blue-900/30 to-cyan-900/30 rounded-lg p-6 border border-blue-500/30 hover:border-blue-500/60 transition-all">
+                                        <div className="flex items-center gap-2 mb-4">
+                                            <Cloud className="w-6 h-6 text-blue-400" />
+                                            <h4 className="text-lg font-semibold text-blue-300">CloudFront CDN</h4>
+                                        </div>
+                                        <p className="text-slate-300 mb-4 text-sm">
+                                            Integrate AWS CloudFront for global content delivery
+                                        </p>
+                                        <ul className="text-slate-400 text-sm space-y-2">
+                                            <li>• Lower latency worldwide</li>
+                                            <li>• Improved delivery times</li>
+                                            <li>• Edge location caching</li>
+                                            <li>• Enhanced user experience</li>
+                                        </ul>
+                                        <div className="mt-4 pt-4 border-t border-blue-500/20">
+                                            <span className="text-xs text-blue-400 font-semibold">Status: Planned</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="bg-gradient-to-br from-red-900/30 to-orange-900/30 rounded-lg p-6 border border-red-500/30 hover:border-red-500/60 transition-all">
+                                        <div className="flex items-center gap-2 mb-4">
+                                            <GraduationCap className="w-6 h-6 text-red-400" />
+                                            <h4 className="text-lg font-semibold text-red-300">Security Sandbox</h4>
+                                        </div>
+                                        <p className="text-slate-300 mb-4 text-sm">
+                                            Hands-on environment for AWS security tools
+                                        </p>
+                                        <ul className="text-slate-400 text-sm space-y-2">
+                                            <li>• CloudWatch monitoring</li>
+                                            <li>• GuardDuty threat detection</li>
+                                            <li>• CloudTrail audit logging</li>
+                                            <li>• Security best practices</li>
+                                        </ul>
+                                        <div className="mt-4 pt-4 border-t border-red-500/20">
+                                            <span className="text-xs text-red-400 font-semibold">Status: In Progress</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 rounded-lg p-6 border border-purple-500/30 hover:border-purple-500/60 transition-all">
+                                        <div className="flex items-center gap-2 mb-4">
+                                            <Code className="w-6 h-6 text-purple-400" />
+                                            <h4 className="text-lg font-semibold text-purple-300">AI Assistant Hub</h4>
+                                        </div>
+                                        <p className="text-slate-300 mb-4 text-sm">
+                                            Interactive AI assistant powered by AWS AI services
+                                        </p>
+                                        <ul className="text-slate-400 text-sm space-y-2">
+                                            <li>• Amazon Bedrock integration</li>
+                                            <li>• Natural language processing</li>
+                                            <li>• SageMaker models</li>
+                                            <li>• Real-time responses</li>
+                                        </ul>
+                                        <div className="mt-4 pt-4 border-t border-purple-500/20">
+                                            <span className="text-xs text-purple-400 font-semibold">Status: Planned</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
