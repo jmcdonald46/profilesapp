@@ -24,7 +24,7 @@ export default function App() {
     const documentUrl = googleDocUrl.replace('/view?usp=sharing', '/preview');
 
     // Profile image URL from S3 or CloudFront
-    const profileImageUrl = './public/IMG_5770.jpeg'; // Replace with your actual image URL
+    const profileImageUrl = 'https://amzn-s3-photo-gallery-35mm.s3.us-east-2.amazonaws.com/minoltax370/IMG_5770.jpeg'; // Replace with your actual image URL
 
     useEffect(() => {
         const handleScroll = () => setScrollY(window.scrollY);
