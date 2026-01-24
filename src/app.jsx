@@ -5,6 +5,7 @@ export default function App() {
     const [scrollY, setScrollY] = useState(0);
     const [showDocument, setShowDocument] = useState(false);
     const [showGallery, setShowGallery] = useState(false);
+    const [showTechStack, setShowTechStack] = useState(false);
     const [pdfError, setPdfError] = useState(false);
 
     // Gallery state
@@ -17,7 +18,7 @@ export default function App() {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [totalImages, setTotalImages] = useState(0);
-    const imagesPerPage = 5; // 5 images per page for faster loading with large files
+    const imagesPerPage = 5;
 
     const googleDocUrl = 'https://drive.google.com/file/d/1L7QnVHeVyMD6w9E5lS_MuRoc3Fns5ru7/view?usp=sharing';
     const documentUrl = googleDocUrl.replace('/view?usp=sharing', '/preview');
@@ -68,7 +69,6 @@ export default function App() {
     const handlePageChange = (newPage) => {
         if (newPage >= 1 && newPage <= totalPages) {
             fetchImages(newPage);
-            // Scroll to top of gallery content
             const galleryContainer = document.querySelector('.gallery-container');
             if (galleryContainer) {
                 galleryContainer.scrollTop = 0;
@@ -117,10 +117,20 @@ export default function App() {
             )
         },
         {
-            title: "Work In Progress",
-            description: "",
-            tech: [""],
-            gradient: "from-orange-500 to-red-500"
+            title: "Tech Stack & Architecture",
+            description: "Explore the AWS services and technologies powering this portfolio",
+            tech: ["AWS S3", "API Gateway", "Lambda", "React"],
+            gradient: "from-orange-500 to-red-500",
+            showPreview: true,
+            icon: Cloud,
+            button: (
+                <button
+                    onClick={() => setShowTechStack(true)}
+                    className="px-8 py-3 bg-gradient-to-r from-orange-500 to-red-600 rounded-full font-semibold hover:shadow-lg hover:shadow-orange-500/50 transition-all hover:scale-105"
+                >
+                    View Architecture
+                </button>
+            )
         }
     ];
 
@@ -261,7 +271,6 @@ export default function App() {
                                         </p>
                                     </div>
 
-                                    {/* Grid - optimized for 5 images: 2-2-1 layout on desktop, 1 column on mobile */}
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
                                         {images.map((image) => (
                                             <div
@@ -287,7 +296,6 @@ export default function App() {
                                         ))}
                                     </div>
 
-                                    {/* Pagination Controls */}
                                     {totalPages > 1 && (
                                         <div className="flex justify-center items-center gap-3 flex-wrap">
                                             <button
@@ -302,7 +310,6 @@ export default function App() {
                                             <div className="flex gap-2">
                                                 {[...Array(totalPages)].map((_, idx) => {
                                                     const pageNum = idx + 1;
-                                                    // Show first page, last page, current page, and pages around current
                                                     if (
                                                         pageNum === 1 ||
                                                         pageNum === totalPages ||
@@ -313,8 +320,8 @@ export default function App() {
                                                                 key={pageNum}
                                                                 onClick={() => handlePageChange(pageNum)}
                                                                 className={`px-3 md:px-4 py-2 rounded-lg transition text-sm md:text-base ${currentPage === pageNum
-                                                                        ? 'bg-purple-600 text-white font-semibold'
-                                                                        : 'bg-slate-700 hover:bg-slate-600'
+                                                                    ? 'bg-purple-600 text-white font-semibold'
+                                                                    : 'bg-slate-700 hover:bg-slate-600'
                                                                     }`}
                                                             >
                                                                 {pageNum}
@@ -373,6 +380,180 @@ export default function App() {
                                     {formatFileSize(selectedImage.size)} • {new Date(selectedImage.lastModified).toLocaleDateString()}
                                 </p>
                             )}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Tech Stack Modal */}
+            {showTechStack && (
+                <div className="fixed inset-0 bg-black bg-opacity-95 z-50 overflow-y-auto">
+                    <div className="min-h-screen py-20 md:py-24 px-4 md:px-6">
+                        <div className="max-w-6xl mx-auto">
+                            <div className="flex justify-between items-center mb-8">
+                                <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent">
+                                    Portfolio Architecture
+                                </h2>
+                                <button
+                                    onClick={() => setShowTechStack(false)}
+                                    className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 md:px-6 md:py-3 rounded-lg transition shadow-lg hover:shadow-orange-500/50 flex items-center gap-2"
+                                >
+                                    <X className="w-4 h-4 md:w-5 md:h-5" />
+                                    Close
+                                </button>
+                            </div>
+
+                            {/* Frontend Section */}
+                            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 md:p-8 mb-6">
+                                <div className="flex items-center gap-3 mb-6">
+                                    <Code className="w-8 h-8 text-cyan-400" />
+                                    <h3 className="text-2xl font-bold">Frontend Architecture</h3>
+                                </div>
+                                <div className="grid md:grid-cols-2 gap-6">
+                                    <div className="bg-slate-900/50 rounded-lg p-6 border border-slate-700/30">
+                                        <h4 className="text-lg font-semibold text-cyan-400 mb-3">React 19</h4>
+                                        <p className="text-slate-300 mb-4">Modern React with hooks for state management and component architecture</p>
+                                        <ul className="text-slate-400 text-sm space-y-2">
+                                            <li>• useState for local state management</li>
+                                            <li>• useEffect for side effects and API calls</li>
+                                            <li>• Functional components throughout</li>
+                                            <li>• Event-driven interactions</li>
+                                        </ul>
+                                    </div>
+                                    <div className="bg-slate-900/50 rounded-lg p-6 border border-slate-700/30">
+                                        <h4 className="text-lg font-semibold text-cyan-400 mb-3">Tailwind CSS v4</h4>
+                                        <p className="text-slate-300 mb-4">Utility-first CSS framework for responsive, modern design</p>
+                                        <ul className="text-slate-400 text-sm space-y-2">
+                                            <li>• Responsive grid layouts</li>
+                                            <li>• Custom gradient backgrounds</li>
+                                            <li>• Hover effects and transitions</li>
+                                            <li>• Mobile-first approach</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* AWS Cloud Section */}
+                            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 md:p-8 mb-6">
+                                <div className="flex items-center gap-3 mb-6">
+                                    <Cloud className="w-8 h-8 text-orange-400" />
+                                    <h3 className="text-2xl font-bold">AWS Cloud Services</h3>
+                                </div>
+                                <div className="grid md:grid-cols-3 gap-6">
+                                    <div className="bg-slate-900/50 rounded-lg p-6 border border-slate-700/30">
+                                        <h4 className="text-lg font-semibold text-orange-400 mb-3">S3 Storage</h4>
+                                        <p className="text-slate-300 mb-4">Object storage for images and assets</p>
+                                        <ul className="text-slate-400 text-sm space-y-2">
+                                            <li>• Scalable image hosting</li>
+                                            <li>• Pre-signed URLs for security</li>
+                                            <li>• Metadata tracking</li>
+                                            <li>• Cost-effective storage</li>
+                                        </ul>
+                                    </div>
+                                    <div className="bg-slate-900/50 rounded-lg p-6 border border-slate-700/30">
+                                        <h4 className="text-lg font-semibold text-orange-400 mb-3">API Gateway</h4>
+                                        <p className="text-slate-300 mb-4">RESTful API endpoint management</p>
+                                        <ul className="text-slate-400 text-sm space-y-2">
+                                            <li>• HTTPS endpoints</li>
+                                            <li>• Request/response handling</li>
+                                            <li>• CORS configuration</li>
+                                            <li>• Rate limiting</li>
+                                        </ul>
+                                    </div>
+                                    <div className="bg-slate-900/50 rounded-lg p-6 border border-slate-700/30">
+                                        <h4 className="text-lg font-semibold text-orange-400 mb-3">Lambda Functions</h4>
+                                        <p className="text-slate-300 mb-4">Serverless compute for backend logic</p>
+                                        <ul className="text-slate-400 text-sm space-y-2">
+                                            <li>• Image retrieval logic</li>
+                                            <li>• Pagination implementation</li>
+                                            <li>• S3 integration</li>
+                                            <li>• Auto-scaling</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Key Features Section */}
+                            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 md:p-8 mb-6">
+                                <div className="flex items-center gap-3 mb-6">
+                                    <GraduationCap className="w-8 h-8 text-purple-400" />
+                                    <h3 className="text-2xl font-bold">Key Features Implemented</h3>
+                                </div>
+                                <div className="grid md:grid-cols-2 gap-4">
+                                    <div className="flex items-start gap-3 bg-slate-900/50 rounded-lg p-4 border border-slate-700/30">
+                                        <div className="w-2 h-2 bg-purple-400 rounded-full mt-2"></div>
+                                        <div>
+                                            <h4 className="font-semibold text-purple-400 mb-1">Serverless Architecture</h4>
+                                            <p className="text-slate-400 text-sm">No servers to manage, automatic scaling, pay-per-use pricing</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start gap-3 bg-slate-900/50 rounded-lg p-4 border border-slate-700/30">
+                                        <div className="w-2 h-2 bg-purple-400 rounded-full mt-2"></div>
+                                        <div>
+                                            <h4 className="font-semibold text-purple-400 mb-1">REST API Integration</h4>
+                                            <p className="text-slate-400 text-sm">Clean API design with pagination and error handling</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start gap-3 bg-slate-900/50 rounded-lg p-4 border border-slate-700/30">
+                                        <div className="w-2 h-2 bg-purple-400 rounded-full mt-2"></div>
+                                        <div>
+                                            <h4 className="font-semibold text-purple-400 mb-1">Responsive Design</h4>
+                                            <p className="text-slate-400 text-sm">Mobile-first approach with seamless desktop experience</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start gap-3 bg-slate-900/50 rounded-lg p-4 border border-slate-700/30">
+                                        <div className="w-2 h-2 bg-purple-400 rounded-full mt-2"></div>
+                                        <div>
+                                            <h4 className="font-semibold text-purple-400 mb-1">Performance Optimization</h4>
+                                            <p className="text-slate-400 text-sm">Lazy loading, efficient state management, optimized rendering</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start gap-3 bg-slate-900/50 rounded-lg p-4 border border-slate-700/30">
+                                        <div className="w-2 h-2 bg-purple-400 rounded-full mt-2"></div>
+                                        <div>
+                                            <h4 className="font-semibold text-purple-400 mb-1">Security Best Practices</h4>
+                                            <p className="text-slate-400 text-sm">Pre-signed URLs, CORS policies, secure API endpoints</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start gap-3 bg-slate-900/50 rounded-lg p-4 border border-slate-700/30">
+                                        <div className="w-2 h-2 bg-purple-400 rounded-full mt-2"></div>
+                                        <div>
+                                            <h4 className="font-semibold text-purple-400 mb-1">Modular Code Structure</h4>
+                                            <p className="text-slate-400 text-sm">Component-based architecture for maintainability</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Architecture Flow */}
+                            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 md:p-8">
+                                <h3 className="text-2xl font-bold mb-6">Data Flow Architecture</h3>
+                                <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                                    <div className="bg-cyan-500/10 border-2 border-cyan-500 rounded-lg p-4 text-center flex-1">
+                                        <Code className="w-8 h-8 mx-auto mb-2 text-cyan-400" />
+                                        <p className="font-semibold">React Frontend</p>
+                                        <p className="text-xs text-slate-400 mt-1">User Interface</p>
+                                    </div>
+                                    <ArrowRight className="w-6 h-6 text-slate-500 hidden md:block" />
+                                    <div className="bg-orange-500/10 border-2 border-orange-500 rounded-lg p-4 text-center flex-1">
+                                        <Cloud className="w-8 h-8 mx-auto mb-2 text-orange-400" />
+                                        <p className="font-semibold">API Gateway</p>
+                                        <p className="text-xs text-slate-400 mt-1">REST Endpoint</p>
+                                    </div>
+                                    <ArrowRight className="w-6 h-6 text-slate-500 hidden md:block" />
+                                    <div className="bg-purple-500/10 border-2 border-purple-500 rounded-lg p-4 text-center flex-1">
+                                        <Code className="w-8 h-8 mx-auto mb-2 text-purple-400" />
+                                        <p className="font-semibold">Lambda Function</p>
+                                        <p className="text-xs text-slate-400 mt-1">Business Logic</p>
+                                    </div>
+                                    <ArrowRight className="w-6 h-6 text-slate-500 hidden md:block" />
+                                    <div className="bg-blue-500/10 border-2 border-blue-500 rounded-lg p-4 text-center flex-1">
+                                        <Camera className="w-8 h-8 mx-auto mb-2 text-blue-400" />
+                                        <p className="font-semibold">S3 Storage</p>
+                                        <p className="text-xs text-slate-400 mt-1">Image Assets</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
