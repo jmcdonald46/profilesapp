@@ -23,6 +23,9 @@ export default function App() {
     const googleDocUrl = 'https://drive.google.com/file/d/1L7QnVHeVyMD6w9E5lS_MuRoc3Fns5ru7/view?usp=sharing';
     const documentUrl = googleDocUrl.replace('/view?usp=sharing', '/preview');
 
+    // Profile image URL from S3 or CloudFront
+    const profileImageUrl = './public/IMG_5770.jpeg'; // Replace with your actual image URL
+
     useEffect(() => {
         const handleScroll = () => setScrollY(window.scrollY);
         window.addEventListener('scroll', handleScroll);
@@ -43,6 +46,7 @@ export default function App() {
             }
 
             const data = await response.json();
+            // Lambda now returns CloudFront URLs directly
             setImages(data.images || []);
 
             if (data.pagination) {
@@ -649,6 +653,18 @@ export default function App() {
                             transform: `translateY(${scrollY * 0.3}px)`
                         }}
                     >
+                        {/* Profile Image */}
+                        <div className="mb-8 flex justify-center">
+                            <div className="relative group">
+                                <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 rounded-full blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
+                                <img
+                                    src={profileImageUrl}
+                                    alt="Jordan McDonald"
+                                    className="relative w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-slate-900 shadow-2xl"
+                                />
+                            </div>
+                        </div>
+
                         <h2 className="text-6xl md:text-7xl font-bold mb-4 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent leading-tight pb-2">
                             Aspiring Cloud Engineer
                         </h2>
