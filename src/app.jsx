@@ -128,9 +128,12 @@ export default function App() {
             const password = passwords[Math.floor(Math.random() * passwords.length)];
 
             try {
-                const response = await fetch('https://lzgtwdx5ii.execute-api.us-east-2.amazonaws.com/prod/images?profile=true', {
+                const response = await fetch('https://ds6u82bzbb.execute-api.us-east-2.amazonaws.com/prod/simulate', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Threat-Type': 'brute-force'
+                    },
                     body: JSON.stringify({ username, password, simulation: true })
                 });
 
@@ -160,9 +163,12 @@ export default function App() {
 
         for (const payload of sqlPayloads) {
             try {
-                await fetch('https://lzgtwdx5ii.execute-api.us-east-2.amazonaws.com/prod/images?profile=true', {
+                await fetch('https://ds6u82bzbb.execute-api.us-east-2.amazonaws.com/prod/simulate', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Threat-Type': 'sql-injection'
+                    },
                     body: JSON.stringify({ query: payload, simulation: true })
                 });
 
@@ -188,9 +194,12 @@ export default function App() {
         const promises = [];
         for (let i = 0; i < requests; i++) {
             promises.push(
-                fetch('https://lzgtwdx5ii.execute-api.us-east-2.amazonaws.com/prod/images?profile=true', {
+                fetch('https://ds6u82bzbb.execute-api.us-east-2.amazonaws.com/prod/simulate', {
                     method: 'GET',
-                    headers: { 'X-Simulation': 'ddos' }
+                    headers: {
+                        'X-Simulation': 'ddos',
+                        'X-Threat-Type': 'ddos'
+                    }
                 }).catch(() => { })
             );
 
@@ -218,11 +227,12 @@ export default function App() {
 
         for (const endpoint of sensitiveEndpoints) {
             try {
-                await fetch(`https://lzgtwdx5ii.execute-api.us-east-2.amazonaws.com${endpoint}`, {
+                await fetch(`https://ds6u82bzbb.execute-api.us-east-2.amazonaws.com/prod/simulate`, {
                     method: 'GET',
                     headers: {
                         'Authorization': 'Bearer invalid_token',
-                        'X-Simulation': 'unauthorized'
+                        'X-Simulation': 'unauthorized',
+                        'X-Threat-Type': 'unauthorized-access' 
                     }
                 });
 
@@ -248,11 +258,12 @@ export default function App() {
             const data = 'A'.repeat(size);
 
             try {
-                await fetch('https://lzgtwdx5ii.execute-api.us-east-2.amazonaws.com/prod/images?profile=true', {
+                await fetch('https://ds6u82bzbb.execute-api.us-east-2.amazonaws.com/prod/simulate', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-Simulation': 'exfiltration'
+                        'X-Simulation': 'exfiltration',
+                        'X-Threat-Type': 'data-exfiltration'
                     },
                     body: JSON.stringify({ data, size })
                 });
