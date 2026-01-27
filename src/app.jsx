@@ -113,36 +113,35 @@ export default function App() {
             message,
             type,
             threatType
-        }, ...prev].slice(0, 100)); // Keep last 100 logs
+        }, ...prev].slice(0, 100));
     };
 
     const simulateBruteForce = async () => {
         setIsSimulating(true);
         addLog('🔴 Initiating Brute Force Attack Simulation', 'danger', 'Brute Force');
-        
+
         const usernames = ['admin', 'root', 'user', 'test', 'administrator'];
         const passwords = ['password123', 'admin', '12345', 'letmein', 'qwerty'];
-        
+
         for (let i = 0; i < 10; i++) {
             const username = usernames[Math.floor(Math.random() * usernames.length)];
             const password = passwords[Math.floor(Math.random() * passwords.length)];
-            
+
             try {
-                // Simulate API call to your endpoint
                 const response = await fetch('https://lzgtwdx5ii.execute-api.us-east-2.amazonaws.com/prod/images?profile=true', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ username, password, simulation: true })
                 });
-                
+
                 addLog(`Failed login attempt: ${username} / ${password}`, 'warning', 'Brute Force');
             } catch (err) {
                 addLog(`Simulated failed login: ${username}`, 'warning', 'Brute Force');
             }
-            
+
             await new Promise(resolve => setTimeout(resolve, 500));
         }
-        
+
         addLog('✅ Brute Force Simulation Complete', 'success', 'Brute Force');
         setIsSimulating(false);
     };
@@ -150,7 +149,7 @@ export default function App() {
     const simulateSQLInjection = async () => {
         setIsSimulating(true);
         addLog('🔴 Initiating SQL Injection Attack Simulation', 'danger', 'SQL Injection');
-        
+
         const sqlPayloads = [
             "' OR '1'='1",
             "'; DROP TABLE users--",
@@ -158,24 +157,23 @@ export default function App() {
             "admin'--",
             "' OR 1=1--"
         ];
-        
+
         for (const payload of sqlPayloads) {
             try {
-                // Simulate API call with malicious payload
-                await fetch('https://lzgtwdx5ii.execute-api.us-east-2.amazonaws.com/prod/images?profile=trueE', {
+                await fetch('https://lzgtwdx5ii.execute-api.us-east-2.amazonaws.com/prod/images?profile=true', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ query: payload, simulation: true })
                 });
-                
+
                 addLog(`SQL Injection attempt: ${payload}`, 'warning', 'SQL Injection');
             } catch (err) {
                 addLog(`Simulated SQL Injection: ${payload.substring(0, 30)}...`, 'warning', 'SQL Injection');
             }
-            
+
             await new Promise(resolve => setTimeout(resolve, 300));
         }
-        
+
         addLog('✅ SQL Injection Simulation Complete', 'success', 'SQL Injection');
         setIsSimulating(false);
     };
@@ -183,24 +181,24 @@ export default function App() {
     const simulateDDoS = async () => {
         setIsSimulating(true);
         addLog('🔴 Initiating DDoS Attack Simulation', 'danger', 'DDoS');
-        
+
         const requests = 50;
         addLog(`Generating ${requests} rapid requests...`, 'warning', 'DDoS');
-        
+
         const promises = [];
         for (let i = 0; i < requests; i++) {
             promises.push(
                 fetch('https://lzgtwdx5ii.execute-api.us-east-2.amazonaws.com/prod/images?profile=true', {
                     method: 'GET',
                     headers: { 'X-Simulation': 'ddos' }
-                }).catch(() => {})
+                }).catch(() => { })
             );
-            
+
             if (i % 10 === 0) {
                 addLog(`Sent ${i}/${requests} requests`, 'info', 'DDoS');
             }
         }
-        
+
         await Promise.allSettled(promises);
         addLog('✅ DDoS Simulation Complete', 'success', 'DDoS');
         setIsSimulating(false);
@@ -209,7 +207,7 @@ export default function App() {
     const simulateUnauthorizedAccess = async () => {
         setIsSimulating(true);
         addLog('🔴 Initiating Unauthorized Access Simulation', 'danger', 'Unauthorized Access');
-        
+
         const sensitiveEndpoints = [
             '/api/admin/users',
             '/api/admin/config',
@@ -217,25 +215,25 @@ export default function App() {
             '/api/internal/secrets',
             '/api/admin/logs'
         ];
-        
+
         for (const endpoint of sensitiveEndpoints) {
             try {
-                await fetch(`YOUR_BASE_URL${endpoint}`, {
+                await fetch(`https://lzgtwdx5ii.execute-api.us-east-2.amazonaws.com${endpoint}`, {
                     method: 'GET',
-                    headers: { 
+                    headers: {
                         'Authorization': 'Bearer invalid_token',
-                        'X-Simulation': 'unauthorized' 
+                        'X-Simulation': 'unauthorized'
                     }
                 });
-                
+
                 addLog(`Unauthorized access attempt: ${endpoint}`, 'warning', 'Unauthorized Access');
             } catch (err) {
                 addLog(`Simulated unauthorized access: ${endpoint}`, 'warning', 'Unauthorized Access');
             }
-            
+
             await new Promise(resolve => setTimeout(resolve, 400));
         }
-        
+
         addLog('✅ Unauthorized Access Simulation Complete', 'success', 'Unauthorized Access');
         setIsSimulating(false);
     };
@@ -243,30 +241,30 @@ export default function App() {
     const simulateDataExfiltration = async () => {
         setIsSimulating(true);
         addLog('🔴 Initiating Data Exfiltration Simulation', 'danger', 'Data Exfiltration');
-        
-        const dataSizes = [1024, 5120, 10240, 51200, 102400]; // KB
-        
+
+        const dataSizes = [1024, 5120, 10240, 51200, 102400];
+
         for (const size of dataSizes) {
             const data = 'A'.repeat(size);
-            
+
             try {
                 await fetch('https://lzgtwdx5ii.execute-api.us-east-2.amazonaws.com/prod/images?profile=true', {
                     method: 'POST',
-                    headers: { 
+                    headers: {
                         'Content-Type': 'application/json',
                         'X-Simulation': 'exfiltration'
                     },
                     body: JSON.stringify({ data, size })
                 });
-                
+
                 addLog(`Data exfiltration attempt: ${(size / 1024).toFixed(1)} KB`, 'warning', 'Data Exfiltration');
             } catch (err) {
                 addLog(`Simulated data transfer: ${(size / 1024).toFixed(1)} KB`, 'warning', 'Data Exfiltration');
             }
-            
+
             await new Promise(resolve => setTimeout(resolve, 600));
         }
-        
+
         addLog('✅ Data Exfiltration Simulation Complete', 'success', 'Data Exfiltration');
         setIsSimulating(false);
     };
@@ -274,24 +272,21 @@ export default function App() {
     const simulatePortScan = async () => {
         setIsSimulating(true);
         addLog('🔴 Initiating Port Scanning Simulation', 'danger', 'Port Scan');
-        
+
         const commonPorts = [22, 80, 443, 3306, 5432, 6379, 8080, 9200, 27017, 3389];
-        
+
         for (const port of commonPorts) {
             try {
-                // Simulate port scan by attempting connection
                 addLog(`Scanning port ${port}...`, 'info', 'Port Scan');
-                
-                // In real implementation, this would attempt connection
                 await new Promise(resolve => setTimeout(resolve, 200));
-                
+
                 const status = Math.random() > 0.5 ? 'OPEN' : 'CLOSED';
                 addLog(`Port ${port}: ${status}`, 'warning', 'Port Scan');
             } catch (err) {
                 addLog(`Port ${port} scan failed`, 'warning', 'Port Scan');
             }
         }
-        
+
         addLog('✅ Port Scan Simulation Complete', 'success', 'Port Scan');
         setIsSimulating(false);
     };
@@ -431,23 +426,255 @@ export default function App() {
             name: "B.S. Cybersecurity",
             icon: GraduationCap,
             color: "text-purple-500",
-            description: "Graduated with a degree in Cybersecurity with a focus on cloud security architecture."
+            description: "Bachelor's degree in Cybersecurity with focus on network security, threat analysis, and secure system design."
         },
         {
-            name: "Full-Stack Development",
+            name: "Web Development w ReactJs",
             icon: Code,
-            color: "text-cyan-500",
-            description: "Proficient in React, AWS services, and building scalable cloud-native applications."
+            color: "text-yellow-500",
+            description: "Building modern, responsive web applications using React, JavaScript, and contemporary development practices."
         }
     ];
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
+            {/* Document Modal */}
+            {showDocument && (
+                <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex flex-col pt-20 md:pt-24 p-4 md:p-6">
+                    <button
+                        onClick={() => setShowDocument(false)}
+                        className="mb-4 self-start z-[60] bg-cyan-500 hover:bg-cyan-600 text-white font-semibold px-4 py-2 md:px-6 md:py-3 rounded-lg transition shadow-lg hover:shadow-cyan-500/50 flex items-center gap-2"
+                    >
+                        <X className="w-4 h-4 md:w-5 md:h-5" />
+                        Close Resumé
+                    </button>
+                    <div className="relative w-full max-w-6xl mx-auto flex-1 bg-slate-800 rounded-lg overflow-hidden flex flex-col">
+                        {!pdfError ? (
+                            <iframe
+                                src={documentUrl}
+                                className="w-full flex-1"
+                                title="PDF Viewer"
+                                onError={() => setPdfError(true)}
+                                allow="autoplay"
+                            />
+                        ) : (
+                            <div className="w-full flex-1 flex flex-col items-center justify-center p-4 md:p-8 text-center">
+                                <Code className="w-16 h-16 md:w-20 md:h-20 text-cyan-400 mb-4 md:mb-6" />
+                                <h3 className="text-xl md:text-2xl font-bold mb-3 md:mb-4">Unable to Display PDF</h3>
+                                <p className="text-sm md:text-base text-slate-300 mb-6 md:mb-8 max-w-md">
+                                    Your browser may not support inline PDF viewing. Please download the PDF to view it.
+                                </p>
+                                <a
+                                    href={googleDocUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold px-6 py-3 md:px-8 md:py-4 rounded-lg transition shadow-lg hover:shadow-cyan-500/50 inline-flex items-center gap-2 text-sm md:text-base"
+                                >
+                                    <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
+                                    Open in Google Docs
+                                </a>
+                            </div>
+                        )}
+                        {!pdfError && (
+                            <div className="p-4 md:p-6 border-t border-slate-700">
+                                <a
+                                    href={googleDocUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="w-full md:w-auto mx-auto bg-cyan-500 hover:bg-cyan-600 text-white font-semibold px-6 py-3 rounded-lg transition shadow-lg hover:shadow-cyan-500/50 inline-flex items-center justify-center gap-2 text-sm md:text-base"
+                                >
+                                    <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
+                                    Open in Google Docs
+                                </a>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
+
+            {/* Gallery Modal */}
+            {showGallery && (
+                <div className="fixed inset-0 bg-black bg-opacity-95 z-50 overflow-y-auto gallery-container">
+                    <div className="min-h-screen py-20 md:py-24 px-4 md:px-6">
+                        <div className="max-w-7xl mx-auto">
+                            <div className="flex justify-between items-center mb-6">
+                                <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
+                                    Photo Gallery
+                                </h2>
+                                <button
+                                    onClick={() => setShowGallery(false)}
+                                    className="bg-purple-500 hover:bg-purple-600 text-white font-semibold px-4 py-2 md:px-6 md:py-3 rounded-lg transition shadow-lg hover:shadow-purple-500/50 flex items-center gap-2"
+                                >
+                                    <X className="w-4 h-4 md:w-5 md:h-5" />
+                                    Close Gallery
+                                </button>
+                            </div>
+
+                            {galleryLoading && (
+                                <div className="flex items-center justify-center py-20">
+                                    <div className="text-center">
+                                        <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                                        <p className="text-slate-300">Loading images...</p>
+                                    </div>
+                                </div>
+                            )}
+
+                            {galleryError && (
+                                <div className="bg-red-900/30 border border-red-500/50 rounded-lg p-6 max-w-md mx-auto">
+                                    <h3 className="text-red-400 font-semibold mb-2">Error</h3>
+                                    <p className="text-red-300 mb-4">{galleryError}</p>
+                                    <button
+                                        onClick={() => fetchImages(currentPage)}
+                                        className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition flex items-center gap-2"
+                                    >
+                                        <RefreshCw className="w-4 h-4" />
+                                        Retry
+                                    </button>
+                                </div>
+                            )}
+
+                            {!galleryLoading && !galleryError && images.length === 0 && (
+                                <div className="text-center py-20">
+                                    <Camera className="w-24 h-24 mx-auto text-slate-600 mb-4" />
+                                    <h3 className="text-xl font-medium text-slate-400 mb-2">No photos found</h3>
+                                    <p className="text-slate-500 max-w-md mx-auto">Upload some images to your S3 bucket to get started</p>
+                                </div>
+                            )}
+
+                            {!galleryLoading && !galleryError && images.length > 0 && (
+                                <>
+                                    <div className="flex justify-between items-center mb-6">
+                                        <p className="text-slate-400">
+                                            Showing {((currentPage - 1) * imagesPerPage) + 1} to {Math.min(currentPage * imagesPerPage, totalImages)} of {totalImages} images
+                                        </p>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                                        {images.map((image, index) => (
+                                            <div
+                                                key={index}
+                                                className="group relative bg-slate-800 rounded-lg overflow-hidden cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/20"
+                                                onClick={() => setSelectedImage(image)}
+                                            >
+                                                <div className="aspect-square overflow-hidden">
+                                                    <img
+                                                        src={image.url}
+                                                        alt={image.key}
+                                                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                                                        loading="lazy"
+                                                    />
+                                                </div>
+                                                <div className="p-4 border-t border-slate-700">
+                                                    <p className="text-sm font-medium truncate mb-1">{image.key}</p>
+                                                    <div className="flex justify-between items-center text-xs text-slate-400">
+                                                        {image.size > 0 && (
+                                                            <span>{formatFileSize(image.size)}</span>
+                                                        )}
+                                                        {image.lastModified && (
+                                                            <span>{new Date(image.lastModified).toLocaleDateString()}</span>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                                <div className="absolute inset-0 bg-gradient-to-t from-purple-900/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                                                    <p className="text-white text-sm font-medium">Click to view full size</p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    {totalPages > 1 && (
+                                        <div className="flex justify-center items-center gap-2 mt-8">
+                                            <button
+                                                onClick={() => handlePageChange(currentPage - 1)}
+                                                disabled={currentPage === 1}
+                                                className="px-4 py-2 bg-purple-600 hover:bg-purple-700 disabled:bg-slate-700 disabled:cursor-not-allowed rounded-lg transition flex items-center gap-2 text-sm md:text-base"
+                                            >
+                                                <ChevronLeft className="w-4 h-4" />
+                                                <span className="hidden sm:inline">Previous</span>
+                                            </button>
+
+                                            <div className="flex gap-2">
+                                                {[...Array(totalPages)].map((_, idx) => {
+                                                    const pageNum = idx + 1;
+                                                    if (
+                                                        pageNum === 1 ||
+                                                        pageNum === totalPages ||
+                                                        (pageNum >= currentPage - 1 && pageNum <= currentPage + 1)
+                                                    ) {
+                                                        return (
+                                                            <button
+                                                                key={pageNum}
+                                                                onClick={() => handlePageChange(pageNum)}
+                                                                className={`px-3 md:px-4 py-2 rounded-lg transition text-sm md:text-base ${currentPage === pageNum
+                                                                    ? 'bg-purple-600 text-white font-semibold'
+                                                                    : 'bg-slate-700 hover:bg-slate-600'
+                                                                    }`}
+                                                            >
+                                                                {pageNum}
+                                                            </button>
+                                                        );
+                                                    } else if (
+                                                        pageNum === currentPage - 2 ||
+                                                        pageNum === currentPage + 2
+                                                    ) {
+                                                        return <span key={pageNum} className="px-2 py-2 text-slate-500">...</span>;
+                                                    }
+                                                    return null;
+                                                })}
+                                            </div>
+
+                                            <button
+                                                onClick={() => handlePageChange(currentPage + 1)}
+                                                disabled={currentPage === totalPages}
+                                                className="px-4 py-2 bg-purple-600 hover:bg-purple-700 disabled:bg-slate-700 disabled:cursor-not-allowed rounded-lg transition flex items-center gap-2 text-sm md:text-base"
+                                            >
+                                                <span className="hidden sm:inline">Next</span>
+                                                <ChevronRight className="w-4 h-4" />
+                                            </button>
+                                        </div>
+                                    )}
+                                </>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Full Image Modal */}
+            {selectedImage && (
+                <div
+                    className="fixed inset-0 bg-black/95 z-[60] flex items-center justify-center p-4"
+                    onClick={() => setSelectedImage(null)}
+                >
+                    <button
+                        className="absolute top-4 right-4 text-white hover:text-purple-400 transition"
+                        onClick={() => setSelectedImage(null)}
+                    >
+                        <X className="w-8 h-8" />
+                    </button>
+                    <div className="max-w-5xl max-h-full">
+                        <img
+                            src={selectedImage.url}
+                            alt={selectedImage.key}
+                            className="max-w-full max-h-[90vh] object-contain rounded-lg"
+                            onClick={(e) => e.stopPropagation()}
+                        />
+                        <div className="text-white text-center mt-4">
+                            <p className="font-medium">{selectedImage.key}</p>
+                            {selectedImage.size > 0 && (
+                                <p className="text-sm text-slate-300 mt-1">
+                                    {formatFileSize(selectedImage.size)} • {new Date(selectedImage.lastModified).toLocaleDateString()}
+                                </p>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {/* Security Sandbox Modal */}
             {showSecuritySandbox && (
                 <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
                     <div className="bg-slate-900 rounded-2xl w-full max-w-7xl max-h-[90vh] overflow-hidden border border-slate-700 shadow-2xl">
-                        {/* Header */}
                         <div className="bg-gradient-to-r from-red-500 to-orange-600 p-6 flex justify-between items-center">
                             <div className="flex items-center gap-3">
                                 <Shield className="w-8 h-8" />
@@ -465,7 +692,6 @@ export default function App() {
                         </div>
 
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-6 overflow-y-auto max-h-[calc(90vh-100px)]">
-                            {/* Threat Types */}
                             <div className="space-y-4">
                                 <h3 className="text-xl font-bold mb-4">Select Threat Type</h3>
                                 {threatTypes.map(threat => {
@@ -503,7 +729,6 @@ export default function App() {
                                 })}
                             </div>
 
-                            {/* Activity Logs */}
                             <div className="space-y-4">
                                 <div className="flex justify-between items-center">
                                     <h3 className="text-xl font-bold">Activity Logs</h3>
@@ -522,12 +747,11 @@ export default function App() {
                                             {sandboxLogs.map(log => (
                                                 <div
                                                     key={log.id}
-                                                    className={`p-2 rounded ${
-                                                        log.type === 'danger' ? 'bg-red-900/20 border-l-4 border-red-500' :
+                                                    className={`p-2 rounded ${log.type === 'danger' ? 'bg-red-900/20 border-l-4 border-red-500' :
                                                         log.type === 'warning' ? 'bg-yellow-900/20 border-l-4 border-yellow-500' :
-                                                        log.type === 'success' ? 'bg-green-900/20 border-l-4 border-green-500' :
-                                                        'bg-blue-900/20 border-l-4 border-blue-500'
-                                                    }`}
+                                                            log.type === 'success' ? 'bg-green-900/20 border-l-4 border-green-500' :
+                                                                'bg-blue-900/20 border-l-4 border-blue-500'
+                                                        }`}
                                                 >
                                                     <div className="text-xs text-slate-400 mb-1">
                                                         {new Date(log.timestamp).toLocaleTimeString()}
@@ -560,9 +784,337 @@ export default function App() {
                 </div>
             )}
 
-            {/* Rest of your existing modals and components remain the same... */}
-            {/* I'm keeping the structure but not duplicating all the modal code here for brevity */}
-            
+            {/* Tech Stack Modal */}
+            {showTechStack && (
+                <div className="fixed inset-0 bg-black bg-opacity-95 z-50 overflow-y-auto">
+                    <div className="min-h-screen py-20 md:py-24 px-4 md:px-6">
+                        <div className="max-w-6xl mx-auto">
+                            <div className="flex justify-between items-center mb-8">
+                                <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent">
+                                    Portfolio Architecture
+                                </h2>
+                                <button
+                                    onClick={() => setShowTechStack(false)}
+                                    className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 md:px-6 md:py-3 rounded-lg transition shadow-lg hover:shadow-orange-500/50 flex items-center gap-2"
+                                >
+                                    <X className="w-4 h-4 md:w-5 md:h-5" />
+                                    Close
+                                </button>
+                            </div>
+
+                            {/* Frontend Section */}
+                            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 md:p-8 mb-6">
+                                <div className="flex items-center gap-3 mb-6">
+                                    <Code className="w-8 h-8 text-cyan-400" />
+                                    <h3 className="text-2xl font-bold">Frontend Architecture</h3>
+                                </div>
+                                <div className="grid md:grid-cols-2 gap-6">
+                                    <div className="bg-slate-900/50 rounded-lg p-6 border border-slate-700/30">
+                                        <h4 className="text-lg font-semibold text-cyan-400 mb-3">React 19</h4>
+                                        <p className="text-slate-300 mb-4">Modern React with hooks for state management and component architecture</p>
+                                        <ul className="text-slate-400 text-sm space-y-2">
+                                            <li>• useState for local state management</li>
+                                            <li>• useEffect for side effects and API calls</li>
+                                            <li>• Functional components throughout</li>
+                                            <li>• Event-driven interactions</li>
+                                        </ul>
+                                    </div>
+                                    <div className="bg-slate-900/50 rounded-lg p-6 border border-slate-700/30">
+                                        <h4 className="text-lg font-semibold text-cyan-400 mb-3">Tailwind CSS v4</h4>
+                                        <p className="text-slate-300 mb-4">Utility-first CSS framework for responsive, modern design</p>
+                                        <ul className="text-slate-400 text-sm space-y-2">
+                                            <li>• Responsive grid layouts</li>
+                                            <li>• Custom gradient backgrounds</li>
+                                            <li>• Hover effects and transitions</li>
+                                            <li>• Mobile-first approach</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* AWS Cloud Section */}
+                            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 md:p-8 mb-6">
+                                <div className="flex items-center gap-3 mb-6">
+                                    <Cloud className="w-8 h-8 text-orange-400" />
+                                    <h3 className="text-2xl font-bold">AWS Cloud Services</h3>
+                                </div>
+                                <div className="grid md:grid-cols-3 gap-6">
+                                    <div className="bg-slate-900/50 rounded-lg p-6 border border-slate-700/30">
+                                        <h4 className="text-lg font-semibold text-orange-400 mb-3">S3 Storage</h4>
+                                        <p className="text-slate-300 mb-4">Object storage for images and assets</p>
+                                        <ul className="text-slate-400 text-sm space-y-2">
+                                            <li>• Scalable image hosting</li>
+                                            <li>• Pre-signed URLs for security</li>
+                                            <li>• Metadata tracking</li>
+                                            <li>• Cost-effective storage</li>
+                                        </ul>
+                                    </div>
+                                    <div className="bg-slate-900/50 rounded-lg p-6 border border-slate-700/30">
+                                        <h4 className="text-lg font-semibold text-orange-400 mb-3">API Gateway</h4>
+                                        <p className="text-slate-300 mb-4">RESTful API endpoint management</p>
+                                        <ul className="text-slate-400 text-sm space-y-2">
+                                            <li>• HTTPS endpoints</li>
+                                            <li>• Request/response handling</li>
+                                            <li>• CORS configuration</li>
+                                            <li>• Rate limiting</li>
+                                        </ul>
+                                    </div>
+                                    <div className="bg-slate-900/50 rounded-lg p-6 border border-slate-700/30">
+                                        <h4 className="text-lg font-semibold text-orange-400 mb-3">Lambda Functions</h4>
+                                        <p className="text-slate-300 mb-4">Serverless compute for backend logic</p>
+                                        <ul className="text-slate-400 text-sm space-y-2">
+                                            <li>• Image retrieval logic</li>
+                                            <li>• Pagination implementation</li>
+                                            <li>• S3 integration</li>
+                                            <li>• Auto-scaling</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Security & Monitoring Section */}
+                            <div className="bg-gradient-to-br from-red-900/20 to-orange-900/20 backdrop-blur-sm rounded-2xl border border-red-700/50 p-6 md:p-8 mb-6">
+                                <div className="flex items-center gap-3 mb-6">
+                                    <GraduationCap className="w-8 h-8 text-red-400" />
+                                    <h3 className="text-2xl font-bold">Security Sandbox & Monitoring</h3>
+                                </div>
+                                <p className="text-slate-300 mb-6">
+                                    Interactive threat simulation environment demonstrating AWS security monitoring capabilities.
+                                    This sandbox allows for controlled security testing while monitoring events across multiple AWS services.
+                                </p>
+                                <div className="grid md:grid-cols-3 gap-6 mb-6">
+                                    <div className="bg-slate-900/50 rounded-lg p-6 border border-red-700/30">
+                                        <h4 className="text-lg font-semibold text-red-400 mb-3">CloudWatch</h4>
+                                        <p className="text-slate-300 mb-4">Centralized logging and monitoring</p>
+                                        <ul className="text-slate-400 text-sm space-y-2">
+                                            <li>• Real-time log streaming</li>
+                                            <li>• Custom metrics tracking</li>
+                                            <li>• Log Insights queries</li>
+                                            <li>• Automated dashboards</li>
+                                        </ul>
+                                    </div>
+                                    <div className="bg-slate-900/50 rounded-lg p-6 border border-red-700/30">
+                                        <h4 className="text-lg font-semibold text-red-400 mb-3">CloudTrail</h4>
+                                        <p className="text-slate-300 mb-4">API activity auditing and governance</p>
+                                        <ul className="text-slate-400 text-sm space-y-2">
+                                            <li>• API call logging</li>
+                                            <li>• Event history tracking</li>
+                                            <li>• Compliance auditing</li>
+                                            <li>• Security analysis</li>
+                                        </ul>
+                                    </div>
+                                    <div className="bg-slate-900/50 rounded-lg p-6 border border-red-700/30">
+                                        <h4 className="text-lg font-semibold text-red-400 mb-3">GuardDuty</h4>
+                                        <p className="text-slate-300 mb-4">Intelligent threat detection service</p>
+                                        <ul className="text-slate-400 text-sm space-y-2">
+                                            <li>• Automated threat detection</li>
+                                            <li>• Anomaly identification</li>
+                                            <li>• Security findings</li>
+                                            <li>• Real-time alerts</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div className="bg-slate-900/30 rounded-lg p-6 border border-red-700/30">
+                                    <h4 className="text-lg font-semibold text-red-300 mb-4">Simulated Threat Types</h4>
+                                    <div className="grid md:grid-cols-2 gap-4">
+                                        <div className="flex items-start gap-3">
+                                            <div className="w-2 h-2 bg-red-400 rounded-full mt-2"></div>
+                                            <div>
+                                                <p className="font-semibold text-red-300 text-sm">Brute Force Attacks</p>
+                                                <p className="text-slate-400 text-xs">Multiple failed authentication attempts to test account lockout</p>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-start gap-3">
+                                            <div className="w-2 h-2 bg-red-400 rounded-full mt-2"></div>
+                                            <div>
+                                                <p className="font-semibold text-red-300 text-sm">SQL Injection</p>
+                                                <p className="text-slate-400 text-xs">Malicious query patterns to test input validation</p>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-start gap-3">
+                                            <div className="w-2 h-2 bg-red-400 rounded-full mt-2"></div>
+                                            <div>
+                                                <p className="font-semibold text-red-300 text-sm">DDoS Simulation</p>
+                                                <p className="text-slate-400 text-xs">High-volume traffic to test rate limiting and auto-scaling</p>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-start gap-3">
+                                            <div className="w-2 h-2 bg-red-400 rounded-full mt-2"></div>
+                                            <div>
+                                                <p className="font-semibold text-red-300 text-sm">Unauthorized Access</p>
+                                                <p className="text-slate-400 text-xs">Protected endpoint access without proper authentication</p>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-start gap-3">
+                                            <div className="w-2 h-2 bg-red-400 rounded-full mt-2"></div>
+                                            <div>
+                                                <p className="font-semibold text-red-300 text-sm">Data Exfiltration</p>
+                                                <p className="text-slate-400 text-xs">Suspicious data transfer patterns to test DLP policies</p>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-start gap-3">
+                                            <div className="w-2 h-2 bg-red-400 rounded-full mt-2"></div>
+                                            <div>
+                                                <p className="font-semibold text-red-300 text-sm">Port Scanning</p>
+                                                <p className="text-slate-400 text-xs">Reconnaissance activity across common service ports</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Key Features Section */}
+                            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 md:p-8 mb-6">
+                                <div className="flex items-center gap-3 mb-6">
+                                    <GraduationCap className="w-8 h-8 text-purple-400" />
+                                    <h3 className="text-2xl font-bold">Key Features Implemented</h3>
+                                </div>
+                                <div className="grid md:grid-cols-2 gap-4">
+                                    <div className="flex items-start gap-3 bg-slate-900/50 rounded-lg p-4 border border-slate-700/30">
+                                        <div className="w-2 h-2 bg-purple-400 rounded-full mt-2"></div>
+                                        <div>
+                                            <h4 className="font-semibold text-purple-400 mb-1">Serverless Architecture</h4>
+                                            <p className="text-slate-400 text-sm">No servers to manage, automatic scaling, pay-per-use pricing</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start gap-3 bg-slate-900/50 rounded-lg p-4 border border-slate-700/30">
+                                        <div className="w-2 h-2 bg-purple-400 rounded-full mt-2"></div>
+                                        <div>
+                                            <h4 className="font-semibold text-purple-400 mb-1">REST API Integration</h4>
+                                            <p className="text-slate-400 text-sm">Clean API design with pagination and error handling</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start gap-3 bg-slate-900/50 rounded-lg p-4 border border-slate-700/30">
+                                        <div className="w-2 h-2 bg-purple-400 rounded-full mt-2"></div>
+                                        <div>
+                                            <h4 className="font-semibold text-purple-400 mb-1">Responsive Design</h4>
+                                            <p className="text-slate-400 text-sm">Mobile-first approach with seamless desktop experience</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start gap-3 bg-slate-900/50 rounded-lg p-4 border border-slate-700/30">
+                                        <div className="w-2 h-2 bg-purple-400 rounded-full mt-2"></div>
+                                        <div>
+                                            <h4 className="font-semibold text-purple-400 mb-1">Performance Optimization</h4>
+                                            <p className="text-slate-400 text-sm">Lazy loading, efficient state management, optimized rendering</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start gap-3 bg-slate-900/50 rounded-lg p-4 border border-slate-700/30">
+                                        <div className="w-2 h-2 bg-purple-400 rounded-full mt-2"></div>
+                                        <div>
+                                            <h4 className="font-semibold text-purple-400 mb-1">Security Best Practices</h4>
+                                            <p className="text-slate-400 text-sm">Pre-signed URLs, CORS policies, secure API endpoints</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start gap-3 bg-slate-900/50 rounded-lg p-4 border border-slate-700/30">
+                                        <div className="w-2 h-2 bg-purple-400 rounded-full mt-2"></div>
+                                        <div>
+                                            <h4 className="font-semibold text-purple-400 mb-1">Modular Code Structure</h4>
+                                            <p className="text-slate-400 text-sm">Component-based architecture for maintainability</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Architecture Flow */}
+                            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 md:p-8 mb-6">
+                                <h3 className="text-2xl font-bold mb-6">Data Flow Architecture</h3>
+                                <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                                    <div className="bg-cyan-500/10 border-2 border-cyan-500 rounded-lg p-4 text-center flex-1">
+                                        <Code className="w-8 h-8 mx-auto mb-2 text-cyan-400" />
+                                        <p className="font-semibold">React Frontend</p>
+                                        <p className="text-xs text-slate-400 mt-1">User Interface</p>
+                                    </div>
+                                    <ArrowRight className="w-6 h-6 text-slate-500 hidden md:block" />
+                                    <div className="bg-orange-500/10 border-2 border-orange-500 rounded-lg p-4 text-center flex-1">
+                                        <Cloud className="w-8 h-8 mx-auto mb-2 text-orange-400" />
+                                        <p className="font-semibold">API Gateway</p>
+                                        <p className="text-xs text-slate-400 mt-1">REST Endpoint</p>
+                                    </div>
+                                    <ArrowRight className="w-6 h-6 text-slate-500 hidden md:block" />
+                                    <div className="bg-purple-500/10 border-2 border-purple-500 rounded-lg p-4 text-center flex-1">
+                                        <Code className="w-8 h-8 mx-auto mb-2 text-purple-400" />
+                                        <p className="font-semibold">Lambda Function</p>
+                                        <p className="text-xs text-slate-400 mt-1">Business Logic</p>
+                                    </div>
+                                    <ArrowRight className="w-6 h-6 text-slate-500 hidden md:block" />
+                                    <div className="bg-blue-500/10 border-2 border-blue-500 rounded-lg p-4 text-center flex-1">
+                                        <Camera className="w-8 h-8 mx-auto mb-2 text-blue-400" />
+                                        <p className="font-semibold">S3 Storage</p>
+                                        <p className="text-xs text-slate-400 mt-1">Image Assets</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Future Projects Section */}
+                            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 md:p-8">
+                                <div className="flex items-center gap-3 mb-6">
+                                    <ArrowRight className="w-8 h-8 text-green-400" />
+                                    <h3 className="text-2xl font-bold">Future Enhancements</h3>
+                                </div>
+                                <div className="grid md:grid-cols-3 gap-6">
+                                    <div className="bg-gradient-to-br from-blue-900/30 to-cyan-900/30 rounded-lg p-6 border border-blue-500/30 hover:border-blue-500/60 transition-all">
+                                        <div className="flex items-center gap-2 mb-4">
+                                            <Cloud className="w-6 h-6 text-blue-400" />
+                                            <h4 className="text-lg font-semibold text-blue-300">CloudFront CDN</h4>
+                                        </div>
+                                        <p className="text-slate-300 mb-4 text-sm">
+                                            Integrate AWS CloudFront for global content delivery
+                                        </p>
+                                        <ul className="text-slate-400 text-sm space-y-2">
+                                            <li>• Lower latency worldwide</li>
+                                            <li>• Improved delivery times</li>
+                                            <li>• Edge location caching</li>
+                                            <li>• Enhanced user experience</li>
+                                        </ul>
+                                        <div className="mt-4 pt-4 border-t border-blue-500/20">
+                                            <span className="text-xs text-blue-400 font-semibold">Status: Planned</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="bg-gradient-to-br from-red-900/30 to-orange-900/30 rounded-lg p-6 border border-red-500/30 hover:border-red-500/60 transition-all">
+                                        <div className="flex items-center gap-2 mb-4">
+                                            <GraduationCap className="w-6 h-6 text-red-400" />
+                                            <h4 className="text-lg font-semibold text-red-300">Security Sandbox</h4>
+                                        </div>
+                                        <p className="text-slate-300 mb-4 text-sm">
+                                            Interactive threat simulation with AWS security tools
+                                        </p>
+                                        <ul className="text-slate-400 text-sm space-y-2">
+                                            <li>• CloudWatch monitoring</li>
+                                            <li>• GuardDuty threat detection</li>
+                                            <li>• CloudTrail audit logging</li>
+                                            <li>• 6 threat simulations</li>
+                                        </ul>
+                                        <div className="mt-4 pt-4 border-t border-red-500/20">
+                                            <span className="text-xs text-green-400 font-semibold">Status: Active ✓</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 rounded-lg p-6 border border-purple-500/30 hover:border-purple-500/60 transition-all">
+                                        <div className="flex items-center gap-2 mb-4">
+                                            <Code className="w-6 h-6 text-purple-400" />
+                                            <h4 className="text-lg font-semibold text-purple-300">AI Assistant Hub</h4>
+                                        </div>
+                                        <p className="text-slate-300 mb-4 text-sm">
+                                            Interactive AI assistant powered by AWS AI services
+                                        </p>
+                                        <ul className="text-slate-400 text-sm space-y-2">
+                                            <li>• Amazon Bedrock integration</li>
+                                            <li>• Natural language processing</li>
+                                            <li>• SageMaker models</li>
+                                            <li>• Real-time responses</li>
+                                        </ul>
+                                        <div className="mt-4 pt-4 border-t border-purple-500/20">
+                                            <span className="text-xs text-purple-400 font-semibold">Status: Planned</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {/* Navigation */}
             <nav className={`fixed w-full z-40 transition-all duration-300 ${scrollY > 50 ? 'bg-slate-900/95 backdrop-blur-sm shadow-lg' : ''}`}>
                 <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
