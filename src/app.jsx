@@ -41,7 +41,7 @@ export default function App() {
         const fetchProfileImage = async () => {
             try {
                 // Add a separate endpoint for profile image, or use static URL
-                const PROFILE_IMAGE_URL = './public/IMGpfp.jpeg';
+                const PROFILE_IMAGE_URL = '/IMGpfp.jpeg';
 
                 if (PROFILE_IMAGE_URL) {
                     // If you have a specific profile image URL in env
