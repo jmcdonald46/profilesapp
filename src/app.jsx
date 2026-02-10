@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Github, Linkedin, Mail, ArrowRight, Code, Cloud, GraduationCap, Camera, X, RefreshCw, ChevronLeft, ChevronRight, Shield, AlertTriangle, Activity, Lock, Database, Zap, Globe, Search, TrendingUp, MapPin, Clock, Eye, Ban, CheckCircle } from 'lucide-react';
+import profileImage from '../public/IMGpfp.jpeg';  // Import your profile image
 
 export default function App() {
     const [scrollY, setScrollY] = useState(0);
@@ -15,7 +16,7 @@ export default function App() {
     const [galleryLoading, setGalleryLoading] = useState(false);
     const [galleryError, setGalleryError] = useState(null);
     const [selectedImage, setSelectedImage] = useState(null);
-    const [profileImageUrl, setProfileImageUrl] = useState('https://ui-avatars.com/api/?name=Jordan+McDonald&size=200&background=0D9488&color=fff&bold=true');
+    const [profileImageUrl, setProfileImageUrl] = useState(profileImage);
 
     // Pagination state
     const [currentPage, setCurrentPage] = useState(1);
@@ -37,32 +38,7 @@ export default function App() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    useEffect(() => {
-        const fetchProfileImage = async () => {
-            try {
-                // Add a separate endpoint for profile image, or use static URL
-                const PROFILE_IMAGE_URL = '/IMGpfp.jpeg';
-
-                if (PROFILE_IMAGE_URL) {
-                    // If you have a specific profile image URL in env
-                    setProfileImageUrl(PROFILE_IMAGE_URL);
-                } else if (import.meta.env.VITE_IMAGES_API) {
-                    // Try to get first image from gallery API
-                    const API_ENDPOINT = `${import.meta.env.VITE_IMAGES_API}?page=1&limit=1`;
-                    const response = await fetch(API_ENDPOINT);
-                    if (response.ok) {
-                        const data = await response.json();
-                        if (data.images && data.images.length > 0) {
-                            setProfileImageUrl(data.images[0].url);
-                        }
-                    }
-                }
-            } catch (err) {
-                console.error('Error fetching profile image:', err);
-            }
-        };
-        fetchProfileImage();
-    }, []);
+    // Profile image is imported as a static asset (see import at top of file)
 
     const fetchImages = async (page = 1) => {
         try {
