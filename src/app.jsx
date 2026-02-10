@@ -1354,15 +1354,27 @@ const ThreatIntelDashboard = ({ onClose }) => {
     const fetchThreatData = async () => {
         setLoading(true);
         try {
+            console.log('🔍 Fetching threat data from:', import.meta.env.VITE_THREAT_INTEL_API);
             const response = await fetch(import.meta.env.VITE_THREAT_INTEL_API);
+            console.log('📡 Response status:', response.status, response.statusText);
+
             if (response.ok) {
                 const data = await response.json();
-                setThreatData(data);
+                console.log('✅ Threat data received:', data);
+
+                // Validate data structure
+                if (data && data.stats && data.recentThreats !== undefined) {
+                    setThreatData(data);
+                } else {
+                    console.warn('⚠️ Invalid data structure, using mock data');
+                    loadMockData();
+                }
             } else {
+                console.warn('⚠️ API returned non-OK status, using mock data');
                 loadMockData();
             }
         } catch (error) {
-            console.error('Error fetching threat data:', error);
+            console.error('❌ Error fetching threat data:', error);
             loadMockData();
         } finally {
             setLoading(false);
