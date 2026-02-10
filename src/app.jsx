@@ -476,7 +476,7 @@ export default function App() {
             name: "AWS Cloud Certified",
             icon: Cloud,
             color: "text-blue-500",
-            description: "Working to obtain AWS Cloud certifications with emphasis on security and AI focused specialties."
+            description: "AWS Cloud Practitioner certified. Working on AWS Solutions Architect with emphasis on security and AI focused specialties to supplement the AWS certifications."
         },
         {
             name: "B.S. Cybersecurity",
@@ -1209,6 +1209,72 @@ export default function App() {
                         <h2 className="text-6xl md:text-7xl font-bold mb-4 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent leading-tight pb-2">
                             Aspiring Cloud Engineer
                         </h2>
+
+                        {/* Certification Badges */}
+                        <div className="mb-6 flex justify-center">
+                            <div className="space-y-4 px-6 py-4 bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50">
+
+                                {/* Completed Certifications */}
+                                <div>
+                                    <div className="text-center mb-3">
+                                        <span className="inline-flex items-center gap-2 px-3 py-1 bg-green-500/20 border border-green-500/50 rounded-full text-green-300 text-xs font-semibold uppercase tracking-wider">
+                                            <CheckCircle className="w-3 h-3" />
+                                            Completed
+                                        </span>
+                                    </div>
+                                    <div className="flex justify-center">
+                                        {/* AWS Certified Cloud Practitioner */}
+                                        <div className="group relative">
+                                            <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg blur opacity-60 group-hover:opacity-100 transition duration-300"></div>
+                                            <div className="relative bg-slate-900 px-4 py-2 rounded-lg flex items-center gap-2 border border-slate-700 hover:border-blue-500/50 transition-all">
+                                                <Cloud className="w-5 h-5 text-blue-400" />
+                                                <div className="text-left">
+                                                    <div className="text-xs text-slate-400 font-medium">AWS</div>
+                                                    <div className="text-sm font-bold text-white">Cloud Practitioner</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Work In Progress */}
+                                <div>
+                                    <div className="text-center mb-3">
+                                        <span className="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/20 border border-amber-500/50 rounded-full text-amber-300 text-xs font-semibold uppercase tracking-wider">
+                                            <Activity className="w-3 h-3" />
+                                            Work In Progress
+                                        </span>
+                                    </div>
+                                    <div className="flex flex-wrap gap-3 justify-center">
+                                        {/* AWS Certified Solutions Architect */}
+                                        <div className="group relative">
+                                            <div className="absolute -inset-0.5 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-lg blur opacity-60 group-hover:opacity-100 transition duration-300"></div>
+                                            <div className="relative bg-slate-900 px-4 py-2 rounded-lg flex items-center gap-2 border border-slate-700 hover:border-orange-500/50 transition-all">
+                                                <Shield className="w-5 h-5 text-orange-400" />
+                                                <div className="text-left">
+                                                    <div className="text-xs text-slate-400 font-medium">AWS</div>
+                                                    <div className="text-sm font-bold text-white">Solutions Architect</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* CompTIA Security+ */}
+                                        <div className="group relative">
+                                            <div className="absolute -inset-0.5 bg-gradient-to-r from-red-500 to-pink-500 rounded-lg blur opacity-60 group-hover:opacity-100 transition duration-300"></div>
+                                            <div className="relative bg-slate-900 px-4 py-2 rounded-lg flex items-center gap-2 border border-slate-700 hover:border-red-500/50 transition-all">
+                                                <Lock className="w-5 h-5 text-red-400" />
+                                                <div className="text-left">
+                                                    <div className="text-xs text-slate-400 font-medium">CompTIA</div>
+                                                    <div className="text-sm font-bold text-white">Security+</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
                         <p className="text-xl md:text-2xl text-slate-300 mb-8">
                             Staying Curious, Adapting to Change, Relentlessly Driven
                         </p>
