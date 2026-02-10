@@ -15,7 +15,7 @@ export default function App() {
     const [galleryLoading, setGalleryLoading] = useState(false);
     const [galleryError, setGalleryError] = useState(null);
     const [selectedImage, setSelectedImage] = useState(null);
-    const [profileImageUrl, setProfileImageUrl] = useState('');
+    const [profileImageUrl, setProfileImageUrl] = useState('https://ui-avatars.com/api/?name=Jordan+McDonald&size=200&background=0D9488&color=fff&bold=true');
 
     // Pagination state
     const [currentPage, setCurrentPage] = useState(1);
@@ -40,11 +40,22 @@ export default function App() {
     useEffect(() => {
         const fetchProfileImage = async () => {
             try {
-                const API_ENDPOINT = import.meta.env.VITE_IMAGES_API;
-                const response = await fetch(API_ENDPOINT);
-                if (response.ok) {
-                    const data = await response.json();
-                    setProfileImageUrl(data.url);
+                // Add a separate endpoint for profile image, or use static URL
+                const PROFILE_IMAGE_URL = './public/IMGpfp.jpeg';
+
+                if (PROFILE_IMAGE_URL) {
+                    // If you have a specific profile image URL in env
+                    setProfileImageUrl(PROFILE_IMAGE_URL);
+                } else if (import.meta.env.VITE_IMAGES_API) {
+                    // Try to get first image from gallery API
+                    const API_ENDPOINT = `${import.meta.env.VITE_IMAGES_API}?page=1&limit=1`;
+                    const response = await fetch(API_ENDPOINT);
+                    if (response.ok) {
+                        const data = await response.json();
+                        if (data.images && data.images.length > 0) {
+                            setProfileImageUrl(data.images[0].url);
+                        }
+                    }
                 }
             } catch (err) {
                 console.error('Error fetching profile image:', err);
