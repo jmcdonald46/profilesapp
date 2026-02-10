@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Github, Linkedin, Mail, ArrowRight, Code, Cloud, GraduationCap, Camera, X, RefreshCw, ChevronLeft, ChevronRight, Shield, AlertTriangle, Activity, Lock, Database, Zap, Globe, Search, TrendingUp, MapPin, Clock, Eye, Ban, CheckCircle } from 'lucide-react';
-import profileImage from '../public/IMGpfp.jpeg';  // Import your profile image
 
 export default function App() {
     const [scrollY, setScrollY] = useState(0);
@@ -16,7 +15,7 @@ export default function App() {
     const [galleryLoading, setGalleryLoading] = useState(false);
     const [galleryError, setGalleryError] = useState(null);
     const [selectedImage, setSelectedImage] = useState(null);
-    const [profileImageUrl, setProfileImageUrl] = useState(profileImage);
+    const [profileImageUrl, setProfileImageUrl] = useState('/IMGpfp.jpeg');
 
     // Pagination state
     const [currentPage, setCurrentPage] = useState(1);
