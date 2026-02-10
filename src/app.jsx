@@ -40,7 +40,7 @@ export default function App() {
     useEffect(() => {
         const fetchProfileImage = async () => {
             try {
-                const API_ENDPOINT = 'https://lzgtwdx5ii.execute-api.us-east-2.amazonaws.com/prod/images?profile=true';
+                const API_ENDPOINT = process.env.REACT_APP_IMAGES_API;
                 const response = await fetch(API_ENDPOINT);
                 if (response.ok) {
                     const data = await response.json();
@@ -58,7 +58,7 @@ export default function App() {
             setGalleryLoading(true);
             setGalleryError(null);
 
-            const API_ENDPOINT = `https://lzgtwdx5ii.execute-api.us-east-2.amazonaws.com/prod/images?page=${page}&limit=${imagesPerPage}`;
+            const API_ENDPOINT = `${process.env.REACT_APP_IMAGES_API}?page=${page}&limit=${imagesPerPage}`;  
             const response = await fetch(API_ENDPOINT);
 
             if (!response.ok) {
@@ -129,7 +129,7 @@ export default function App() {
             const password = passwords[Math.floor(Math.random() * passwords.length)];
 
             try {
-                const response = await fetch('https://ds6u82bzbb.execute-api.us-east-2.amazonaws.com/prod/simulate', {
+                const response = await fetch(process.env.REACT_APP_SECURITY_API, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -164,7 +164,7 @@ export default function App() {
 
         for (const payload of sqlPayloads) {
             try {
-                await fetch('https://ds6u82bzbb.execute-api.us-east-2.amazonaws.com/prod/simulate', {
+                await fetch(process.env.REACT_APP_SECURITY_API, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -195,7 +195,7 @@ export default function App() {
         const promises = [];
         for (let i = 0; i < requests; i++) {
             promises.push(
-                fetch('https://ds6u82bzbb.execute-api.us-east-2.amazonaws.com/prod/simulate', {
+                fetch(process.env.REACT_APP_SECURITY_API, {
                     method: 'GET',
                     headers: {
                         'X-Simulation': 'ddos',
@@ -228,7 +228,7 @@ export default function App() {
 
         for (const endpoint of sensitiveEndpoints) {
             try {
-                await fetch(`https://ds6u82bzbb.execute-api.us-east-2.amazonaws.com/prod/simulate`, {
+                await fetch(process.env.REACT_APP_SECURITY_API, {
                     method: 'GET',
                     headers: {
                         'Authorization': 'Bearer invalid_token',
@@ -259,7 +259,7 @@ export default function App() {
             const data = 'A'.repeat(size);
 
             try {
-                await fetch('https://ds6u82bzbb.execute-api.us-east-2.amazonaws.com/prod/simulate', {
+                await fetch(process.env.REACT_APP_SECURITY_API, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1338,7 +1338,7 @@ const ThreatIntelDashboard = ({ onClose }) => {
     const fetchThreatData = async () => {
         setLoading(true);
         try {
-            const response = await fetch('https://ovw06kjo36.execute-api.us-east-2.amazonaws.com/prod');
+            const response = await fetch(process.env.REACT_APP_THREAT_INTEL_API);
             if (response.ok) {
                 const data = await response.json();
                 setThreatData(data);
@@ -1447,7 +1447,7 @@ const ThreatIntelDashboard = ({ onClose }) => {
         setIpResult(null);
 
         try {
-            const response = await fetch(`https://ovw06kjo36.execute-api.us-east-2.amazonaws.com/prod/lookup-ip?ip=${ipLookup}`);
+            const response = await fetch(`${process.env.REACT_APP_THREAT_INTEL_API}/lookup-ip?ip=${ipLookup}`);
             if (response.ok) {
                 const data = await response.json();
                 setIpResult(data);
