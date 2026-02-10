@@ -40,7 +40,7 @@ export default function App() {
     useEffect(() => {
         const fetchProfileImage = async () => {
             try {
-                const API_ENDPOINT = process.env.REACT_APP_IMAGES_API;
+                const API_ENDPOINT = import.meta.env.VITE_IMAGES_API;
                 const response = await fetch(API_ENDPOINT);
                 if (response.ok) {
                     const data = await response.json();
@@ -58,14 +58,30 @@ export default function App() {
             setGalleryLoading(true);
             setGalleryError(null);
 
-            const API_ENDPOINT = `${process.env.REACT_APP_IMAGES_API}?page=${page}&limit=${imagesPerPage}`;  
+            const API_ENDPOINT = `${import.meta.env.VITE_IMAGES_API}?page=${page}&limit=${imagesPerPage}`;
+            console.log('🔍 Fetching images from:', API_ENDPOINT);
+
             const response = await fetch(API_ENDPOINT);
+            console.log('📡 Response status:', response.status, response.statusText);
+            console.log('📡 Response headers:', Object.fromEntries(response.headers));
 
             if (!response.ok) {
-                throw new Error('Failed to fetch images from API');
+                const errorText = await response.text();
+                console.error('❌ API Error Response:', errorText);
+                throw new Error(`API returned ${response.status}: ${response.statusText}`);
+            }
+
+            const contentType = response.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                const text = await response.text();
+                console.error('❌ Expected JSON but got:', contentType);
+                console.error('❌ Response body:', text.substring(0, 200));
+                throw new Error('API returned non-JSON response');
             }
 
             const data = await response.json();
+            console.log('✅ Successfully fetched data:', data);
+
             setImages(data.images || []);
 
             if (data.pagination) {
@@ -74,8 +90,8 @@ export default function App() {
                 setTotalImages(data.pagination.totalImages);
             }
         } catch (err) {
-            console.error('Error fetching images:', err);
-            setGalleryError('Failed to load images. Please check your API configuration.');
+            console.error('❌ Error fetching images:', err);
+            setGalleryError(`Failed to load images: ${err.message}`);
         } finally {
             setGalleryLoading(false);
         }
@@ -129,7 +145,7 @@ export default function App() {
             const password = passwords[Math.floor(Math.random() * passwords.length)];
 
             try {
-                const response = await fetch(process.env.REACT_APP_SECURITY_API, {
+                const response = await fetch(import.meta.env.VITE_SECURITY_API, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -164,7 +180,7 @@ export default function App() {
 
         for (const payload of sqlPayloads) {
             try {
-                await fetch(process.env.REACT_APP_SECURITY_API, {
+                await fetch(import.meta.env.VITE_SECURITY_API, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -195,7 +211,7 @@ export default function App() {
         const promises = [];
         for (let i = 0; i < requests; i++) {
             promises.push(
-                fetch(process.env.REACT_APP_SECURITY_API, {
+                fetch(import.meta.env.VITE_SECURITY_API, {
                     method: 'GET',
                     headers: {
                         'X-Simulation': 'ddos',
@@ -228,7 +244,7 @@ export default function App() {
 
         for (const endpoint of sensitiveEndpoints) {
             try {
-                await fetch(process.env.REACT_APP_SECURITY_API, {
+                await fetch(import.meta.env.VITE_SECURITY_API, {
                     method: 'GET',
                     headers: {
                         'Authorization': 'Bearer invalid_token',
@@ -259,7 +275,7 @@ export default function App() {
             const data = 'A'.repeat(size);
 
             try {
-                await fetch(process.env.REACT_APP_SECURITY_API, {
+                await fetch(import.meta.env.VITE_SECURITY_API, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1338,7 +1354,7 @@ const ThreatIntelDashboard = ({ onClose }) => {
     const fetchThreatData = async () => {
         setLoading(true);
         try {
-            const response = await fetch(process.env.REACT_APP_THREAT_INTEL_API);
+            const response = await fetch(import.meta.env.VITE_THREAT_INTEL_API);
             if (response.ok) {
                 const data = await response.json();
                 setThreatData(data);
@@ -1447,7 +1463,7 @@ const ThreatIntelDashboard = ({ onClose }) => {
         setIpResult(null);
 
         try {
-            const response = await fetch(`${process.env.REACT_APP_THREAT_INTEL_API}/lookup-ip?ip=${ipLookup}`);
+            const response = await fetch(`${import.meta.env.VITE_THREAT_INTEL_API}/lookup-ip?ip=${ipLookup}`);
             if (response.ok) {
                 const data = await response.json();
                 setIpResult(data);
@@ -1580,8 +1596,8 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                 key={tab}
                                 onClick={() => setActiveTab(tab)}
                                 className={`px-4 py-2 font-mono text-sm uppercase tracking-wider transition-all whitespace-nowrap ${activeTab === tab
-                                        ? 'text-cyan-400 border-b-2 border-cyan-400'
-                                        : 'text-slate-500 hover:text-slate-300'
+                                    ? 'text-cyan-400 border-b-2 border-cyan-400'
+                                    : 'text-slate-500 hover:text-slate-300'
                                     }`}
                             >
                                 {tab}
@@ -1708,8 +1724,8 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                                 <div className="text-2xl font-mono font-bold text-white">{ipResult.ip}</div>
                                             </div>
                                             <div className={`px-4 py-2 rounded-lg font-bold text-sm ${ipResult.is_malicious
-                                                    ? 'bg-red-500/20 text-red-300 border border-red-500/50'
-                                                    : 'bg-green-500/20 text-green-300 border border-green-500/50'
+                                                ? 'bg-red-500/20 text-red-300 border border-red-500/50'
+                                                : 'bg-green-500/20 text-green-300 border border-green-500/50'
                                                 }`}>
                                                 {ipResult.is_malicious ? (
                                                     <span className="flex items-center gap-2">
@@ -1732,8 +1748,8 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                                     <div className="flex-1 h-2 bg-slate-800 rounded-full overflow-hidden">
                                                         <div
                                                             className={`h-full transition-all ${ipResult.threat_score > 70 ? 'bg-red-500' :
-                                                                    ipResult.threat_score > 40 ? 'bg-yellow-500' :
-                                                                        'bg-green-500'
+                                                                ipResult.threat_score > 40 ? 'bg-yellow-500' :
+                                                                    'bg-green-500'
                                                                 }`}
                                                             style={{ width: `${ipResult.threat_score}%` }}
                                                         />
@@ -1808,8 +1824,8 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                                 </div>
                                             </div>
                                             <div className={`flex items-center gap-1 text-sm font-mono ${malware.trend === 'up' ? 'text-red-400' :
-                                                    malware.trend === 'down' ? 'text-green-400' :
-                                                        'text-slate-400'
+                                                malware.trend === 'down' ? 'text-green-400' :
+                                                    'text-slate-400'
                                                 }`}>
                                                 <TrendingUp className={`w-4 h-4 ${malware.trend === 'down' ? 'rotate-180' : malware.trend === 'stable' ? 'rotate-90' : ''}`} />
                                                 {malware.trend}
@@ -1835,7 +1851,7 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                             <div className="flex items-start justify-between mb-3">
                                                 <h4 className="font-bold text-lg text-white group-hover:text-purple-400 transition-colors">{actor.name}</h4>
                                                 <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${actor.activity === 'high' ? 'bg-red-500/20 text-red-300 border border-red-500/50' :
-                                                        'bg-yellow-500/20 text-yellow-300 border border-yellow-500/50'
+                                                    'bg-yellow-500/20 text-yellow-300 border border-yellow-500/50'
                                                     }`}>
                                                     {actor.activity} activity
                                                 </span>
@@ -1869,8 +1885,8 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                                             {vuln.cve}
                                                         </code>
                                                         <span className={`px-2 py-1 rounded text-xs font-bold ${vuln.severity >= 9 ? 'bg-red-500/20 text-red-300 border border-red-500/50' :
-                                                                vuln.severity >= 7 ? 'bg-orange-500/20 text-orange-300 border border-orange-500/50' :
-                                                                    'bg-yellow-500/20 text-yellow-300 border border-yellow-500/50'
+                                                            vuln.severity >= 7 ? 'bg-orange-500/20 text-orange-300 border border-orange-500/50' :
+                                                                'bg-yellow-500/20 text-yellow-300 border border-yellow-500/50'
                                                             }`}>
                                                             CVSS {vuln.severity}
                                                         </span>
