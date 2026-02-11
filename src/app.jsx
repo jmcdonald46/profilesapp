@@ -1995,7 +1995,6 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                 </div>
                             </div>
                         </div>
-                        </div>
                     )}
             </div>
         </div>
