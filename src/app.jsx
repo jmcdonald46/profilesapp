@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Github, Linkedin, Mail, ArrowRight, Code, Cloud, GraduationCap, Camera, X, RefreshCw, ChevronLeft, ChevronRight, Shield, AlertTriangle, Activity, Lock, Database, Zap, Globe, Search, TrendingUp, MapPin, Clock, Eye, Ban, CheckCircle } from 'lucide-react';
+import profileImage from './assets/profile.jpeg';
 
 export default function App() {
     const [scrollY, setScrollY] = useState(0);
@@ -15,7 +16,7 @@ export default function App() {
     const [galleryLoading, setGalleryLoading] = useState(false);
     const [galleryError, setGalleryError] = useState(null);
     const [selectedImage, setSelectedImage] = useState(null);
-    const [profileImageUrl, setProfileImageUrl] = useState('/IMGpfp.jpeg');
+    const [profileImageUrl, setProfileImageUrl] = useState(profileImage);
 
     // Pagination state
     const [currentPage, setCurrentPage] = useState(1);
@@ -36,8 +37,6 @@ export default function App() {
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
-
-    // Profile image is imported as a static asset (see import at top of file)
 
     const fetchImages = async (page = 1) => {
         try {
@@ -1177,6 +1176,12 @@ export default function App() {
                                     src={profileImageUrl}
                                     alt="Jordan McDonald"
                                     className="relative w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-slate-900 shadow-2xl"
+                                    onError={(e) => {
+                                        console.error('❌ Profile image failed to load');
+                                        console.log('📍 Attempted to load:', e.target.src);
+                                        // Fallback to avatar with initials
+                                        e.target.src = 'https://ui-avatars.com/api/?name=Jordan+McDonald&size=200&background=0D9488&color=fff&bold=true';
+                                    }}
                                 />
                             </div>
                         </div>
