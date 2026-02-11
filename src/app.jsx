@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Github, Linkedin, Mail, ArrowRight, Code, Cloud, GraduationCap, Camera, X, RefreshCw, ChevronLeft, ChevronRight, Shield, AlertTriangle, Activity, Lock, Database, Zap, Globe, Search, TrendingUp, MapPin, Clock, Eye, Ban, CheckCircle } from 'lucide-react';
-import profileImage from './assets/profile.jpg';  // Profile image import
-import profileImage from './assets/profile.jpg';
+import profileImage from './assets/profile.jpeg';
 
 export default function App() {
     const [scrollY, setScrollY] = useState(0);
