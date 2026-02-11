@@ -29,7 +29,7 @@ export default function App() {
     const [isSimulating, setIsSimulating] = useState(false);
     const [selectedThreat, setSelectedThreat] = useState(null);
 
-    const googleDocUrl = 'https://docs.google.com/document/d/1ohiIrWn-cLsB5NucBOoqwAGK_R9xbZoH/edit?usp=sharing&ouid=101746393336097840782&rtpof=true&sd=true';
+    const googleDocUrl = 'https://drive.google.com/file/d/1ByYz8F5wqgsevWSPjLlViyPXsPVMkL9I/view?usp=sharing';
     const documentUrl = googleDocUrl.replace('/view?usp=sharing', '/preview');
 
     useEffect(() => {
