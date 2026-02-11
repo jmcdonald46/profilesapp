@@ -1696,6 +1696,71 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                 </button>
                             </div>
 
+                            {/* Recent Vulnerabilities Summary Card */}
+                            {threatData.vulnerabilities && threatData.vulnerabilities.length > 0 && (
+                                <div className="bg-gradient-to-br from-yellow-900/20 to-red-900/20 border border-yellow-500/30 rounded-xl p-6 mb-6">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <h4 className="text-lg font-bold text-white flex items-center gap-2">
+                                            <Zap className="w-5 h-5 text-yellow-400" />
+                                            Critical Vulnerabilities (Last 7 Days)
+                                        </h4>
+                                        <button
+                                            onClick={() => setActiveTab('vulnerabilities')}
+                                            className="flex items-center gap-2 px-4 py-2 bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-300 border border-yellow-500/50 rounded-lg transition-all text-sm font-medium"
+                                        >
+                                            View All
+                                            <ArrowRight className="w-4 h-4" />
+                                        </button>
+                                    </div>
+
+                                    <div className="space-y-3">
+                                        {threatData.vulnerabilities.slice(0, 3).map((vuln, idx) => (
+                                            <div
+                                                key={idx}
+                                                onClick={() => setActiveTab('vulnerabilities')}
+                                                className="p-4 bg-slate-950/50 border border-slate-700 rounded-lg hover:border-yellow-500/50 transition-all cursor-pointer group"
+                                            >
+                                                <div className="flex items-center justify-between mb-2">
+                                                    <div className="flex items-center gap-3">
+                                                        <code className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-cyan-400 font-mono text-sm">
+                                                            {vuln.cve}
+                                                        </code>
+                                                        <span className={`px-2 py-1 rounded text-xs font-bold ${vuln.severity >= 9 ? 'bg-red-500/20 text-red-300 border border-red-500/50' :
+                                                                vuln.severity >= 7 ? 'bg-orange-500/20 text-orange-300 border border-orange-500/50' :
+                                                                    'bg-yellow-500/20 text-yellow-300 border border-yellow-500/50'
+                                                            }`}>
+                                                            CVSS {vuln.severity}
+                                                        </span>
+                                                        {vuln.exploited && (
+                                                            <span className="px-2 py-1 bg-red-500/20 text-red-300 border border-red-500/50 rounded text-xs font-bold uppercase flex items-center gap-1">
+                                                                <AlertTriangle className="w-3 h-3" />
+                                                                Exploited
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                    <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-yellow-400 transition-colors" />
+                                                </div>
+                                                <div className="text-white text-sm font-medium mb-1">{vuln.product}</div>
+                                                <div className="text-slate-400 text-xs line-clamp-2">
+                                                    {vuln.description}
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    {threatData.vulnerabilities.length > 3 && (
+                                        <div className="mt-3 text-center">
+                                            <button
+                                                onClick={() => setActiveTab('vulnerabilities')}
+                                                className="text-sm text-yellow-400 hover:text-yellow-300 font-medium transition-colors"
+                                            >
+                                                +{threatData.vulnerabilities.length - 3} more vulnerabilities
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+
                             {threatData.recentThreats.map((threat) => (
                                 <div
                                     key={threat.id}
