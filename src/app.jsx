@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Github, Linkedin, Mail, ArrowRight, Code, Cloud, GraduationCap, Camera, X, RefreshCw, ChevronLeft, ChevronRight, Shield, AlertTriangle, Activity, Lock, Database, Zap, Globe, Search, TrendingUp, MapPin, Clock, Eye, Ban, CheckCircle } from 'lucide-react';
-import profileImage from './assets/IMGpfp.jpeg';
+// Profile image: Replace the URL below with your Imgur URL after uploading
+import profileImage from './assets/profile.jpg';
 
 export default function App() {
     const [scrollY, setScrollY] = useState(0);
@@ -16,7 +17,7 @@ export default function App() {
     const [galleryLoading, setGalleryLoading] = useState(false);
     const [galleryError, setGalleryError] = useState(null);
     const [selectedImage, setSelectedImage] = useState(null);
-    const [profileImageUrl, setProfileImageUrl] = useState(profileImage);
+    const [profileImageUrl] = useState('https://jordanmcdonaldusprofileimage.s3.us-east-2.amazonaws.com/IMG_5770.jpeg');
 
     // Pagination state
     const [currentPage, setCurrentPage] = useState(1);
@@ -29,7 +30,7 @@ export default function App() {
     const [isSimulating, setIsSimulating] = useState(false);
     const [selectedThreat, setSelectedThreat] = useState(null);
 
-    const googleDocUrl = 'https://drive.google.com/file/d/1ByYz8F5wqgsevWSPjLlViyPXsPVMkL9I/view?usp=sharing';
+    const googleDocUrl = 'https://drive.google.com/file/d/18bjJPJpaDcBSij2CtWOtmNSL2iSB0G2y/view?usp=sharing';
     const documentUrl = googleDocUrl.replace('/view?usp=sharing', '/preview');
 
     useEffect(() => {
