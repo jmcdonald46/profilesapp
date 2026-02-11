@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Github, Linkedin, Mail, ArrowRight, Code, Cloud, GraduationCap, Camera, X, RefreshCw, ChevronLeft, ChevronRight, Shield, AlertTriangle, Activity, Lock, Database, Zap, Globe, Search, TrendingUp, MapPin, Clock, Eye, Ban, CheckCircle } from 'lucide-react';
-import profileImage from './assets/IMGpfp.jpeg';
+import profileImage from './assets/profile.jpg';  // Profile image import
+import profileImage from './assets/profile.jpg';
 
 export default function App() {
     const [scrollY, setScrollY] = useState(0);
@@ -37,6 +38,8 @@ export default function App() {
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
+
+    // Profile image is imported as a static asset (see import at top of file)
 
     const fetchImages = async (page = 1) => {
         try {
@@ -1941,7 +1944,7 @@ const ThreatIntelDashboard = ({ onClose }) => {
                             <div className="bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-700 rounded-xl p-8">
                                 <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
                                     <Zap className="w-6 h-6 text-yellow-400" />
-                                    Recent Critical Vulnerabilities
+                                    Recent Critical Vulnerabilities (Last 7 Days)
                                 </h3>
 
                                 <div className="space-y-4">
@@ -1966,7 +1969,26 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                                             </span>
                                                         )}
                                                     </div>
-                                                    <div className="text-white font-semibold">{vuln.product}</div>
+                                                    <div className="text-white font-semibold mb-3">{vuln.product}</div>
+
+                                                    {/* Full Description */}
+                                                    <div className="text-slate-300 text-sm leading-relaxed mb-4 pl-3 border-l-2 border-slate-700">
+                                                        {vuln.description}
+                                                    </div>
+
+                                                    {/* NVD Link */}
+                                                    {vuln.nvd_link && (
+                                                        <a
+                                                            href={vuln.nvd_link}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 border border-blue-500/50 rounded-lg text-sm font-medium transition-all hover:border-blue-400"
+                                                        >
+                                                            <Globe className="w-4 h-4" />
+                                                            View on NVD
+                                                            <ArrowRight className="w-4 h-4" />
+                                                        </a>
+                                                    )}
                                                 </div>
                                             </div>
                                         </div>
@@ -1974,9 +1996,10 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                 </div>
                             </div>
                         </div>
+                        </div>
                     )}
-                </div>
             </div>
         </div>
+        </div >
     );
 };
