@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Github, Linkedin, Mail, ArrowRight, Code, Cloud, GraduationCap, Camera, X, RefreshCw, ChevronLeft, ChevronRight, Shield, AlertTriangle, Activity, Lock, Database, Zap, Globe, Search, TrendingUp, MapPin, Clock, Eye, Ban, CheckCircle } from 'lucide-react';
-import profileImage from './assets/profile.jpeg';
+import profileImage from './assets/IMGpfp.jpeg';  // Profile image import - matches actual filename
+import profileImage from './assets/profile.jpg';
 
 export default function App() {
     const [scrollY, setScrollY] = useState(0);
@@ -1996,8 +1997,8 @@ const ThreatIntelDashboard = ({ onClose }) => {
                             </div>
                         </div>
                     )}
+                </div>
             </div>
         </div>
-        </div >
     );
 };
