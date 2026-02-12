@@ -1405,8 +1405,7 @@ const ThreatIntelDashboard = ({ onClose }) => {
         },
         topMalware: [],
         threatActors: [],
-        vulnerabilities: [],
-        otxIntelligence: []
+        vulnerabilities: []
     });
     const [ipLookup, setIpLookup] = useState('');
     const [ipResult, setIpResult] = useState(null);
@@ -1423,43 +1422,111 @@ const ThreatIntelDashboard = ({ onClose }) => {
                 const data = await response.json();
                 console.log('✅ Threat data received:', data);
 
-                // Use API data directly - no mock fallback
-                setThreatData({
-                    recentThreats: data.recentThreats || [],
-                    stats: data.stats || { totalThreats: 0, criticalThreats: 0, blockedIPs: 0, activeCampaigns: 0 },
-                    topMalware: data.topMalware || [],
-                    threatActors: data.threatActors || [],
-                    vulnerabilities: data.vulnerabilities || [],
-                    otxIntelligence: data.otxIntelligence || []
-                });
+                // Validate data structure
+                if (data && data.stats && data.recentThreats !== undefined) {
+                    setThreatData(data);
+                } else {
+                    console.warn('⚠️ Invalid data structure, using mock data');
+                    loadMockData();
+                }
             } else {
-                console.error('⚠️ API returned non-OK status:', response.status);
-                // Set empty data instead of mock
-                setThreatData({
-                    recentThreats: [],
-                    stats: { totalThreats: 0, criticalThreats: 0, blockedIPs: 0, activeCampaigns: 0 },
-                    topMalware: [],
-                    threatActors: [],
-                    vulnerabilities: [],
-                    otxIntelligence: []
-                });
+                console.warn('⚠️ API returned non-OK status, using mock data');
+                loadMockData();
             }
         } catch (error) {
             console.error('❌ Error fetching threat data:', error);
-            // Set empty data on error
-            setThreatData({
-                recentThreats: [],
-                stats: { totalThreats: 0, criticalThreats: 0, blockedIPs: 0, activeCampaigns: 0 },
-                topMalware: [],
-                threatActors: [],
-                vulnerabilities: [],
-                otxIntelligence: []
-            });
+            loadMockData();
         } finally {
             setLoading(false);
         }
     };
 
+    const loadMockData = () => {
+        setThreatData({
+            recentThreats: [
+                {
+                    id: 1,
+                    name: 'Emotet Botnet Activity',
+                    severity: 'critical',
+                    type: 'Malware',
+                    timestamp: new Date().toISOString(),
+                    source: 'abuse.ch',
+                    description: 'Active botnet spreading via phishing campaigns',
+                    indicators: ['192.168.1.100', '10.0.0.45'],
+                    countries: ['US', 'DE', 'CN']
+                },
+                {
+                    id: 2,
+                    name: 'CVE-2024-1234 Exploitation',
+                    severity: 'high',
+                    type: 'Vulnerability',
+                    timestamp: new Date(Date.now() - 3600000).toISOString(),
+                    source: 'NIST NVD',
+                    description: 'Remote code execution in Apache software',
+                    indicators: ['CVE-2024-1234'],
+                    countries: ['CN', 'RU']
+                },
+                {
+                    id: 3,
+                    name: 'Ransomware C2 Infrastructure',
+                    severity: 'critical',
+                    type: 'C2 Server',
+                    timestamp: new Date(Date.now() - 7200000).toISOString(),
+                    source: 'URLhaus',
+                    description: 'Command and control server for LockBit variant',
+                    indicators: ['malicious-domain.xyz', '203.0.113.42'],
+                    countries: ['RU']
+                },
+                {
+                    id: 4,
+                    name: 'Credential Stuffing Campaign',
+                    severity: 'medium',
+                    type: 'Attack Campaign',
+                    timestamp: new Date(Date.now() - 14400000).toISOString(),
+                    source: 'OTX AlienVault',
+                    description: 'Automated login attempts against financial institutions',
+                    indicators: ['Multiple IPs'],
+                    countries: ['BR', 'VN']
+                },
+                {
+                    id: 5,
+                    name: 'Cryptojacking Malware',
+                    severity: 'medium',
+                    type: 'Malware',
+                    timestamp: new Date(Date.now() - 21600000).toISOString(),
+                    source: 'abuse.ch',
+                    description: 'XMRig miner deployment via compromised web servers',
+                    indicators: ['cryptopool.example.com'],
+                    countries: ['CN', 'IN']
+                }
+            ],
+            stats: {
+                totalThreats: 1247,
+                criticalThreats: 89,
+                blockedIPs: 5432,
+                activeCampaigns: 23
+            },
+            topMalware: [
+                { name: 'Emotet', count: 234, trend: 'up' },
+                { name: 'TrickBot', count: 189, trend: 'down' },
+                { name: 'Qakbot', count: 156, trend: 'up' },
+                { name: 'IcedID', count: 143, trend: 'stable' },
+                { name: 'Dridex', count: 98, trend: 'down' }
+            ],
+            threatActors: [
+                { name: 'APT29 (Cozy Bear)', activity: 'high', targets: 'Government, Defense' },
+                { name: 'Lazarus Group', activity: 'high', targets: 'Financial, Crypto' },
+                { name: 'FIN7', activity: 'medium', targets: 'Retail, Hospitality' },
+                { name: 'Sandworm', activity: 'medium', targets: 'Infrastructure, Energy' }
+            ],
+            vulnerabilities: [
+                { cve: 'CVE-2024-1234', severity: 9.8, product: 'Apache HTTP Server', exploited: true },
+                { cve: 'CVE-2024-5678', severity: 8.9, product: 'Microsoft Exchange', exploited: true },
+                { cve: 'CVE-2024-9012', severity: 7.5, product: 'Cisco IOS', exploited: false },
+                { cve: 'CVE-2024-3456', severity: 9.1, product: 'VMware vCenter', exploited: true }
+            ]
+        });
+    };
 
     const lookupIP = async () => {
         if (!ipLookup.trim()) return;
@@ -1605,7 +1672,7 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                     : 'text-slate-500 hover:text-slate-300'
                                     }`}
                             >
-                                {tab === 'intelligence' ? 'threat intelligence' : tab}
+                                {tab}
                             </button>
                         ))}
                     </div>
@@ -1648,7 +1715,7 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                     </div>
 
                                     <div className="space-y-3">
-                                        {(threatData.vulnerabilities || []).slice(0, 3).map((vuln, idx) => (
+                                        {threatData.vulnerabilities.slice(0, 3).map((vuln, idx) => (
                                             <div
                                                 key={idx}
                                                 onClick={() => setActiveTab('vulnerabilities')}
@@ -1695,178 +1762,7 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                 </div>
                             )}
 
-                            {/* Top Malware Summary Card */}
-                            {threatData.topMalware && threatData.topMalware.length > 0 && (
-                                <div className="bg-gradient-to-br from-red-900/20 to-orange-900/20 border border-red-500/30 rounded-xl p-6 mb-6">
-                                    <div className="flex items-center justify-between mb-4">
-                                        <h4 className="text-lg font-bold text-white flex items-center gap-2">
-                                            <AlertTriangle className="w-5 h-5 text-red-400" />
-                                            Top Malware Families
-                                        </h4>
-                                        <button
-                                            onClick={() => setActiveTab('malware')}
-                                            className="flex items-center gap-2 px-4 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/50 rounded-lg transition-all text-sm font-medium"
-                                        >
-                                            View All
-                                            <ArrowRight className="w-4 h-4" />
-                                        </button>
-                                    </div>
-
-                                    <div className="space-y-3">
-                                        {(threatData.topMalware || []).slice(0, 3).map((malware, idx) => (
-                                            <div
-                                                key={idx}
-                                                className="flex items-center gap-3 p-3 bg-slate-950/50 border border-slate-700/50 rounded-lg hover:border-slate-600 transition-all cursor-pointer"
-                                                onClick={() => setActiveTab('malware')}
-                                            >
-                                                <div className="text-lg font-bold text-slate-600 font-mono w-6">#{idx + 1}</div>
-                                                <div className="flex-1">
-                                                    <div className="font-semibold text-white text-sm mb-1">{malware.name}</div>
-                                                    <div className="flex items-center gap-2">
-                                                        <div className="flex-1 h-1.5 bg-slate-800 rounded-full overflow-hidden">
-                                                            <div className="h-full bg-gradient-to-r from-red-500 to-orange-500" style={{ width: `${(malware.count / 234) * 100}%` }} />
-                                                        </div>
-                                                        <span className="text-xs text-slate-400 font-mono">{malware.count}</span>
-                                                    </div>
-                                                </div>
-                                                <div className={`flex items-center gap-1 text-xs font-mono ${malware.trend === 'up' ? 'text-red-400' :
-                                                        malware.trend === 'down' ? 'text-green-400' :
-                                                            'text-slate-400'
-                                                    }`}>
-                                                    <TrendingUp className={`w-3 h-3 ${malware.trend === 'down' ? 'rotate-180' : malware.trend === 'stable' ? 'rotate-90' : ''}`} />
-                                                </div>
-                                                <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-red-400 transition-colors" />
-                                            </div>
-                                        ))}
-                                    </div>
-
-                                    {threatData.topMalware.length > 3 && (
-                                        <div className="mt-3 text-center">
-                                            <button
-                                                onClick={() => setActiveTab('malware')}
-                                                className="text-sm text-red-400 hover:text-red-300 font-medium transition-colors"
-                                            >
-                                                +{threatData.topMalware.length - 3} more malware families
-                                            </button>
-                                        </div>
-                                    )}
-                                </div>
-                            )}
-
-                            {/* Threat Actors Summary Card */}
-                            {threatData.threatActors && threatData.threatActors.length > 0 && (
-                                <div className="bg-gradient-to-br from-purple-900/20 to-indigo-900/20 border border-purple-500/30 rounded-xl p-6 mb-6">
-                                    <div className="flex items-center justify-between mb-4">
-                                        <h4 className="text-lg font-bold text-white flex items-center gap-2">
-                                            <Shield className="w-5 h-5 text-purple-400" />
-                                            Active Threat Actors
-                                        </h4>
-                                        <button
-                                            onClick={() => setActiveTab('actors')}
-                                            className="flex items-center gap-2 px-4 py-2 bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/50 rounded-lg transition-all text-sm font-medium"
-                                        >
-                                            View All
-                                            <ArrowRight className="w-4 h-4" />
-                                        </button>
-                                    </div>
-
-                                    <div className="space-y-3">
-                                        {(threatData.threatActors || []).slice(0, 3).map((actor, idx) => (
-                                            <div
-                                                key={idx}
-                                                className="flex items-center gap-3 p-3 bg-slate-950/50 border border-slate-700/50 rounded-lg hover:border-slate-600 transition-all cursor-pointer"
-                                                onClick={() => setActiveTab('actors')}
-                                            >
-                                                <div className="flex-1">
-                                                    <div className="font-semibold text-white text-sm mb-1">{actor.name}</div>
-                                                    <div className="text-xs text-slate-400">{actor.targets}</div>
-                                                </div>
-                                                <span className={`px-2 py-1 rounded-full text-xs font-bold uppercase ${actor.activity === 'high' ? 'bg-red-500/20 text-red-300 border border-red-500/50' :
-                                                        'bg-yellow-500/20 text-yellow-300 border border-yellow-500/50'
-                                                    }`}>
-                                                    {actor.activity}
-                                                </span>
-                                                <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-purple-400 transition-colors" />
-                                            </div>
-                                        ))}
-                                    </div>
-
-                                    {threatData.threatActors.length > 3 && (
-                                        <div className="mt-3 text-center">
-                                            <button
-                                                onClick={() => setActiveTab('actors')}
-                                                className="text-sm text-purple-400 hover:text-purple-300 font-medium transition-colors"
-                                            >
-                                                +{threatData.threatActors.length - 3} more threat actors
-                                            </button>
-                                        </div>
-                                    )}
-                                </div>
-                            )}
-
-                            {/* OTX Threat Intelligence Summary Card */}
-                            {threatData.otxIntelligence && threatData.otxIntelligence.length > 0 && (
-                                <div className="bg-gradient-to-br from-cyan-900/20 to-blue-900/20 border border-cyan-500/30 rounded-xl p-6 mb-6">
-                                    <div className="flex items-center justify-between mb-4">
-                                        <h4 className="text-lg font-bold text-white flex items-center gap-2">
-                                            <Database className="w-5 h-5 text-cyan-400" />
-                                            AlienVault OTX Threat Intelligence
-                                        </h4>
-                                        <button
-                                            onClick={() => setActiveTab('intelligence')}
-                                            className="flex items-center gap-2 px-4 py-2 bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/50 rounded-lg transition-all text-sm font-medium"
-                                        >
-                                            View All
-                                            <ArrowRight className="w-4 h-4" />
-                                        </button>
-                                    </div>
-
-                                    <div className="space-y-3">
-                                        {(threatData.otxIntelligence || []).slice(0, 3).map((pulse, idx) => (
-                                            <div
-                                                key={idx}
-                                                onClick={() => setActiveTab('intelligence')}
-                                                className="p-4 bg-slate-950/50 border border-slate-700 rounded-lg hover:border-cyan-500/50 transition-all cursor-pointer group"
-                                            >
-                                                <div className="flex items-center justify-between mb-2">
-                                                    <div className="flex items-center gap-3">
-                                                        <span className={`px-2 py-1 rounded text-xs font-bold uppercase ${pulse.tlp === 'red' ? 'bg-red-500/20 text-red-300 border border-red-500/50' :
-                                                                pulse.tlp === 'amber' ? 'bg-orange-500/20 text-orange-300 border border-orange-500/50' :
-                                                                    'bg-green-500/20 text-green-300 border border-green-500/50'
-                                                            }`}>
-                                                            TLP:{pulse.tlp}
-                                                        </span>
-                                                        <span className="px-2 py-1 bg-purple-500/20 text-purple-300 border border-purple-500/50 rounded text-xs font-mono">
-                                                            {pulse.subscribers.toLocaleString()} subscribers
-                                                        </span>
-                                                    </div>
-                                                    <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-cyan-400 transition-colors" />
-                                                </div>
-                                                <div className="text-white text-sm font-medium mb-1">{pulse.name}</div>
-                                                <div className="text-slate-400 text-xs line-clamp-2 mb-2">
-                                                    {pulse.description}
-                                                </div>
-                                                <div className="text-xs text-slate-500">
-                                                    <span className="font-mono">Adversary:</span> {pulse.adversary}
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-
-                                    {threatData.otxIntelligence.length > 3 && (
-                                        <div className="mt-3 text-center">
-                                            <button
-                                                onClick={() => setActiveTab('intelligence')}
-                                                className="text-sm text-cyan-400 hover:text-cyan-300 font-medium transition-colors"
-                                            >
-                                                +{threatData.otxIntelligence.length - 3} more threat intelligence pulses
-                                            </button>
-                                        </div>
-                                    )}
-                                </div>
-                            )}
-
-                            {(threatData.recentThreats || []).map((threat) => (
+                            {threatData.recentThreats.map((threat) => (
                                 <div
                                     key={threat.id}
                                     className="bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-700 rounded-xl p-6 hover:border-slate-600 transition-all group"
@@ -2044,276 +1940,65 @@ const ThreatIntelDashboard = ({ onClose }) => {
                     )}
 
                     {activeTab === 'malware' && (
-                        <div className="max-w-5xl mx-auto">
+                        <div className="max-w-4xl mx-auto">
                             <div className="bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-700 rounded-xl p-8">
-                                <h3 className="text-2xl font-bold text-white mb-2 flex items-center gap-2">
+                                <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
                                     <AlertTriangle className="w-6 h-6 text-red-400" />
                                     Top Malware Families
                                 </h3>
-                                <p className="text-slate-400 mb-6">Detailed intelligence on the most prevalent malware threats detected globally</p>
 
-                                <div className="space-y-6">
-                                    {(threatData.topMalware || []).map((malware, idx) => {
-                                        // Enhanced malware details (in real app, this would come from API)
-                                        const malwareDetails = {
-                                            'Emotet': {
-                                                description: 'Advanced banking trojan and malware-as-a-service platform used to deliver secondary payloads including ransomware and information stealers.',
-                                                type: 'Banking Trojan / Loader',
-                                                targets: 'Financial institutions, Healthcare, Government',
-                                                infection: 'Phishing emails with malicious attachments or links',
-                                                mitigation: 'Email filtering, user awareness training, endpoint protection'
-                                            },
-                                            'TrickBot': {
-                                                description: 'Sophisticated banking malware that evolved into a modular trojan capable of lateral movement, credential theft, and ransomware delivery.',
-                                                type: 'Modular Banking Trojan',
-                                                targets: 'Financial services, Corporate networks, Critical infrastructure',
-                                                infection: 'Spam campaigns, exploit kits, malicious downloads',
-                                                mitigation: 'Network segmentation, multi-factor authentication, behavior analysis'
-                                            },
-                                            'Qakbot': {
-                                                description: 'Banking trojan with worm capabilities that steals credentials, financial data, and facilitates lateral movement for ransomware deployment.',
-                                                type: 'Banking Trojan / Worm',
-                                                targets: 'Financial sector, Small-to-medium businesses, Enterprise networks',
-                                                infection: 'Malicious email attachments, exploit kits, hijacked email threads',
-                                                mitigation: 'Email security, application whitelisting, regular patching'
-                                            },
-                                            'IcedID': {
-                                                description: 'Modular banking trojan focusing on credential theft and serving as initial access broker for ransomware operations.',
-                                                type: 'Banking Trojan / RAT',
-                                                targets: 'Banking customers, E-commerce platforms, Enterprises',
-                                                infection: 'Phishing campaigns, fake software updates, drive-by downloads',
-                                                mitigation: 'Browser isolation, DNS filtering, endpoint detection and response'
-                                            },
-                                            'Dridex': {
-                                                description: 'Banking malware specializing in credential theft and financial fraud, known for sophisticated evasion techniques and polymorphic behavior.',
-                                                type: 'Banking Trojan',
-                                                targets: 'Banking institutions, Payment processors, Financial services',
-                                                infection: 'Office document macros, phishing emails, malicious links',
-                                                mitigation: 'Macro blocking, sandboxing, threat intelligence feeds'
-                                            }
-                                        };
-
-                                        const details = malwareDetails[malware.name] || {};
-
-                                        return (
-                                            <div key={idx} className="p-6 bg-slate-950 border border-slate-700 rounded-lg hover:border-red-500/50 transition-all group">
-                                                <div className="flex items-start justify-between mb-4">
-                                                    <div className="flex-1">
-                                                        <div className="flex items-center gap-3 mb-3">
-                                                            <div className="text-xl font-bold text-slate-600 font-mono">#{idx + 1}</div>
-                                                            <h4 className="text-xl font-bold text-white group-hover:text-red-400 transition-colors">{malware.name}</h4>
-                                                            <span className="px-3 py-1 bg-slate-900 border border-slate-700 rounded text-sm text-cyan-400 font-mono">
-                                                                {details.type || 'Malware'}
-                                                            </span>
-                                                        </div>
-
-                                                        {/* Description */}
-                                                        {details.description && (
-                                                            <div className="text-slate-300 text-sm leading-relaxed mb-4 pl-3 border-l-2 border-slate-700">
-                                                                {details.description}
-                                                            </div>
-                                                        )}
-
-                                                        {/* Detection Stats */}
-                                                        <div className="mb-4">
-                                                            <div className="flex items-center gap-2 mb-2">
-                                                                <span className="text-xs text-slate-500 uppercase tracking-wider font-mono">Detection Activity</span>
-                                                                <div className={`flex items-center gap-1 text-xs font-mono ${malware.trend === 'up' ? 'text-red-400' :
-                                                                        malware.trend === 'down' ? 'text-green-400' :
-                                                                            'text-slate-400'
-                                                                    }`}>
-                                                                    <TrendingUp className={`w-3 h-3 ${malware.trend === 'down' ? 'rotate-180' : malware.trend === 'stable' ? 'rotate-90' : ''}`} />
-                                                                    {malware.trend}
-                                                                </div>
-                                                            </div>
-                                                            <div className="flex items-center gap-3">
-                                                                <div className="flex-1 h-3 bg-slate-800 rounded-full overflow-hidden border border-slate-700">
-                                                                    <div className="h-full bg-gradient-to-r from-red-500 to-orange-500" style={{ width: `${(malware.count / 234) * 100}%` }} />
-                                                                </div>
-                                                                <span className="text-sm text-slate-300 font-mono font-bold">{malware.count} detections</span>
-                                                            </div>
-                                                        </div>
-
-                                                        {/* Details Grid */}
-                                                        <div className="grid md:grid-cols-2 gap-4 mb-4">
-                                                            {details.targets && (
-                                                                <div>
-                                                                    <div className="text-xs text-slate-500 mb-1 uppercase tracking-wider font-mono">Primary Targets</div>
-                                                                    <div className="text-sm text-slate-300">{details.targets}</div>
-                                                                </div>
-                                                            )}
-                                                            {details.infection && (
-                                                                <div>
-                                                                    <div className="text-xs text-slate-500 mb-1 uppercase tracking-wider font-mono">Infection Vector</div>
-                                                                    <div className="text-sm text-slate-300">{details.infection}</div>
-                                                                </div>
-                                                            )}
-                                                        </div>
-
-                                                        {/* Mitigation */}
-                                                        {details.mitigation && (
-                                                            <div className="p-3 bg-slate-900/50 border border-slate-700 rounded-lg">
-                                                                <div className="text-xs text-green-400 mb-1 uppercase tracking-wider font-mono flex items-center gap-2">
-                                                                    <CheckCircle className="w-3 h-3" />
-                                                                    Recommended Mitigations
-                                                                </div>
-                                                                <div className="text-sm text-slate-300">{details.mitigation}</div>
-                                                            </div>
-                                                        )}
+                                <div className="space-y-4">
+                                    {threatData.topMalware.map((malware, idx) => (
+                                        <div key={idx} className="flex items-center gap-4 p-4 bg-slate-950 border border-slate-700 rounded-lg hover:border-slate-600 transition-all">
+                                            <div className="text-2xl font-bold text-slate-600 font-mono w-8">#{idx + 1}</div>
+                                            <div className="flex-1">
+                                                <div className="font-bold text-white mb-1">{malware.name}</div>
+                                                <div className="flex items-center gap-2">
+                                                    <div className="flex-1 h-2 bg-slate-800 rounded-full overflow-hidden">
+                                                        <div className="h-full bg-gradient-to-r from-red-500 to-orange-500" style={{ width: `${(malware.count / 234) * 100}%` }} />
                                                     </div>
+                                                    <span className="text-sm text-slate-400 font-mono">{malware.count} detections</span>
                                                 </div>
                                             </div>
-                                        );
-                                    })}
+                                            <div className={`flex items-center gap-1 text-sm font-mono ${malware.trend === 'up' ? 'text-red-400' :
+                                                malware.trend === 'down' ? 'text-green-400' :
+                                                    'text-slate-400'
+                                                }`}>
+                                                <TrendingUp className={`w-4 h-4 ${malware.trend === 'down' ? 'rotate-180' : malware.trend === 'stable' ? 'rotate-90' : ''}`} />
+                                                {malware.trend}
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                         </div>
                     )}
 
                     {activeTab === 'actors' && (
-                        <div className="max-w-5xl mx-auto">
+                        <div className="max-w-4xl mx-auto">
                             <div className="bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-700 rounded-xl p-8">
-                                <h3 className="text-2xl font-bold text-white mb-2 flex items-center gap-2">
+                                <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
                                     <Shield className="w-6 h-6 text-purple-400" />
                                     Active Threat Actors
                                 </h3>
-                                <p className="text-slate-400 mb-6">Intelligence profiles on nation-state and cybercriminal groups actively conducting operations</p>
 
-                                <div className="grid gap-6">
-                                    {(threatData.threatActors || []).map((actor, idx) => {
-                                        // Enhanced actor details (in real app, this would come from API)
-                                        const actorDetails = {
-                                            'APT29 (Cozy Bear)': {
-                                                description: 'Russian state-sponsored APT group attributed to the SVR, known for sophisticated spear-phishing campaigns and supply chain compromises targeting government and defense sectors.',
-                                                aliases: 'Cozy Bear, The Dukes, YTTRIUM',
-                                                origin: 'Russia (SVR)',
-                                                firstSeen: '2008',
-                                                motivation: 'Espionage, Intelligence gathering',
-                                                techniques: 'Spear-phishing, supply chain attacks, credential harvesting, cloud exploitation',
-                                                notableOps: 'SolarWinds compromise (2020), DNC breach (2016), COVID-19 vaccine research targeting'
-                                            },
-                                            'Lazarus Group': {
-                                                description: 'North Korean state-sponsored APT group conducting financially motivated attacks and espionage operations, responsible for major cryptocurrency thefts and destructive attacks.',
-                                                aliases: 'Hidden Cobra, ZINC, Guardians of Peace',
-                                                origin: 'North Korea (RGB)',
-                                                firstSeen: '2009',
-                                                motivation: 'Financial gain, Espionage, Disruption',
-                                                techniques: 'Supply chain attacks, cryptocurrency theft, custom malware, watering hole attacks',
-                                                notableOps: 'WannaCry ransomware (2017), Sony Pictures hack (2014), $600M+ cryptocurrency heists'
-                                            },
-                                            'FIN7': {
-                                                description: 'Financially motivated cybercriminal group specializing in payment card theft and point-of-sale compromises, targeting retail and hospitality industries worldwide.',
-                                                aliases: 'Carbanak Group, Carbon Spider',
-                                                origin: 'Eastern Europe',
-                                                firstSeen: '2013',
-                                                motivation: 'Financial gain',
-                                                techniques: 'Phishing, POS malware, fileless attacks, stolen credentials, social engineering',
-                                                notableOps: 'Over $1 billion stolen from retail/hospitality, 15+ million payment cards compromised'
-                                            },
-                                            'Sandworm': {
-                                                description: 'Russian military intelligence (GRU) APT group known for destructive attacks on critical infrastructure, particularly targeting energy and industrial control systems.',
-                                                aliases: 'Voodoo Bear, IRIDIUM, TeleBots',
-                                                origin: 'Russia (GRU Unit 74455)',
-                                                firstSeen: '2009',
-                                                motivation: 'Sabotage, Disruption, Geopolitical influence',
-                                                techniques: 'ICS/SCADA attacks, destructive malware, supply chain compromise, wiper attacks',
-                                                notableOps: 'Ukraine power grid attacks (2015, 2016), NotPetya (2017), Olympic Destroyer (2018)'
-                                            }
-                                        };
-
-                                        const details = actorDetails[actor.name] || {};
-
-                                        return (
-                                            <div key={idx} className="p-6 bg-slate-950 border border-slate-700 rounded-lg hover:border-purple-500/50 transition-all group">
-                                                <div className="flex items-start justify-between mb-4">
-                                                    <div className="flex-1">
-                                                        <div className="flex items-center gap-3 mb-3">
-                                                            <h4 className="text-xl font-bold text-white group-hover:text-purple-400 transition-colors">{actor.name}</h4>
-                                                            <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${actor.activity === 'high' ? 'bg-red-500/20 text-red-300 border border-red-500/50' :
-                                                                    'bg-yellow-500/20 text-yellow-300 border border-yellow-500/50'
-                                                                }`}>
-                                                                {actor.activity} activity
-                                                            </span>
-                                                        </div>
-
-                                                        {/* Description */}
-                                                        {details.description && (
-                                                            <div className="text-slate-300 text-sm leading-relaxed mb-4 pl-3 border-l-2 border-purple-700">
-                                                                {details.description}
-                                                            </div>
-                                                        )}
-
-                                                        {/* Actor Profile Grid */}
-                                                        <div className="grid md:grid-cols-2 gap-4 mb-4">
-                                                            {details.origin && (
-                                                                <div>
-                                                                    <div className="text-xs text-slate-500 mb-1 uppercase tracking-wider font-mono">Attribution</div>
-                                                                    <div className="text-sm text-slate-300 flex items-center gap-2">
-                                                                        <MapPin className="w-3 h-3 text-purple-400" />
-                                                                        {details.origin}
-                                                                    </div>
-                                                                </div>
-                                                            )}
-                                                            {details.firstSeen && (
-                                                                <div>
-                                                                    <div className="text-xs text-slate-500 mb-1 uppercase tracking-wider font-mono">First Observed</div>
-                                                                    <div className="text-sm text-slate-300 flex items-center gap-2">
-                                                                        <Clock className="w-3 h-3 text-purple-400" />
-                                                                        {details.firstSeen}
-                                                                    </div>
-                                                                </div>
-                                                            )}
-                                                            <div>
-                                                                <div className="text-xs text-slate-500 mb-1 uppercase tracking-wider font-mono">Primary Targets</div>
-                                                                <div className="text-sm text-slate-300">{actor.targets}</div>
-                                                            </div>
-                                                            {details.motivation && (
-                                                                <div>
-                                                                    <div className="text-xs text-slate-500 mb-1 uppercase tracking-wider font-mono">Motivation</div>
-                                                                    <div className="text-sm text-slate-300">{details.motivation}</div>
-                                                                </div>
-                                                            )}
-                                                        </div>
-
-                                                        {/* Aliases */}
-                                                        {details.aliases && (
-                                                            <div className="mb-4">
-                                                                <div className="text-xs text-slate-500 mb-2 uppercase tracking-wider font-mono">Known Aliases</div>
-                                                                <div className="flex flex-wrap gap-2">
-                                                                    {details.aliases.split(', ').map((alias, i) => (
-                                                                        <span key={i} className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-xs text-slate-300 font-mono">
-                                                                            {alias}
-                                                                        </span>
-                                                                    ))}
-                                                                </div>
-                                                            </div>
-                                                        )}
-
-                                                        {/* TTPs */}
-                                                        {details.techniques && (
-                                                            <div className="mb-4">
-                                                                <div className="text-xs text-slate-500 mb-2 uppercase tracking-wider font-mono">Tactics, Techniques & Procedures (TTPs)</div>
-                                                                <div className="text-sm text-slate-300 p-3 bg-slate-900/50 border border-slate-700 rounded-lg">
-                                                                    {details.techniques}
-                                                                </div>
-                                                            </div>
-                                                        )}
-
-                                                        {/* Notable Operations */}
-                                                        {details.notableOps && (
-                                                            <div className="p-3 bg-purple-500/10 border border-purple-500/30 rounded-lg">
-                                                                <div className="text-xs text-purple-400 mb-2 uppercase tracking-wider font-mono flex items-center gap-2">
-                                                                    <AlertTriangle className="w-3 h-3" />
-                                                                    Notable Operations
-                                                                </div>
-                                                                <div className="text-sm text-slate-300">{details.notableOps}</div>
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                </div>
+                                <div className="grid gap-4">
+                                    {threatData.threatActors.map((actor, idx) => (
+                                        <div key={idx} className="p-6 bg-slate-950 border border-slate-700 rounded-lg hover:border-purple-500/50 transition-all group">
+                                            <div className="flex items-start justify-between mb-3">
+                                                <h4 className="font-bold text-lg text-white group-hover:text-purple-400 transition-colors">{actor.name}</h4>
+                                                <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${actor.activity === 'high' ? 'bg-red-500/20 text-red-300 border border-red-500/50' :
+                                                    'bg-yellow-500/20 text-yellow-300 border border-yellow-500/50'
+                                                    }`}>
+                                                    {actor.activity} activity
+                                                </span>
                                             </div>
-                                        );
-                                    })}
+                                            <div className="flex items-center gap-2 text-slate-400 text-sm">
+                                                <span className="font-mono">Targets:</span>
+                                                <span>{actor.targets}</span>
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                         </div>
@@ -2328,7 +2013,7 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                 </h3>
 
                                 <div className="space-y-4">
-                                    {(threatData.vulnerabilities || []).map((vuln, idx) => (
+                                    {threatData.vulnerabilities.map((vuln, idx) => (
                                         <div key={idx} className="p-6 bg-slate-950 border border-slate-700 rounded-lg hover:border-yellow-500/50 transition-all group">
                                             <div className="flex items-start justify-between mb-3">
                                                 <div className="flex-1">
@@ -2387,125 +2072,107 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                 </h3>
 
                                 <div className="space-y-4">
-                                    {(threatData.otxIntelligence || []).map((pulse, idx) => (
-                                        <div key={idx} className="p-6 bg-slate-950 border border-slate-700 rounded-lg hover:border-cyan-500/50 transition-all group">
-                                            <div className="flex items-start justify-between mb-3">
-                                                <div className="flex-1">
-                                                    {/* Header with TLP and Badges */}
-                                                    <div className="flex items-center gap-3 mb-2">
-                                                        <span className={`px-3 py-1 rounded text-xs font-bold uppercase ${pulse.tlp === 'red' ? 'bg-red-500/20 text-red-300 border border-red-500/50' :
-                                                                pulse.tlp === 'amber' ? 'bg-orange-500/20 text-orange-300 border border-orange-500/50' :
-                                                                    'bg-green-500/20 text-green-300 border border-green-500/50'
-                                                            }`}>
-                                                            TLP:{pulse.tlp}
-                                                        </span>
-                                                        <span className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-sm text-purple-400 font-mono">
-                                                            {pulse.subscribers.toLocaleString()} subscribers
-                                                        </span>
-                                                        <span className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-sm text-slate-400 font-mono">
-                                                            {pulse.references} references
-                                                        </span>
-                                                    </div>
+                                    {(threatData.otxIntelligence || []).map((pulse, idx) => {
+                                        // Extract OTX pulse ID from the id field (format: otx_PULSEID)
+                                        const pulseId = pulse.id ? pulse.id.replace('otx_', '') : '';
+                                        const otxUrl = pulseId ? `https://otx.alienvault.com/pulse/${pulseId}` : null;
 
-                                                    {/* Pulse Name */}
-                                                    <div className="text-white font-semibold mb-3">{pulse.name}</div>
-
-                                                    {/* Full Description */}
-                                                    <div className="text-slate-300 text-sm leading-relaxed mb-4 pl-3 border-l-2 border-slate-700">
-                                                        {pulse.description}
-                                                    </div>
-
-                                                    {/* Key Details Grid */}
-                                                    <div className="grid md:grid-cols-2 gap-4 mb-4">
-                                                        <div>
-                                                            <div className="text-xs text-slate-500 mb-1 uppercase tracking-wider font-mono">Adversary</div>
-                                                            <div className="text-sm text-slate-300 flex items-center gap-2">
-                                                                <Shield className="w-4 h-4 text-cyan-400" />
-                                                                {pulse.adversary}
-                                                            </div>
-                                                        </div>
-                                                        <div>
-                                                            <div className="text-xs text-slate-500 mb-1 uppercase tracking-wider font-mono">Author</div>
-                                                            <div className="text-sm text-slate-300">{pulse.author}</div>
-                                                        </div>
-                                                        <div>
-                                                            <div className="text-xs text-slate-500 mb-1 uppercase tracking-wider font-mono">Targeted Industries</div>
-                                                            <div className="text-sm text-slate-300">{pulse.industries.join(', ')}</div>
-                                                        </div>
-                                                        <div>
-                                                            <div className="text-xs text-slate-500 mb-1 uppercase tracking-wider font-mono">Targeted Countries</div>
-                                                            <div className="text-sm text-slate-300">{pulse.targeted_countries.join(', ')}</div>
-                                                        </div>
-                                                    </div>
-
-                                                    {/* Tags */}
-                                                    <div className="mb-4">
-                                                        <div className="text-xs text-slate-500 mb-2 uppercase tracking-wider font-mono">Tags</div>
-                                                        <div className="flex flex-wrap gap-2">
-                                                            {pulse.tags.map((tag, i) => (
-                                                                <span key={i} className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-xs text-cyan-400 font-mono">
-                                                                    #{tag}
+                                        return (
+                                            <div key={pulse.id || idx} className="p-6 bg-slate-950 border border-slate-700 rounded-lg hover:border-cyan-500/50 transition-all group">
+                                                <div className="flex items-start justify-between mb-3">
+                                                    <div className="flex-1">
+                                                        {/* Header with Severity Badge */}
+                                                        <div className="flex items-center gap-3 mb-2">
+                                                            <span className={`px-3 py-1 rounded text-xs font-bold uppercase ${pulse.severity === 'critical' ? 'bg-red-500/20 text-red-300 border border-red-500/50' :
+                                                                    pulse.severity === 'high' ? 'bg-orange-500/20 text-orange-300 border border-orange-500/50' :
+                                                                        'bg-yellow-500/20 text-yellow-300 border border-yellow-500/50'
+                                                                }`}>
+                                                                {pulse.severity || 'medium'}
+                                                            </span>
+                                                            {pulse.source && (
+                                                                <span className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-sm text-purple-400 font-mono">
+                                                                    {pulse.source}
                                                                 </span>
-                                                            ))}
-                                                        </div>
-                                                    </div>
-
-                                                    {/* MITRE ATT&CK Techniques */}
-                                                    <div className="mb-4">
-                                                        <div className="text-xs text-slate-500 mb-2 uppercase tracking-wider font-mono">MITRE ATT&CK Techniques</div>
-                                                        <div className="flex flex-wrap gap-2">
-                                                            {pulse.mitre_techniques.map((technique, i) => (
-                                                                <code key={i} className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-xs text-yellow-400 font-mono">
-                                                                    {technique}
-                                                                </code>
-                                                            ))}
-                                                        </div>
-                                                    </div>
-
-                                                    {/* Key Indicators Summary */}
-                                                    <div className="mb-4 p-3 bg-slate-900/50 border border-slate-700 rounded-lg">
-                                                        <div className="text-xs text-cyan-400 mb-2 uppercase tracking-wider font-mono">Indicators of Compromise</div>
-                                                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs text-slate-400">
-                                                            {pulse.indicators.ips && (
-                                                                <div>
-                                                                    <span className="font-mono text-slate-500">IPs:</span> {pulse.indicators.ips.length}
-                                                                </div>
                                                             )}
-                                                            {pulse.indicators.domains && (
-                                                                <div>
-                                                                    <span className="font-mono text-slate-500">Domains:</span> {pulse.indicators.domains.length}
-                                                                </div>
-                                                            )}
-                                                            {pulse.indicators.hashes && (
-                                                                <div>
-                                                                    <span className="font-mono text-slate-500">Hashes:</span> {pulse.indicators.hashes.length}
-                                                                </div>
-                                                            )}
-                                                            {pulse.indicators.emails && (
-                                                                <div>
-                                                                    <span className="font-mono text-slate-500">Emails:</span> {pulse.indicators.emails.length}
-                                                                </div>
+                                                            {pulse.timestamp && (
+                                                                <span className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-sm text-slate-400 font-mono">
+                                                                    {formatTimestamp(pulse.timestamp)}
+                                                                </span>
                                                             )}
                                                         </div>
-                                                    </div>
 
-                                                    {/* OTX Link */}
-                                                    {pulse.otx_url && (
-                                                        <a
-                                                            href={pulse.otx_url}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            className="inline-flex items-center gap-2 px-4 py-2 bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/50 rounded-lg text-sm font-medium transition-all hover:border-cyan-400"
-                                                        >
-                                                            <Globe className="w-4 h-4" />
-                                                            View on AlienVault OTX
-                                                            <ArrowRight className="w-4 h-4" />
-                                                        </a>
-                                                    )}
+                                                        {/* Pulse Name */}
+                                                        <div className="text-white font-semibold mb-3">{pulse.name}</div>
+
+                                                        {/* Full Description */}
+                                                        {pulse.description && (
+                                                            <div className="text-slate-300 text-sm leading-relaxed mb-4 pl-3 border-l-2 border-slate-700">
+                                                                {pulse.description}
+                                                            </div>
+                                                        )}
+
+                                                        {/* Key Details Grid */}
+                                                        <div className="grid md:grid-cols-2 gap-4 mb-4">
+                                                            {pulse.source && (
+                                                                <div>
+                                                                    <div className="text-xs text-slate-500 mb-1 uppercase tracking-wider font-mono">Source</div>
+                                                                    <div className="text-sm text-slate-300">{pulse.source}</div>
+                                                                </div>
+                                                            )}
+                                                            {pulse.timestamp && (
+                                                                <div>
+                                                                    <div className="text-xs text-slate-500 mb-1 uppercase tracking-wider font-mono">Published</div>
+                                                                    <div className="text-sm text-slate-300 flex items-center gap-2">
+                                                                        <Clock className="w-4 h-4 text-cyan-400" />
+                                                                        {formatTimestamp(pulse.timestamp)}
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                            {pulse.countries && pulse.countries.length > 0 && (
+                                                                <div>
+                                                                    <div className="text-xs text-slate-500 mb-1 uppercase tracking-wider font-mono">Targeted Countries</div>
+                                                                    <div className="text-sm text-slate-300">{pulse.countries.join(', ')}</div>
+                                                                </div>
+                                                            )}
+                                                        </div>
+
+                                                        {/* Indicators (if available) */}
+                                                        {pulse.indicators && pulse.indicators.length > 0 && (
+                                                            <div className="mb-4">
+                                                                <div className="text-xs text-slate-500 mb-2 uppercase tracking-wider font-mono">Indicators</div>
+                                                                <div className="flex flex-wrap gap-2">
+                                                                    {pulse.indicators.slice(0, 5).map((indicator, i) => (
+                                                                        <code key={i} className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-xs text-cyan-400 font-mono">
+                                                                            {indicator}
+                                                                        </code>
+                                                                    ))}
+                                                                    {pulse.indicators.length > 5 && (
+                                                                        <span className="px-2 py-1 text-xs text-slate-500">
+                                                                            +{pulse.indicators.length - 5} more
+                                                                        </span>
+                                                                    )}
+                                                                </div>
+                                                            </div>
+                                                        )}
+
+                                                        {/* OTX Link */}
+                                                        {otxUrl && (
+                                                            <a
+                                                                href={otxUrl}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                className="inline-flex items-center gap-2 px-4 py-2 bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/50 rounded-lg text-sm font-medium transition-all hover:border-cyan-400"
+                                                            >
+                                                                <Globe className="w-4 h-4" />
+                                                                View on AlienVault OTX
+                                                                <ArrowRight className="w-4 h-4" />
+                                                            </a>
+                                                        )}
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    ))}
+                                        );
+                                    })}
                                 </div>
                             </div>
                         </div>
