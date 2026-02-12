@@ -1423,9 +1423,16 @@ const ThreatIntelDashboard = ({ onClose }) => {
                 const data = await response.json();
                 console.log('✅ Threat data received:', data);
 
-                // Validate data structure
+                // Validate data structure and merge with defaults
                 if (data && data.stats && data.recentThreats !== undefined) {
-                    setThreatData(data);
+                    setThreatData({
+                        recentThreats: data.recentThreats || [],
+                        stats: data.stats || { totalThreats: 0, criticalThreats: 0, blockedIPs: 0, activeCampaigns: 0 },
+                        topMalware: data.topMalware || [],
+                        threatActors: data.threatActors || [],
+                        vulnerabilities: data.vulnerabilities || [],
+                        otxIntelligence: data.otxIntelligence || []
+                    });
                 } else {
                     console.warn('⚠️ Invalid data structure, using mock data');
                     loadMockData();
@@ -1833,7 +1840,7 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                     </div>
 
                                     <div className="space-y-3">
-                                        {threatData.vulnerabilities.slice(0, 3).map((vuln, idx) => (
+                                        {(threatData.vulnerabilities || []).slice(0, 3).map((vuln, idx) => (
                                             <div
                                                 key={idx}
                                                 onClick={() => setActiveTab('vulnerabilities')}
@@ -1898,7 +1905,7 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                     </div>
 
                                     <div className="space-y-3">
-                                        {threatData.topMalware.slice(0, 3).map((malware, idx) => (
+                                        {(threatData.topMalware || []).slice(0, 3).map((malware, idx) => (
                                             <div
                                                 key={idx}
                                                 className="flex items-center gap-3 p-3 bg-slate-950/50 border border-slate-700/50 rounded-lg hover:border-slate-600 transition-all cursor-pointer"
@@ -1956,7 +1963,7 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                     </div>
 
                                     <div className="space-y-3">
-                                        {threatData.threatActors.slice(0, 3).map((actor, idx) => (
+                                        {(threatData.threatActors || []).slice(0, 3).map((actor, idx) => (
                                             <div
                                                 key={idx}
                                                 className="flex items-center gap-3 p-3 bg-slate-950/50 border border-slate-700/50 rounded-lg hover:border-slate-600 transition-all cursor-pointer"
@@ -2007,7 +2014,7 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                     </div>
 
                                     <div className="space-y-3">
-                                        {threatData.otxIntelligence.slice(0, 3).map((pulse, idx) => (
+                                        {(threatData.otxIntelligence || []).slice(0, 3).map((pulse, idx) => (
                                             <div
                                                 key={idx}
                                                 className="flex items-start gap-3 p-3 bg-slate-950/50 border border-slate-700/50 rounded-lg hover:border-slate-600 transition-all cursor-pointer group"
@@ -2054,7 +2061,7 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                 </div>
                             )}
 
-                            {threatData.recentThreats.map((threat) => (
+                            {(threatData.recentThreats || []).map((threat) => (
                                 <div
                                     key={threat.id}
                                     className="bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-700 rounded-xl p-6 hover:border-slate-600 transition-all group"
@@ -2241,7 +2248,7 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                 <p className="text-slate-400 mb-6">Detailed intelligence on the most prevalent malware threats detected globally</p>
 
                                 <div className="space-y-6">
-                                    {threatData.topMalware.map((malware, idx) => {
+                                    {(threatData.topMalware || []).map((malware, idx) => {
                                         // Enhanced malware details (in real app, this would come from API)
                                         const malwareDetails = {
                                             'Emotet': {
@@ -2368,7 +2375,7 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                 <p className="text-slate-400 mb-6">Intelligence profiles on nation-state and cybercriminal groups actively conducting operations</p>
 
                                 <div className="grid gap-6">
-                                    {threatData.threatActors.map((actor, idx) => {
+                                    {(threatData.threatActors || []).map((actor, idx) => {
                                         // Enhanced actor details (in real app, this would come from API)
                                         const actorDetails = {
                                             'APT29 (Cozy Bear)': {
@@ -2516,7 +2523,7 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                 </h3>
 
                                 <div className="space-y-4">
-                                    {threatData.vulnerabilities.map((vuln, idx) => (
+                                    {(threatData.vulnerabilities || []).map((vuln, idx) => (
                                         <div key={idx} className="p-6 bg-slate-950 border border-slate-700 rounded-lg hover:border-yellow-500/50 transition-all group">
                                             <div className="flex items-start justify-between mb-3">
                                                 <div className="flex-1">
@@ -2578,7 +2585,7 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                 </div>
 
                                 <div className="space-y-6">
-                                    {threatData.otxIntelligence.map((pulse, idx) => (
+                                    {(threatData.otxIntelligence || []).map((pulse, idx) => (
                                         <div key={idx} className="p-6 bg-slate-950 border border-slate-700 rounded-lg hover:border-cyan-500/50 transition-all">
                                             {/* Header */}
                                             <div className="flex items-start justify-between mb-4">
