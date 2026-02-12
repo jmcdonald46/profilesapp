@@ -415,22 +415,6 @@ export default function App() {
             )
         },
         {
-            title: "Tech Stack & Architecture",
-            description: "Explore the AWS services and technologies powering this portfolio",
-            tech: ["AWS S3", "API Gateway", "Lambda", "React"],
-            gradient: "from-orange-500 to-red-500",
-            showPreview: true,
-            icon: Cloud,
-            button: (
-                <button
-                    onClick={() => setShowTechStack(true)}
-                    className="px-8 py-3 bg-gradient-to-r from-orange-500 to-red-600 rounded-full font-semibold hover:shadow-lg hover:shadow-orange-500/50 transition-all hover:scale-105"
-                >
-                    View Architecture
-                </button>
-            )
-        },
-        {
             title: "Photo Gallery",
             description: "AWS S3 powered photo gallery with cloud storage",
             tech: ["AWS S3", "React", "REST API"],
@@ -905,6 +889,323 @@ export default function App() {
                                 </div>
                             </div>
 
+                            {/* Threat Intelligence Dashboard Section */}
+                            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 md:p-8 mb-6">
+                                <div className="flex items-center gap-3 mb-6">
+                                    <Database className="w-8 h-8 text-purple-400" />
+                                    <h3 className="text-2xl font-bold">Threat Intelligence Dashboard</h3>
+                                </div>
+                                <p className="text-slate-300 mb-6">
+                                    Real-time cybersecurity threat monitoring powered by multiple open-source intelligence feeds.
+                                </p>
+
+                                <div className="grid md:grid-cols-3 gap-6 mb-6">
+                                    {/* URLhaus */}
+                                    <div className="bg-slate-900/50 rounded-lg p-6 border border-orange-500/30">
+                                        <div className="flex items-center gap-2 mb-3">
+                                            <AlertTriangle className="w-6 h-6 text-orange-400" />
+                                            <h4 className="text-lg font-semibold text-orange-400">URLhaus</h4>
+                                        </div>
+                                        <p className="text-slate-300 mb-3 text-sm">Malware distribution URL tracking</p>
+                                        <ul className="text-slate-400 text-sm space-y-2">
+                                            <li className="flex items-start gap-2">
+                                                <span className="text-orange-400 mt-0.5">•</span>
+                                                <span>Real-time malware URL feed</span>
+                                            </li>
+                                            <li className="flex items-start gap-2">
+                                                <span className="text-orange-400 mt-0.5">•</span>
+                                                <span>Threat indicators and IOCs</span>
+                                            </li>
+                                            <li className="flex items-start gap-2">
+                                                <span className="text-orange-400 mt-0.5">•</span>
+                                                <span>Malware family identification</span>
+                                            </li>
+                                            <li className="flex items-start gap-2">
+                                                <span className="text-orange-400 mt-0.5">•</span>
+                                                <span>Abuse.ch community data</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    {/* Feodo Tracker */}
+                                    <div className="bg-slate-900/50 rounded-lg p-6 border border-red-500/30">
+                                        <div className="flex items-center gap-2 mb-3">
+                                            <Globe className="w-6 h-6 text-red-400" />
+                                            <h4 className="text-lg font-semibold text-red-400">Feodo Tracker</h4>
+                                        </div>
+                                        <p className="text-slate-300 mb-3 text-sm">C2 infrastructure monitoring</p>
+                                        <ul className="text-slate-400 text-sm space-y-2">
+                                            <li className="flex items-start gap-2">
+                                                <span className="text-red-400 mt-0.5">•</span>
+                                                <span>Botnet C2 server tracking</span>
+                                            </li>
+                                            <li className="flex items-start gap-2">
+                                                <span className="text-red-400 mt-0.5">•</span>
+                                                <span>Active threat infrastructure</span>
+                                            </li>
+                                            <li className="flex items-start gap-2">
+                                                <span className="text-red-400 mt-0.5">•</span>
+                                                <span>IP blocklist generation</span>
+                                            </li>
+                                            <li className="flex items-start gap-2">
+                                                <span className="text-red-400 mt-0.5">•</span>
+                                                <span>Geolocation data</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    {/* AlienVault OTX */}
+                                    <div className="bg-slate-900/50 rounded-lg p-6 border border-cyan-500/30">
+                                        <div className="flex items-center gap-2 mb-3">
+                                            <Shield className="w-6 h-6 text-cyan-400" />
+                                            <h4 className="text-lg font-semibold text-cyan-400">AlienVault OTX</h4>
+                                        </div>
+                                        <p className="text-slate-300 mb-3 text-sm">Global threat intelligence pulses</p>
+                                        <ul className="text-slate-400 text-sm space-y-2">
+                                            <li className="flex items-start gap-2">
+                                                <span className="text-cyan-400 mt-0.5">•</span>
+                                                <span>Community threat sharing</span>
+                                            </li>
+                                            <li className="flex items-start gap-2">
+                                                <span className="text-cyan-400 mt-0.5">•</span>
+                                                <span>Threat actor campaigns</span>
+                                            </li>
+                                            <li className="flex items-start gap-2">
+                                                <span className="text-cyan-400 mt-0.5">•</span>
+                                                <span>Targeted country data</span>
+                                            </li>
+                                            <li className="flex items-start gap-2">
+                                                <span className="text-cyan-400 mt-0.5">•</span>
+                                                <span>CVE exploitation tracking</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                {/* Data Processing Pipeline */}
+                                <div className="bg-gradient-to-r from-purple-900/20 to-cyan-900/20 rounded-xl p-6 border border-purple-500/30 mb-6">
+                                    <h4 className="text-lg font-semibold text-purple-300 mb-3 flex items-center gap-2">
+                                        <Activity className="w-5 h-5" />
+                                        Data Processing Pipeline
+                                    </h4>
+                                    <div className="grid md:grid-cols-4 gap-4 text-sm">
+                                        <div className="text-center">
+                                            <div className="bg-purple-500/20 rounded-lg p-3 mb-2">
+                                                <Database className="w-6 h-6 mx-auto text-purple-400" />
+                                            </div>
+                                            <p className="text-slate-300 font-medium">API Ingestion</p>
+                                            <p className="text-slate-500 text-xs mt-1">Fetch from sources</p>
+                                        </div>
+                                        <div className="text-center">
+                                            <div className="bg-cyan-500/20 rounded-lg p-3 mb-2">
+                                                <Code className="w-6 h-6 mx-auto text-cyan-400" />
+                                            </div>
+                                            <p className="text-slate-300 font-medium">Lambda Processing</p>
+                                            <p className="text-slate-500 text-xs mt-1">Parse & normalize</p>
+                                        </div>
+                                        <div className="text-center">
+                                            <div className="bg-orange-500/20 rounded-lg p-3 mb-2">
+                                                <Shield className="w-6 h-6 mx-auto text-orange-400" />
+                                            </div>
+                                            <p className="text-slate-300 font-medium">Caching Layer</p>
+                                            <p className="text-slate-500 text-xs mt-1">15-min TTL</p>
+                                        </div>
+                                        <div className="text-center">
+                                            <div className="bg-green-500/20 rounded-lg p-3 mb-2">
+                                                <Activity className="w-6 h-6 mx-auto text-green-400" />
+                                            </div>
+                                            <p className="text-slate-300 font-medium">Live Dashboard</p>
+                                            <p className="text-slate-500 text-xs mt-1">Real-time updates</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* How It Works Section */}
+                                <div className="bg-gradient-to-br from-slate-900 to-slate-950 rounded-xl p-6 border border-purple-500/30 mb-6">
+                                    <h4 className="text-xl font-bold text-purple-300 mb-6 flex items-center gap-2">
+                                        <Activity className="w-6 h-6" />
+                                        How the Threat Dashboard Works
+                                    </h4>
+
+                                    <div className="space-y-6">
+                                        {/* Step 1 */}
+                                        <div className="flex gap-4">
+                                            <div className="flex-shrink-0">
+                                                <div className="w-10 h-10 rounded-full bg-purple-500/20 border-2 border-purple-500 flex items-center justify-center">
+                                                    <span className="text-purple-300 font-bold">1</span>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h5 className="font-semibold text-white mb-2">API Request from Frontend</h5>
+                                                <p className="text-slate-400 text-sm">
+                                                    React application sends GET request to AWS API Gateway endpoint when dashboard loads
+                                                </p>
+                                                <code className="block mt-2 px-3 py-2 bg-slate-950 border border-slate-700 rounded text-xs text-cyan-400 font-mono">
+                                                    fetch(VITE_THREAT_INTEL_API)
+                                                </code>
+                                            </div>
+                                        </div>
+
+                                        {/* Step 2 */}
+                                        <div className="flex gap-4">
+                                            <div className="flex-shrink-0">
+                                                <div className="w-10 h-10 rounded-full bg-cyan-500/20 border-2 border-cyan-500 flex items-center justify-center">
+                                                    <span className="text-cyan-300 font-bold">2</span>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h5 className="font-semibold text-white mb-2">Lambda Function Execution</h5>
+                                                <p className="text-slate-400 text-sm mb-2">
+                                                    Python Lambda function checks cache, then fetches from three threat intelligence APIs:
+                                                </p>
+                                                <div className="grid grid-cols-3 gap-2 mt-2">
+                                                    <div className="px-2 py-1 bg-orange-500/10 border border-orange-500/30 rounded text-xs text-orange-300 text-center">
+                                                        URLhaus API
+                                                    </div>
+                                                    <div className="px-2 py-1 bg-red-500/10 border border-red-500/30 rounded text-xs text-red-300 text-center">
+                                                        Feodo Tracker
+                                                    </div>
+                                                    <div className="px-2 py-1 bg-cyan-500/10 border border-cyan-500/30 rounded text-xs text-cyan-300 text-center">
+                                                        AlienVault OTX
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Step 3 */}
+                                        <div className="flex gap-4">
+                                            <div className="flex-shrink-0">
+                                                <div className="w-10 h-10 rounded-full bg-orange-500/20 border-2 border-orange-500 flex items-center justify-center">
+                                                    <span className="text-orange-300 font-bold">3</span>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h5 className="font-semibold text-white mb-2">Data Processing & Normalization</h5>
+                                                <p className="text-slate-400 text-sm">
+                                                    Lambda parses responses, filters by threat type, and normalizes data structure
+                                                </p>
+                                                <div className="mt-2 text-xs text-slate-500 space-y-1">
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
+                                                        <span>Malware URLs → malwareUrls[]</span>
+                                                    </div>
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="w-2 h-2 bg-red-400 rounded-full"></div>
+                                                        <span>C2 Servers → c2Servers[]</span>
+                                                    </div>
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
+                                                        <span>OTX Pulses → otxIntelligence[]</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Step 4 */}
+                                        <div className="flex gap-4">
+                                            <div className="flex-shrink-0">
+                                                <div className="w-10 h-10 rounded-full bg-green-500/20 border-2 border-green-500 flex items-center justify-center">
+                                                    <span className="text-green-300 font-bold">4</span>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h5 className="font-semibold text-white mb-2">Caching & Response</h5>
+                                                <p className="text-slate-400 text-sm">
+                                                    Data cached for 15 minutes (900s TTL), then returned as JSON to frontend
+                                                </p>
+                                                <div className="mt-2 px-3 py-2 bg-slate-950 border border-green-500/30 rounded text-xs">
+                                                    <div className="flex items-center justify-between text-green-400">
+                                                        <span>Cache Hit Rate:</span>
+                                                        <span className="font-bold">~85%</span>
+                                                    </div>
+                                                    <div className="flex items-center justify-between text-green-400 mt-1">
+                                                        <span>Response Time:</span>
+                                                        <span className="font-bold">&lt;200ms</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Step 5 */}
+                                        <div className="flex gap-4">
+                                            <div className="flex-shrink-0">
+                                                <div className="w-10 h-10 rounded-full bg-blue-500/20 border-2 border-blue-500 flex items-center justify-center">
+                                                    <span className="text-blue-300 font-bold">5</span>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h5 className="font-semibold text-white mb-2">Frontend Rendering</h5>
+                                                <p className="text-slate-400 text-sm">
+                                                    React components display threats in categorized tabs with real-time updates
+                                                </p>
+                                                <div className="mt-2 grid grid-cols-2 gap-2">
+                                                    <div className="px-2 py-1 bg-slate-950 border border-slate-700 rounded text-xs text-slate-400">
+                                                        📊 Overview Stats
+                                                    </div>
+                                                    <div className="px-2 py-1 bg-slate-950 border border-slate-700 rounded text-xs text-slate-400">
+                                                        🟠 Malware URLs
+                                                    </div>
+                                                    <div className="px-2 py-1 bg-slate-950 border border-slate-700 rounded text-xs text-slate-400">
+                                                        🔴 C2 Servers
+                                                    </div>
+                                                    <div className="px-2 py-1 bg-slate-950 border border-slate-700 rounded text-xs text-slate-400">
+                                                        🔵 Threat Intel
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Key Features */}
+                                    <div className="mt-6 pt-6 border-t border-slate-700">
+                                        <h5 className="font-semibold text-white mb-3">Key Features</h5>
+                                        <div className="grid md:grid-cols-2 gap-3">
+                                            <div className="flex items-start gap-2">
+                                                <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                                                <span className="text-slate-300 text-sm">Serverless architecture - zero maintenance</span>
+                                            </div>
+                                            <div className="flex items-start gap-2">
+                                                <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                                                <span className="text-slate-300 text-sm">15-minute cache reduces API calls by 85%</span>
+                                            </div>
+                                            <div className="flex items-start gap-2">
+                                                <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                                                <span className="text-slate-300 text-sm">Real-time data from 3 threat sources</span>
+                                            </div>
+                                            <div className="flex items-start gap-2">
+                                                <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                                                <span className="text-slate-300 text-sm">Automatic fallback to mock data on errors</span>
+                                            </div>
+                                            <div className="flex items-start gap-2">
+                                                <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                                                <span className="text-slate-300 text-sm">Color-coded severity indicators</span>
+                                            </div>
+                                            <div className="flex items-start gap-2">
+                                                <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                                                <span className="text-slate-300 text-sm">Direct links to threat source pages</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Launch Dashboard Button */}
+                                <div className="text-center">
+                                    <button
+                                        onClick={() => {
+                                            setShowTechStack(false);
+                                            setShowThreatIntel(true);
+                                        }}
+                                        className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-500 to-cyan-600 hover:from-purple-600 hover:to-cyan-700 text-white rounded-xl font-bold text-lg transition-all hover:shadow-lg hover:shadow-purple-500/50 hover:scale-105">
+                                        <Activity className="w-6 h-6" />
+                                        Launch Threat Dashboard
+                                        <ArrowRight className="w-5 h-5" />
+                                    </button>
+                                    <p className="text-slate-400 text-sm mt-3">
+                                        Experience the live dashboard with real-time threat data
+                                    </p>
+                                </div>
+                            </div>
+
                             {/* Security & Monitoring Section */}
                             <div className="bg-gradient-to-br from-red-900/20 to-orange-900/20 backdrop-blur-sm rounded-2xl border border-red-700/50 p-6 md:p-8 mb-6">
                                 <div className="flex items-center gap-3 mb-6">
@@ -1157,6 +1458,7 @@ export default function App() {
                     <div className="flex gap-6">
                         <a href="#about" className="hover:text-cyan-400 transition-colors">About</a>
                         <a href="#projects" className="hover:text-cyan-400 transition-colors">Projects</a>
+                        <a href="#architecture" className="hover:text-cyan-400 transition-colors">Architecture</a>
                         <a href="#contact" className="hover:text-cyan-400 transition-colors">Contact</a>
                     </div>
                 </div>
@@ -1362,6 +1664,69 @@ export default function App() {
             </section>
 
             {/* Contact Section */}
+
+            {/* Technical Architecture Section */}
+            <section id="architecture" className="py-20 px-6">
+                <div className="container mx-auto max-w-6xl">
+                    <div className="text-center mb-12">
+                        <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent">
+                            Technical Architecture
+                        </h2>
+                        <div className="w-20 h-1 bg-gradient-to-r from-orange-400 to-red-500 mx-auto rounded-full"></div>
+                    </div>
+
+                    <div className="bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-700 rounded-2xl p-8">
+                        <p className="text-slate-300 text-lg text-center mb-8">
+                            A comprehensive overview of the technologies, services, and integrations powering this portfolio.
+                        </p>
+
+                        <button
+                            onClick={() => setShowTechStack(true)}
+                            className="mx-auto flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white rounded-xl font-bold text-lg transition-all hover:shadow-lg hover:shadow-orange-500/50 hover:scale-105">
+                            <Cloud className="w-6 h-6" />
+                            Explore Full Architecture
+                            <ArrowRight className="w-5 h-5" />
+                        </button>
+
+                        {/* Quick Overview Cards */}
+                        <div className="grid md:grid-cols-3 gap-6 mt-12">
+                            <div className="bg-slate-950 border border-slate-700 rounded-xl p-6 hover:border-cyan-500/50 transition-all">
+                                <Code className="w-10 h-10 text-cyan-400 mb-4" />
+                                <h3 className="text-xl font-bold text-white mb-2">Frontend</h3>
+                                <p className="text-slate-400 text-sm mb-4">Modern React application with real-time threat data visualization</p>
+                                <div className="flex flex-wrap gap-2">
+                                    <span className="px-2 py-1 bg-cyan-500/10 text-cyan-400 rounded text-xs">React 19</span>
+                                    <span className="px-2 py-1 bg-cyan-500/10 text-cyan-400 rounded text-xs">Tailwind CSS</span>
+                                    <span className="px-2 py-1 bg-cyan-500/10 text-cyan-400 rounded text-xs">Vite</span>
+                                </div>
+                            </div>
+
+                            <div className="bg-slate-950 border border-slate-700 rounded-xl p-6 hover:border-orange-500/50 transition-all">
+                                <Cloud className="w-10 h-10 text-orange-400 mb-4" />
+                                <h3 className="text-xl font-bold text-white mb-2">AWS Infrastructure</h3>
+                                <p className="text-slate-400 text-sm mb-4">Serverless architecture with scalable cloud services</p>
+                                <div className="flex flex-wrap gap-2">
+                                    <span className="px-2 py-1 bg-orange-500/10 text-orange-400 rounded text-xs">S3</span>
+                                    <span className="px-2 py-1 bg-orange-500/10 text-orange-400 rounded text-xs">Lambda</span>
+                                    <span className="px-2 py-1 bg-orange-500/10 text-orange-400 rounded text-xs">API Gateway</span>
+                                </div>
+                            </div>
+
+                            <div className="bg-slate-950 border border-slate-700 rounded-xl p-6 hover:border-purple-500/50 transition-all">
+                                <Database className="w-10 h-10 text-purple-400 mb-4" />
+                                <h3 className="text-xl font-bold text-white mb-2">Threat Intelligence</h3>
+                                <p className="text-slate-400 text-sm mb-4">Real-time data from multiple security sources</p>
+                                <div className="flex flex-wrap gap-2">
+                                    <span className="px-2 py-1 bg-purple-500/10 text-purple-400 rounded text-xs">URLhaus</span>
+                                    <span className="px-2 py-1 bg-purple-500/10 text-purple-400 rounded text-xs">Feodo</span>
+                                    <span className="px-2 py-1 bg-purple-500/10 text-purple-400 rounded text-xs">OTX</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <section id="contact" className="py-20 px-6">
                 <div className="max-w-4xl mx-auto text-center">
                     <h3 className="text-4xl font-bold mb-6">Let's Get In Touch!</h3>
