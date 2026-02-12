@@ -1423,240 +1423,43 @@ const ThreatIntelDashboard = ({ onClose }) => {
                 const data = await response.json();
                 console.log('✅ Threat data received:', data);
 
-                // Validate data structure and merge with defaults
-                if (data && data.stats && data.recentThreats !== undefined) {
-                    setThreatData({
-                        recentThreats: data.recentThreats || [],
-                        stats: data.stats || { totalThreats: 0, criticalThreats: 0, blockedIPs: 0, activeCampaigns: 0 },
-                        topMalware: data.topMalware || [],
-                        threatActors: data.threatActors || [],
-                        vulnerabilities: data.vulnerabilities || [],
-                        otxIntelligence: data.otxIntelligence || []
-                    });
-                } else {
-                    console.warn('⚠️ Invalid data structure, using mock data');
-                    loadMockData();
-                }
+                // Use API data directly - no mock fallback
+                setThreatData({
+                    recentThreats: data.recentThreats || [],
+                    stats: data.stats || { totalThreats: 0, criticalThreats: 0, blockedIPs: 0, activeCampaigns: 0 },
+                    topMalware: data.topMalware || [],
+                    threatActors: data.threatActors || [],
+                    vulnerabilities: data.vulnerabilities || [],
+                    otxIntelligence: data.otxIntelligence || []
+                });
             } else {
-                console.warn('⚠️ API returned non-OK status, using mock data');
-                loadMockData();
+                console.error('⚠️ API returned non-OK status:', response.status);
+                // Set empty data instead of mock
+                setThreatData({
+                    recentThreats: [],
+                    stats: { totalThreats: 0, criticalThreats: 0, blockedIPs: 0, activeCampaigns: 0 },
+                    topMalware: [],
+                    threatActors: [],
+                    vulnerabilities: [],
+                    otxIntelligence: []
+                });
             }
         } catch (error) {
             console.error('❌ Error fetching threat data:', error);
-            loadMockData();
+            // Set empty data on error
+            setThreatData({
+                recentThreats: [],
+                stats: { totalThreats: 0, criticalThreats: 0, blockedIPs: 0, activeCampaigns: 0 },
+                topMalware: [],
+                threatActors: [],
+                vulnerabilities: [],
+                otxIntelligence: []
+            });
         } finally {
             setLoading(false);
         }
     };
 
-    const loadMockData = () => {
-        setThreatData({
-            recentThreats: [
-                {
-                    id: 1,
-                    name: 'Emotet Botnet Activity',
-                    severity: 'critical',
-                    type: 'Malware',
-                    timestamp: new Date().toISOString(),
-                    source: 'abuse.ch',
-                    description: 'Active botnet spreading via phishing campaigns',
-                    indicators: ['192.168.1.100', '10.0.0.45'],
-                    countries: ['US', 'DE', 'CN']
-                },
-                {
-                    id: 2,
-                    name: 'CVE-2024-1234 Exploitation',
-                    severity: 'high',
-                    type: 'Vulnerability',
-                    timestamp: new Date(Date.now() - 3600000).toISOString(),
-                    source: 'NIST NVD',
-                    description: 'Remote code execution in Apache software',
-                    indicators: ['CVE-2024-1234'],
-                    countries: ['CN', 'RU']
-                },
-                {
-                    id: 3,
-                    name: 'Ransomware C2 Infrastructure',
-                    severity: 'critical',
-                    type: 'C2 Server',
-                    timestamp: new Date(Date.now() - 7200000).toISOString(),
-                    source: 'URLhaus',
-                    description: 'Command and control server for LockBit variant',
-                    indicators: ['malicious-domain.xyz', '203.0.113.42'],
-                    countries: ['RU']
-                },
-                {
-                    id: 4,
-                    name: 'Credential Stuffing Campaign',
-                    severity: 'medium',
-                    type: 'Attack Campaign',
-                    timestamp: new Date(Date.now() - 14400000).toISOString(),
-                    source: 'OTX AlienVault',
-                    description: 'Automated login attempts against financial institutions',
-                    indicators: ['Multiple IPs'],
-                    countries: ['BR', 'VN']
-                },
-                {
-                    id: 5,
-                    name: 'Cryptojacking Malware',
-                    severity: 'medium',
-                    type: 'Malware',
-                    timestamp: new Date(Date.now() - 21600000).toISOString(),
-                    source: 'abuse.ch',
-                    description: 'XMRig miner deployment via compromised web servers',
-                    indicators: ['cryptopool.example.com'],
-                    countries: ['CN', 'IN']
-                }
-            ],
-            stats: {
-                totalThreats: 1247,
-                criticalThreats: 89,
-                blockedIPs: 5432,
-                activeCampaigns: 23
-            },
-            topMalware: [
-                { name: 'Emotet', count: 234, trend: 'up' },
-                { name: 'TrickBot', count: 189, trend: 'down' },
-                { name: 'Qakbot', count: 156, trend: 'up' },
-                { name: 'IcedID', count: 143, trend: 'stable' },
-                { name: 'Dridex', count: 98, trend: 'down' }
-            ],
-            threatActors: [
-                { name: 'APT29 (Cozy Bear)', activity: 'high', targets: 'Government, Defense' },
-                { name: 'Lazarus Group', activity: 'high', targets: 'Financial, Crypto' },
-                { name: 'FIN7', activity: 'medium', targets: 'Retail, Hospitality' },
-                { name: 'Sandworm', activity: 'medium', targets: 'Infrastructure, Energy' }
-            ],
-            vulnerabilities: [
-                { cve: 'CVE-2024-1234', severity: 9.8, product: 'Apache HTTP Server', exploited: true },
-                { cve: 'CVE-2024-5678', severity: 8.9, product: 'Microsoft Exchange', exploited: true },
-                { cve: 'CVE-2024-9012', severity: 7.5, product: 'Cisco IOS', exploited: false },
-                { cve: 'CVE-2024-3456', severity: 9.1, product: 'VMware vCenter', exploited: true }
-            ],
-            otxIntelligence: [
-                {
-                    id: 'pulse-1',
-                    name: 'Emerging Ransomware Campaign - LockBit 3.0',
-                    author: 'AlienVault',
-                    created: new Date(Date.now() - 3600000).toISOString(),
-                    modified: new Date(Date.now() - 1800000).toISOString(),
-                    description: 'Large-scale ransomware campaign targeting enterprise networks using LockBit 3.0 with advanced evasion techniques and double extortion tactics.',
-                    tags: ['ransomware', 'lockbit', 'double-extortion', 'enterprise'],
-                    targeted_countries: ['US', 'UK', 'DE', 'FR', 'CA'],
-                    industries: ['Financial Services', 'Healthcare', 'Manufacturing', 'Technology'],
-                    tlp: 'amber',
-                    adversary: 'LockBit Group',
-                    attack_phases: ['Reconnaissance', 'Initial Access', 'Execution', 'Persistence', 'Lateral Movement', 'Exfiltration', 'Impact'],
-                    indicators: {
-                        ips: ['185.220.101.45', '192.42.116.180', '45.142.212.61'],
-                        domains: ['lockbit3-payment.onion', 'lockbit-data-leak.onion'],
-                        hashes: ['a1b2c3d4e5f6...', '9f8e7d6c5b4a...', '1a2b3c4d5e6f...'],
-                        emails: ['admin@compromised-domain.com']
-                    },
-                    mitre_techniques: ['T1486', 'T1490', 'T1027', 'T1083', 'T1569'],
-                    references: 3,
-                    subscribers: 1247,
-                    otx_url: 'https://otx.alienvault.com/pulse/lockbit-ransomware-2024'
-                },
-                {
-                    id: 'pulse-2',
-                    name: 'APT28 Phishing Campaign - Credential Harvesting',
-                    author: 'Cyber Threat Alliance',
-                    created: new Date(Date.now() - 7200000).toISOString(),
-                    modified: new Date(Date.now() - 3600000).toISOString(),
-                    description: 'Sophisticated spear-phishing campaign attributed to APT28 targeting government and military personnel with credential harvesting pages mimicking legitimate authentication portals.',
-                    tags: ['apt28', 'phishing', 'credential-harvesting', 'nation-state'],
-                    targeted_countries: ['US', 'UK', 'UA', 'PL', 'EE'],
-                    industries: ['Government', 'Defense', 'Diplomatic'],
-                    tlp: 'red',
-                    adversary: 'APT28 (Fancy Bear)',
-                    attack_phases: ['Reconnaissance', 'Resource Development', 'Initial Access', 'Collection'],
-                    indicators: {
-                        ips: ['194.165.16.85', '89.223.92.12'],
-                        domains: ['secure-login-portal.com', 'auth-microsoft365.net', 'myaccount-google.org'],
-                        hashes: ['7e8d9c0b1a2f...', 'b4c5d6e7f8a9...'],
-                        emails: ['noreply@secure-auth.com']
-                    },
-                    mitre_techniques: ['T1566.001', 'T1566.002', 'T1589', 'T1598'],
-                    references: 5,
-                    subscribers: 2891,
-                    otx_url: 'https://otx.alienvault.com/pulse/apt28-phishing-2024'
-                },
-                {
-                    id: 'pulse-3',
-                    name: 'Supply Chain Attack - Compromised NPM Package',
-                    author: 'SANS ISC',
-                    created: new Date(Date.now() - 10800000).toISOString(),
-                    modified: new Date(Date.now() - 5400000).toISOString(),
-                    description: 'Malicious code injected into popular NPM package affecting thousands of applications. The compromised package contains cryptocurrency mining and credential stealing capabilities.',
-                    tags: ['supply-chain', 'npm', 'cryptominer', 'infostealer'],
-                    targeted_countries: ['Global'],
-                    industries: ['Technology', 'Software Development', 'SaaS'],
-                    tlp: 'amber',
-                    adversary: 'Unknown',
-                    attack_phases: ['Initial Access', 'Execution', 'Persistence', 'Collection'],
-                    indicators: {
-                        ips: ['104.21.45.193'],
-                        domains: ['cryptopool-secure.io', 'data-collector.dev'],
-                        hashes: ['3f4e5d6c7b8a...', 'c9d0e1f2a3b4...'],
-                        packages: ['popular-utils@1.2.7', 'web-helpers@3.4.1']
-                    },
-                    mitre_techniques: ['T1195.002', 'T1496', 'T1552.001'],
-                    references: 8,
-                    subscribers: 4532,
-                    otx_url: 'https://otx.alienvault.com/pulse/npm-supply-chain-attack-2024'
-                },
-                {
-                    id: 'pulse-4',
-                    name: 'Zero-Day Exploitation in the Wild - CVE-2024-XXXX',
-                    author: 'Microsoft Threat Intelligence',
-                    created: new Date(Date.now() - 14400000).toISOString(),
-                    modified: new Date(Date.now() - 7200000).toISOString(),
-                    description: 'Active exploitation of zero-day vulnerability in widely-deployed enterprise software. Attackers are leveraging this for initial access and privilege escalation.',
-                    tags: ['zero-day', 'exploitation', 'privilege-escalation', 'enterprise'],
-                    targeted_countries: ['US', 'UK', 'JP', 'AU', 'SG'],
-                    industries: ['All Sectors'],
-                    tlp: 'red',
-                    adversary: 'Multiple Groups',
-                    attack_phases: ['Initial Access', 'Privilege Escalation', 'Defense Evasion'],
-                    indicators: {
-                        ips: ['23.95.123.45', '198.51.100.78', '203.0.113.91'],
-                        domains: ['exploit-server.xyz', 'c2-command.net'],
-                        hashes: ['d8e9f0a1b2c3...', 'f5e6d7c8b9a0...', 'a0b1c2d3e4f5...'],
-                        cves: ['CVE-2024-XXXX']
-                    },
-                    mitre_techniques: ['T1190', 'T1068', 'T1211'],
-                    references: 12,
-                    subscribers: 8921,
-                    otx_url: 'https://otx.alienvault.com/pulse/zero-day-exploitation-2024'
-                },
-                {
-                    id: 'pulse-5',
-                    name: 'IoT Botnet - Mirai Variant Targeting Smart Devices',
-                    author: 'Shadowserver Foundation',
-                    created: new Date(Date.now() - 18000000).toISOString(),
-                    modified: new Date(Date.now() - 9000000).toISOString(),
-                    description: 'New variant of Mirai botnet exploiting default credentials and known vulnerabilities in IoT devices. Used for DDoS attacks and cryptocurrency mining.',
-                    tags: ['botnet', 'iot', 'mirai', 'ddos', 'cryptomining'],
-                    targeted_countries: ['CN', 'IN', 'BR', 'RU', 'ID'],
-                    industries: ['Consumer Electronics', 'Home Automation', 'ISPs'],
-                    tlp: 'white',
-                    adversary: 'Cybercriminal Group',
-                    attack_phases: ['Initial Access', 'Execution', 'Command and Control', 'Impact'],
-                    indicators: {
-                        ips: ['45.123.234.12', '91.234.45.123', '178.45.123.234', '103.123.45.67'],
-                        domains: ['iot-c2.ddns.net', 'botnet-master.tk'],
-                        hashes: ['b2c3d4e5f6a7...', 'e4f5a6b7c8d9...'],
-                        ports: ['23', '2323', '8080', '8291']
-                    },
-                    mitre_techniques: ['T1110.001', 'T1190', 'T1498', 'T1496'],
-                    references: 6,
-                    subscribers: 3245,
-                    otx_url: 'https://otx.alienvault.com/pulse/mirai-iot-botnet-2024'
-                }
-            ]
-        });
-    };
 
     const lookupIP = async () => {
         if (!ipLookup.trim()) return;
