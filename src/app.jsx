@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Github, Linkedin, Mail, ArrowRight, Code, Cloud, GraduationCap, Camera, X, RefreshCw, ChevronLeft, ChevronRight, Shield, AlertTriangle, Activity, Lock, Database, Zap, Globe, Search, TrendingUp, MapPin, Clock, Eye, Ban, CheckCircle } from 'lucide-react';
 // Profile image: Replace the URL below with your Imgur URL after uploading
-import profileImage from './assets/profile.jpg';
+import profileImage from './assets/IMGpfp.jpeg';
 
 export default function App() {
     const [scrollY, setScrollY] = useState(0);
@@ -1762,6 +1762,117 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                 </div>
                             )}
 
+                            {/* Top Malware Summary Card */}
+                            {threatData.topMalware && threatData.topMalware.length > 0 && (
+                                <div className="bg-gradient-to-br from-red-900/20 to-orange-900/20 border border-red-500/30 rounded-xl p-6 mb-6">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <h4 className="text-lg font-bold text-white flex items-center gap-2">
+                                            <AlertTriangle className="w-5 h-5 text-red-400" />
+                                            Top Malware Families
+                                        </h4>
+                                        <button
+                                            onClick={() => setActiveTab('malware')}
+                                            className="flex items-center gap-2 px-4 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/50 rounded-lg transition-all text-sm font-medium"
+                                        >
+                                            View All
+                                            <ArrowRight className="w-4 h-4" />
+                                        </button>
+                                    </div>
+
+                                    <div className="space-y-3">
+                                        {threatData.topMalware.slice(0, 3).map((malware, idx) => (
+                                            <div
+                                                key={idx}
+                                                className="flex items-center gap-3 p-3 bg-slate-950/50 border border-slate-700/50 rounded-lg hover:border-slate-600 transition-all cursor-pointer"
+                                                onClick={() => setActiveTab('malware')}
+                                            >
+                                                <div className="text-lg font-bold text-slate-600 font-mono w-6">#{idx + 1}</div>
+                                                <div className="flex-1">
+                                                    <div className="font-semibold text-white text-sm mb-1">{malware.name}</div>
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="flex-1 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                                            <div className="h-full bg-gradient-to-r from-red-500 to-orange-500" style={{ width: `${(malware.count / 234) * 100}%` }} />
+                                                        </div>
+                                                        <span className="text-xs text-slate-400 font-mono">{malware.count}</span>
+                                                    </div>
+                                                </div>
+                                                <div className={`flex items-center gap-1 text-xs font-mono ${
+                                                    malware.trend === 'up' ? 'text-red-400' :
+                                                    malware.trend === 'down' ? 'text-green-400' :
+                                                    'text-slate-400'
+                                                }`}>
+                                                    <TrendingUp className={`w-3 h-3 ${malware.trend === 'down' ? 'rotate-180' : malware.trend === 'stable' ? 'rotate-90' : ''}`} />
+                                                </div>
+                                                <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-red-400 transition-colors" />
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    {threatData.topMalware.length > 3 && (
+                                        <div className="mt-3 text-center">
+                                            <button
+                                                onClick={() => setActiveTab('malware')}
+                                                className="text-sm text-red-400 hover:text-red-300 font-medium transition-colors"
+                                            >
+                                                +{threatData.topMalware.length - 3} more malware families
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+
+                            {/* Threat Actors Summary Card */}
+                            {threatData.threatActors && threatData.threatActors.length > 0 && (
+                                <div className="bg-gradient-to-br from-purple-900/20 to-indigo-900/20 border border-purple-500/30 rounded-xl p-6 mb-6">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <h4 className="text-lg font-bold text-white flex items-center gap-2">
+                                            <Shield className="w-5 h-5 text-purple-400" />
+                                            Active Threat Actors
+                                        </h4>
+                                        <button
+                                            onClick={() => setActiveTab('actors')}
+                                            className="flex items-center gap-2 px-4 py-2 bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/50 rounded-lg transition-all text-sm font-medium"
+                                        >
+                                            View All
+                                            <ArrowRight className="w-4 h-4" />
+                                        </button>
+                                    </div>
+
+                                    <div className="space-y-3">
+                                        {threatData.threatActors.slice(0, 3).map((actor, idx) => (
+                                            <div
+                                                key={idx}
+                                                className="flex items-center gap-3 p-3 bg-slate-950/50 border border-slate-700/50 rounded-lg hover:border-slate-600 transition-all cursor-pointer"
+                                                onClick={() => setActiveTab('actors')}
+                                            >
+                                                <div className="flex-1">
+                                                    <div className="font-semibold text-white text-sm mb-1">{actor.name}</div>
+                                                    <div className="text-xs text-slate-400">{actor.targets}</div>
+                                                </div>
+                                                <span className={`px-2 py-1 rounded-full text-xs font-bold uppercase ${
+                                                    actor.activity === 'high' ? 'bg-red-500/20 text-red-300 border border-red-500/50' :
+                                                    'bg-yellow-500/20 text-yellow-300 border border-yellow-500/50'
+                                                }`}>
+                                                    {actor.activity}
+                                                </span>
+                                                <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-purple-400 transition-colors" />
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    {threatData.threatActors.length > 3 && (
+                                        <div className="mt-3 text-center">
+                                            <button
+                                                onClick={() => setActiveTab('actors')}
+                                                className="text-sm text-purple-400 hover:text-purple-300 font-medium transition-colors"
+                                            >
+                                                +{threatData.threatActors.length - 3} more threat actors
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+
                             {threatData.recentThreats.map((threat) => (
                                 <div
                                     key={threat.id}
@@ -1940,65 +2051,278 @@ const ThreatIntelDashboard = ({ onClose }) => {
                     )}
 
                     {activeTab === 'malware' && (
-                        <div className="max-w-4xl mx-auto">
+                        <div className="max-w-5xl mx-auto">
                             <div className="bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-700 rounded-xl p-8">
-                                <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+                                <h3 className="text-2xl font-bold text-white mb-2 flex items-center gap-2">
                                     <AlertTriangle className="w-6 h-6 text-red-400" />
                                     Top Malware Families
                                 </h3>
+                                <p className="text-slate-400 mb-6">Detailed intelligence on the most prevalent malware threats detected globally</p>
 
-                                <div className="space-y-4">
-                                    {threatData.topMalware.map((malware, idx) => (
-                                        <div key={idx} className="flex items-center gap-4 p-4 bg-slate-950 border border-slate-700 rounded-lg hover:border-slate-600 transition-all">
-                                            <div className="text-2xl font-bold text-slate-600 font-mono w-8">#{idx + 1}</div>
-                                            <div className="flex-1">
-                                                <div className="font-bold text-white mb-1">{malware.name}</div>
-                                                <div className="flex items-center gap-2">
-                                                    <div className="flex-1 h-2 bg-slate-800 rounded-full overflow-hidden">
-                                                        <div className="h-full bg-gradient-to-r from-red-500 to-orange-500" style={{ width: `${(malware.count / 234) * 100}%` }} />
+                                <div className="space-y-6">
+                                    {threatData.topMalware.map((malware, idx) => {
+                                        // Enhanced malware details (in real app, this would come from API)
+                                        const malwareDetails = {
+                                            'Emotet': {
+                                                description: 'Advanced banking trojan and malware-as-a-service platform used to deliver secondary payloads including ransomware and information stealers.',
+                                                type: 'Banking Trojan / Loader',
+                                                targets: 'Financial institutions, Healthcare, Government',
+                                                infection: 'Phishing emails with malicious attachments or links',
+                                                mitigation: 'Email filtering, user awareness training, endpoint protection'
+                                            },
+                                            'TrickBot': {
+                                                description: 'Sophisticated banking malware that evolved into a modular trojan capable of lateral movement, credential theft, and ransomware delivery.',
+                                                type: 'Modular Banking Trojan',
+                                                targets: 'Financial services, Corporate networks, Critical infrastructure',
+                                                infection: 'Spam campaigns, exploit kits, malicious downloads',
+                                                mitigation: 'Network segmentation, multi-factor authentication, behavior analysis'
+                                            },
+                                            'Qakbot': {
+                                                description: 'Banking trojan with worm capabilities that steals credentials, financial data, and facilitates lateral movement for ransomware deployment.',
+                                                type: 'Banking Trojan / Worm',
+                                                targets: 'Financial sector, Small-to-medium businesses, Enterprise networks',
+                                                infection: 'Malicious email attachments, exploit kits, hijacked email threads',
+                                                mitigation: 'Email security, application whitelisting, regular patching'
+                                            },
+                                            'IcedID': {
+                                                description: 'Modular banking trojan focusing on credential theft and serving as initial access broker for ransomware operations.',
+                                                type: 'Banking Trojan / RAT',
+                                                targets: 'Banking customers, E-commerce platforms, Enterprises',
+                                                infection: 'Phishing campaigns, fake software updates, drive-by downloads',
+                                                mitigation: 'Browser isolation, DNS filtering, endpoint detection and response'
+                                            },
+                                            'Dridex': {
+                                                description: 'Banking malware specializing in credential theft and financial fraud, known for sophisticated evasion techniques and polymorphic behavior.',
+                                                type: 'Banking Trojan',
+                                                targets: 'Banking institutions, Payment processors, Financial services',
+                                                infection: 'Office document macros, phishing emails, malicious links',
+                                                mitigation: 'Macro blocking, sandboxing, threat intelligence feeds'
+                                            }
+                                        };
+
+                                        const details = malwareDetails[malware.name] || {};
+
+                                        return (
+                                            <div key={idx} className="p-6 bg-slate-950 border border-slate-700 rounded-lg hover:border-red-500/50 transition-all group">
+                                                <div className="flex items-start justify-between mb-4">
+                                                    <div className="flex-1">
+                                                        <div className="flex items-center gap-3 mb-3">
+                                                            <div className="text-xl font-bold text-slate-600 font-mono">#{idx + 1}</div>
+                                                            <h4 className="text-xl font-bold text-white group-hover:text-red-400 transition-colors">{malware.name}</h4>
+                                                            <span className="px-3 py-1 bg-slate-900 border border-slate-700 rounded text-sm text-cyan-400 font-mono">
+                                                                {details.type || 'Malware'}
+                                                            </span>
+                                                        </div>
+
+                                                        {/* Description */}
+                                                        {details.description && (
+                                                            <div className="text-slate-300 text-sm leading-relaxed mb-4 pl-3 border-l-2 border-slate-700">
+                                                                {details.description}
+                                                            </div>
+                                                        )}
+
+                                                        {/* Detection Stats */}
+                                                        <div className="mb-4">
+                                                            <div className="flex items-center gap-2 mb-2">
+                                                                <span className="text-xs text-slate-500 uppercase tracking-wider font-mono">Detection Activity</span>
+                                                                <div className={`flex items-center gap-1 text-xs font-mono ${
+                                                                    malware.trend === 'up' ? 'text-red-400' :
+                                                                    malware.trend === 'down' ? 'text-green-400' :
+                                                                    'text-slate-400'
+                                                                }`}>
+                                                                    <TrendingUp className={`w-3 h-3 ${malware.trend === 'down' ? 'rotate-180' : malware.trend === 'stable' ? 'rotate-90' : ''}`} />
+                                                                    {malware.trend}
+                                                                </div>
+                                                            </div>
+                                                            <div className="flex items-center gap-3">
+                                                                <div className="flex-1 h-3 bg-slate-800 rounded-full overflow-hidden border border-slate-700">
+                                                                    <div className="h-full bg-gradient-to-r from-red-500 to-orange-500" style={{ width: `${(malware.count / 234) * 100}%` }} />
+                                                                </div>
+                                                                <span className="text-sm text-slate-300 font-mono font-bold">{malware.count} detections</span>
+                                                            </div>
+                                                        </div>
+
+                                                        {/* Details Grid */}
+                                                        <div className="grid md:grid-cols-2 gap-4 mb-4">
+                                                            {details.targets && (
+                                                                <div>
+                                                                    <div className="text-xs text-slate-500 mb-1 uppercase tracking-wider font-mono">Primary Targets</div>
+                                                                    <div className="text-sm text-slate-300">{details.targets}</div>
+                                                                </div>
+                                                            )}
+                                                            {details.infection && (
+                                                                <div>
+                                                                    <div className="text-xs text-slate-500 mb-1 uppercase tracking-wider font-mono">Infection Vector</div>
+                                                                    <div className="text-sm text-slate-300">{details.infection}</div>
+                                                                </div>
+                                                            )}
+                                                        </div>
+
+                                                        {/* Mitigation */}
+                                                        {details.mitigation && (
+                                                            <div className="p-3 bg-slate-900/50 border border-slate-700 rounded-lg">
+                                                                <div className="text-xs text-green-400 mb-1 uppercase tracking-wider font-mono flex items-center gap-2">
+                                                                    <CheckCircle className="w-3 h-3" />
+                                                                    Recommended Mitigations
+                                                                </div>
+                                                                <div className="text-sm text-slate-300">{details.mitigation}</div>
+                                                            </div>
+                                                        )}
                                                     </div>
-                                                    <span className="text-sm text-slate-400 font-mono">{malware.count} detections</span>
                                                 </div>
                                             </div>
-                                            <div className={`flex items-center gap-1 text-sm font-mono ${malware.trend === 'up' ? 'text-red-400' :
-                                                malware.trend === 'down' ? 'text-green-400' :
-                                                    'text-slate-400'
-                                                }`}>
-                                                <TrendingUp className={`w-4 h-4 ${malware.trend === 'down' ? 'rotate-180' : malware.trend === 'stable' ? 'rotate-90' : ''}`} />
-                                                {malware.trend}
-                                            </div>
-                                        </div>
-                                    ))}
+                                        );
+                                    })}
                                 </div>
                             </div>
                         </div>
                     )}
 
                     {activeTab === 'actors' && (
-                        <div className="max-w-4xl mx-auto">
+                        <div className="max-w-5xl mx-auto">
                             <div className="bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-700 rounded-xl p-8">
-                                <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+                                <h3 className="text-2xl font-bold text-white mb-2 flex items-center gap-2">
                                     <Shield className="w-6 h-6 text-purple-400" />
                                     Active Threat Actors
                                 </h3>
+                                <p className="text-slate-400 mb-6">Intelligence profiles on nation-state and cybercriminal groups actively conducting operations</p>
 
-                                <div className="grid gap-4">
-                                    {threatData.threatActors.map((actor, idx) => (
-                                        <div key={idx} className="p-6 bg-slate-950 border border-slate-700 rounded-lg hover:border-purple-500/50 transition-all group">
-                                            <div className="flex items-start justify-between mb-3">
-                                                <h4 className="font-bold text-lg text-white group-hover:text-purple-400 transition-colors">{actor.name}</h4>
-                                                <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${actor.activity === 'high' ? 'bg-red-500/20 text-red-300 border border-red-500/50' :
-                                                    'bg-yellow-500/20 text-yellow-300 border border-yellow-500/50'
-                                                    }`}>
-                                                    {actor.activity} activity
-                                                </span>
+                                <div className="grid gap-6">
+                                    {threatData.threatActors.map((actor, idx) => {
+                                        // Enhanced actor details (in real app, this would come from API)
+                                        const actorDetails = {
+                                            'APT29 (Cozy Bear)': {
+                                                description: 'Russian state-sponsored APT group attributed to the SVR, known for sophisticated spear-phishing campaigns and supply chain compromises targeting government and defense sectors.',
+                                                aliases: 'Cozy Bear, The Dukes, YTTRIUM',
+                                                origin: 'Russia (SVR)',
+                                                firstSeen: '2008',
+                                                motivation: 'Espionage, Intelligence gathering',
+                                                techniques: 'Spear-phishing, supply chain attacks, credential harvesting, cloud exploitation',
+                                                notableOps: 'SolarWinds compromise (2020), DNC breach (2016), COVID-19 vaccine research targeting'
+                                            },
+                                            'Lazarus Group': {
+                                                description: 'North Korean state-sponsored APT group conducting financially motivated attacks and espionage operations, responsible for major cryptocurrency thefts and destructive attacks.',
+                                                aliases: 'Hidden Cobra, ZINC, Guardians of Peace',
+                                                origin: 'North Korea (RGB)',
+                                                firstSeen: '2009',
+                                                motivation: 'Financial gain, Espionage, Disruption',
+                                                techniques: 'Supply chain attacks, cryptocurrency theft, custom malware, watering hole attacks',
+                                                notableOps: 'WannaCry ransomware (2017), Sony Pictures hack (2014), $600M+ cryptocurrency heists'
+                                            },
+                                            'FIN7': {
+                                                description: 'Financially motivated cybercriminal group specializing in payment card theft and point-of-sale compromises, targeting retail and hospitality industries worldwide.',
+                                                aliases: 'Carbanak Group, Carbon Spider',
+                                                origin: 'Eastern Europe',
+                                                firstSeen: '2013',
+                                                motivation: 'Financial gain',
+                                                techniques: 'Phishing, POS malware, fileless attacks, stolen credentials, social engineering',
+                                                notableOps: 'Over $1 billion stolen from retail/hospitality, 15+ million payment cards compromised'
+                                            },
+                                            'Sandworm': {
+                                                description: 'Russian military intelligence (GRU) APT group known for destructive attacks on critical infrastructure, particularly targeting energy and industrial control systems.',
+                                                aliases: 'Voodoo Bear, IRIDIUM, TeleBots',
+                                                origin: 'Russia (GRU Unit 74455)',
+                                                firstSeen: '2009',
+                                                motivation: 'Sabotage, Disruption, Geopolitical influence',
+                                                techniques: 'ICS/SCADA attacks, destructive malware, supply chain compromise, wiper attacks',
+                                                notableOps: 'Ukraine power grid attacks (2015, 2016), NotPetya (2017), Olympic Destroyer (2018)'
+                                            }
+                                        };
+
+                                        const details = actorDetails[actor.name] || {};
+
+                                        return (
+                                            <div key={idx} className="p-6 bg-slate-950 border border-slate-700 rounded-lg hover:border-purple-500/50 transition-all group">
+                                                <div className="flex items-start justify-between mb-4">
+                                                    <div className="flex-1">
+                                                        <div className="flex items-center gap-3 mb-3">
+                                                            <h4 className="text-xl font-bold text-white group-hover:text-purple-400 transition-colors">{actor.name}</h4>
+                                                            <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${
+                                                                actor.activity === 'high' ? 'bg-red-500/20 text-red-300 border border-red-500/50' :
+                                                                'bg-yellow-500/20 text-yellow-300 border border-yellow-500/50'
+                                                            }`}>
+                                                                {actor.activity} activity
+                                                            </span>
+                                                        </div>
+
+                                                        {/* Description */}
+                                                        {details.description && (
+                                                            <div className="text-slate-300 text-sm leading-relaxed mb-4 pl-3 border-l-2 border-purple-700">
+                                                                {details.description}
+                                                            </div>
+                                                        )}
+
+                                                        {/* Actor Profile Grid */}
+                                                        <div className="grid md:grid-cols-2 gap-4 mb-4">
+                                                            {details.origin && (
+                                                                <div>
+                                                                    <div className="text-xs text-slate-500 mb-1 uppercase tracking-wider font-mono">Attribution</div>
+                                                                    <div className="text-sm text-slate-300 flex items-center gap-2">
+                                                                        <MapPin className="w-3 h-3 text-purple-400" />
+                                                                        {details.origin}
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                            {details.firstSeen && (
+                                                                <div>
+                                                                    <div className="text-xs text-slate-500 mb-1 uppercase tracking-wider font-mono">First Observed</div>
+                                                                    <div className="text-sm text-slate-300 flex items-center gap-2">
+                                                                        <Clock className="w-3 h-3 text-purple-400" />
+                                                                        {details.firstSeen}
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                            <div>
+                                                                <div className="text-xs text-slate-500 mb-1 uppercase tracking-wider font-mono">Primary Targets</div>
+                                                                <div className="text-sm text-slate-300">{actor.targets}</div>
+                                                            </div>
+                                                            {details.motivation && (
+                                                                <div>
+                                                                    <div className="text-xs text-slate-500 mb-1 uppercase tracking-wider font-mono">Motivation</div>
+                                                                    <div className="text-sm text-slate-300">{details.motivation}</div>
+                                                                </div>
+                                                            )}
+                                                        </div>
+
+                                                        {/* Aliases */}
+                                                        {details.aliases && (
+                                                            <div className="mb-4">
+                                                                <div className="text-xs text-slate-500 mb-2 uppercase tracking-wider font-mono">Known Aliases</div>
+                                                                <div className="flex flex-wrap gap-2">
+                                                                    {details.aliases.split(', ').map((alias, i) => (
+                                                                        <span key={i} className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-xs text-slate-300 font-mono">
+                                                                            {alias}
+                                                                        </span>
+                                                                    ))}
+                                                                </div>
+                                                            </div>
+                                                        )}
+
+                                                        {/* TTPs */}
+                                                        {details.techniques && (
+                                                            <div className="mb-4">
+                                                                <div className="text-xs text-slate-500 mb-2 uppercase tracking-wider font-mono">Tactics, Techniques & Procedures (TTPs)</div>
+                                                                <div className="text-sm text-slate-300 p-3 bg-slate-900/50 border border-slate-700 rounded-lg">
+                                                                    {details.techniques}
+                                                                </div>
+                                                            </div>
+                                                        )}
+
+                                                        {/* Notable Operations */}
+                                                        {details.notableOps && (
+                                                            <div className="p-3 bg-purple-500/10 border border-purple-500/30 rounded-lg">
+                                                                <div className="text-xs text-purple-400 mb-2 uppercase tracking-wider font-mono flex items-center gap-2">
+                                                                    <AlertTriangle className="w-3 h-3" />
+                                                                    Notable Operations
+                                                                </div>
+                                                                <div className="text-sm text-slate-300">{details.notableOps}</div>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div className="flex items-center gap-2 text-slate-400 text-sm">
-                                                <span className="font-mono">Targets:</span>
-                                                <span>{actor.targets}</span>
-                                            </div>
-                                        </div>
-                                    ))}
+                                        );
+                                    })}
                                 </div>
                             </div>
                         </div>
