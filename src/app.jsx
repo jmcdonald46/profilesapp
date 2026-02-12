@@ -2030,12 +2030,12 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                                 <div className="flex items-start justify-between mb-3">
                                                     <div className="flex-1">
                                                         {/* Header with Severity Badge */}
-                                                        <div className="flex items-center gap-3 mb-2">
-                                                            <span className={`px-3 py-1 rounded text-xs font-bold uppercase ${pulse.severity === 'critical' ? 'bg-red-500/20 text-red-300 border border-red-500/50' :
-                                                                pulse.severity === 'high' ? 'bg-orange-500/20 text-orange-300 border border-orange-500/50' :
-                                                                    'bg-yellow-500/20 text-yellow-300 border border-yellow-500/50'
-                                                                }`}>
+                                                        <div className="flex items-center gap-3 mb-3">
+                                                            <span className={`px-3 py-1 rounded text-xs font-bold uppercase border ${getSeverityColor(pulse.severity)}`}>
                                                                 {pulse.severity || 'medium'}
+                                                            </span>
+                                                            <span className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-sm text-cyan-400 font-mono">
+                                                                {pulse.type || 'Threat Intelligence'}
                                                             </span>
                                                             {pulse.source && (
                                                                 <span className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-sm text-purple-400 font-mono">
@@ -2043,7 +2043,8 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                                                 </span>
                                                             )}
                                                             {pulse.timestamp && (
-                                                                <span className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-sm text-slate-400 font-mono">
+                                                                <span className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-sm text-slate-400 font-mono flex items-center gap-1">
+                                                                    <Clock className="w-3 h-3" />
                                                                     {formatTimestamp(pulse.timestamp)}
                                                                 </span>
                                                             )}
@@ -2077,9 +2078,16 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                                                 </div>
                                                             )}
                                                             {pulse.countries && pulse.countries.length > 0 && (
-                                                                <div>
+                                                                <div className="md:col-span-2">
                                                                     <div className="text-xs text-slate-500 mb-1 uppercase tracking-wider font-mono">Targeted Countries</div>
-                                                                    <div className="text-sm text-slate-300">{pulse.countries.join(', ')}</div>
+                                                                    <div className="flex flex-wrap gap-2">
+                                                                        {pulse.countries.map((country, i) => (
+                                                                            <span key={i} className="px-2 py-1 bg-slate-800 border border-slate-700 rounded text-xs text-slate-300 flex items-center gap-1">
+                                                                                <MapPin className="w-3 h-3 text-cyan-400" />
+                                                                                {country}
+                                                                            </span>
+                                                                        ))}
+                                                                    </div>
                                                                 </div>
                                                             )}
                                                         </div>
@@ -2087,18 +2095,15 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                                         {/* Indicators (if available) */}
                                                         {pulse.indicators && pulse.indicators.length > 0 && (
                                                             <div className="mb-4">
-                                                                <div className="text-xs text-slate-500 mb-2 uppercase tracking-wider font-mono">Indicators</div>
-                                                                <div className="flex flex-wrap gap-2">
-                                                                    {pulse.indicators.slice(0, 5).map((indicator, i) => (
-                                                                        <code key={i} className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-xs text-cyan-400 font-mono">
+                                                                <div className="text-xs text-slate-500 mb-2 uppercase tracking-wider font-mono">
+                                                                    Indicators of Compromise ({pulse.indicators.length})
+                                                                </div>
+                                                                <div className="grid md:grid-cols-2 gap-2">
+                                                                    {pulse.indicators.map((indicator, i) => (
+                                                                        <code key={i} className="px-3 py-2 bg-slate-900 border border-cyan-500/30 rounded text-xs text-cyan-300 font-mono break-all">
                                                                             {indicator}
                                                                         </code>
                                                                     ))}
-                                                                    {pulse.indicators.length > 5 && (
-                                                                        <span className="px-2 py-1 text-xs text-slate-500">
-                                                                            +{pulse.indicators.length - 5} more
-                                                                        </span>
-                                                                    )}
                                                                 </div>
                                                             </div>
                                                         )}
