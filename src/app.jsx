@@ -3,11 +3,6 @@ import { Github, Linkedin, Mail, ArrowRight, Code, Cloud, GraduationCap, Camera,
 // Profile image: Replace the URL below with your Imgur URL after uploading
 import profileImage from './assets/IMGpfp.jpeg';
 
-<style>
-    .scrollbar-hide::-webkit-scrollbar {display: none; }
-    .scrollbar-hide {-ms - overflow - style: none; scrollbar-width: none; }
-</style>
-
 export default function App() {
     const [scrollY, setScrollY] = useState(0);
     const [showDocument, setShowDocument] = useState(false);
@@ -416,6 +411,22 @@ export default function App() {
                     className="px-8 py-3 bg-gradient-to-r from-red-500 to-orange-600 rounded-full font-semibold hover:shadow-lg hover:shadow-red-500/50 transition-all hover:scale-105"
                 >
                     Launch Sandbox
+                </button>
+            )
+        },
+        {
+            title: "Tech Stack & Architecture",
+            description: "Explore the AWS services and technologies powering this portfolio",
+            tech: ["AWS S3", "API Gateway", "Lambda", "React"],
+            gradient: "from-orange-500 to-red-500",
+            showPreview: true,
+            icon: Cloud,
+            button: (
+                <button
+                    onClick={() => setShowTechStack(true)}
+                    className="px-8 py-3 bg-gradient-to-r from-orange-500 to-red-600 rounded-full font-semibold hover:shadow-lg hover:shadow-orange-500/50 transition-all hover:scale-105"
+                >
+                    View Architecture
                 </button>
             )
         },
@@ -830,7 +841,7 @@ export default function App() {
                                     <Code className="w-8 h-8 text-cyan-400" />
                                     <h3 className="text-2xl font-bold">Frontend Architecture</h3>
                                 </div>
-                                <div className="grid sm:grid-cols-2 grid-cols-2 gap-6">
+                                <div className="grid md:grid-cols-2 gap-6">
                                     <div className="bg-slate-900/50 rounded-lg p-6 border border-slate-700/30">
                                         <h4 className="text-lg font-semibold text-cyan-400 mb-3">React 19</h4>
                                         <p className="text-slate-300 mb-4">Modern React with hooks for state management and component architecture</p>
@@ -860,7 +871,7 @@ export default function App() {
                                     <Cloud className="w-8 h-8 text-orange-400" />
                                     <h3 className="text-2xl font-bold">AWS Cloud Services</h3>
                                 </div>
-                                <div className="grid sm:grid-cols-2 grid-cols-3 gap-6">
+                                <div className="grid md:grid-cols-3 gap-6">
                                     <div className="bg-slate-900/50 rounded-lg p-6 border border-slate-700/30">
                                         <h4 className="text-lg font-semibold text-orange-400 mb-3">S3 Storage</h4>
                                         <p className="text-slate-300 mb-4">Object storage for images and assets</p>
@@ -894,323 +905,6 @@ export default function App() {
                                 </div>
                             </div>
 
-                            {/* Threat Intelligence Dashboard Section */}
-                            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 md:p-8 mb-6">
-                                <div className="flex items-center gap-3 mb-6">
-                                    <Database className="w-8 h-8 text-purple-400" />
-                                    <h3 className="text-2xl font-bold">Threat Intelligence Dashboard</h3>
-                                </div>
-                                <p className="text-slate-300 mb-6">
-                                    Real-time cybersecurity threat monitoring powered by multiple open-source intelligence feeds.
-                                </p>
-
-                                <div className="grid sm:grid-cols-2 grid-cols-3 gap-6 mb-6">
-                                    {/* URLhaus */}
-                                    <div className="bg-slate-900/50 rounded-lg p-6 border border-orange-500/30">
-                                        <div className="flex items-center gap-2 mb-3">
-                                            <AlertTriangle className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0 text-orange-400" />
-                                            <h4 className="text-lg font-semibold text-orange-400">URLhaus</h4>
-                                        </div>
-                                        <p className="text-slate-300 mb-3 text-sm">Malware distribution URL tracking</p>
-                                        <ul className="text-slate-400 text-sm space-y-2">
-                                            <li className="flex items-start gap-2">
-                                                <span className="text-orange-400 mt-0.5">•</span>
-                                                <span>Real-time malware URL feed</span>
-                                            </li>
-                                            <li className="flex items-start gap-2">
-                                                <span className="text-orange-400 mt-0.5">•</span>
-                                                <span>Threat indicators and IOCs</span>
-                                            </li>
-                                            <li className="flex items-start gap-2">
-                                                <span className="text-orange-400 mt-0.5">•</span>
-                                                <span>Malware family identification</span>
-                                            </li>
-                                            <li className="flex items-start gap-2">
-                                                <span className="text-orange-400 mt-0.5">•</span>
-                                                <span>Abuse.ch community data</span>
-                                            </li>
-                                        </ul>
-                                    </div>
-
-                                    {/* Feodo Tracker */}
-                                    <div className="bg-slate-900/50 rounded-lg p-6 border border-red-500/30">
-                                        <div className="flex items-center gap-2 mb-3">
-                                            <Globe className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0 text-red-400" />
-                                            <h4 className="text-lg font-semibold text-red-400">Feodo Tracker</h4>
-                                        </div>
-                                        <p className="text-slate-300 mb-3 text-sm">C2 infrastructure monitoring</p>
-                                        <ul className="text-slate-400 text-sm space-y-2">
-                                            <li className="flex items-start gap-2">
-                                                <span className="text-red-400 mt-0.5">•</span>
-                                                <span>Botnet C2 server tracking</span>
-                                            </li>
-                                            <li className="flex items-start gap-2">
-                                                <span className="text-red-400 mt-0.5">•</span>
-                                                <span>Active threat infrastructure</span>
-                                            </li>
-                                            <li className="flex items-start gap-2">
-                                                <span className="text-red-400 mt-0.5">•</span>
-                                                <span>IP blocklist generation</span>
-                                            </li>
-                                            <li className="flex items-start gap-2">
-                                                <span className="text-red-400 mt-0.5">•</span>
-                                                <span>Geolocation data</span>
-                                            </li>
-                                        </ul>
-                                    </div>
-
-                                    {/* AlienVault OTX */}
-                                    <div className="bg-slate-900/50 rounded-lg p-6 border border-cyan-500/30">
-                                        <div className="flex items-center gap-2 mb-3">
-                                            <Shield className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0 text-cyan-400" />
-                                            <h4 className="text-lg font-semibold text-cyan-400">AlienVault OTX</h4>
-                                        </div>
-                                        <p className="text-slate-300 mb-3 text-sm">Global threat intelligence pulses</p>
-                                        <ul className="text-slate-400 text-sm space-y-2">
-                                            <li className="flex items-start gap-2">
-                                                <span className="text-cyan-400 mt-0.5">•</span>
-                                                <span>Community threat sharing</span>
-                                            </li>
-                                            <li className="flex items-start gap-2">
-                                                <span className="text-cyan-400 mt-0.5">•</span>
-                                                <span>Threat actor campaigns</span>
-                                            </li>
-                                            <li className="flex items-start gap-2">
-                                                <span className="text-cyan-400 mt-0.5">•</span>
-                                                <span>Targeted country data</span>
-                                            </li>
-                                            <li className="flex items-start gap-2">
-                                                <span className="text-cyan-400 mt-0.5">•</span>
-                                                <span>CVE exploitation tracking</span>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                {/* Data Processing Pipeline */}
-                                <div className="bg-gradient-to-r from-purple-900/20 to-cyan-900/20 rounded-xl p-6 border border-purple-500/30 mb-6">
-                                    <h4 className="text-lg font-semibold text-purple-300 mb-3 flex items-center gap-2">
-                                        <Activity className="w-5 h-5" />
-                                        Data Processing Pipeline
-                                    </h4>
-                                    <div className="grid sm:grid-cols-2 grid-cols-4 gap-4 text-sm">
-                                        <div className="text-center">
-                                            <div className="bg-purple-500/20 rounded-lg p-3 mb-2">
-                                                <Database className="w-6 h-6 mx-auto text-purple-400" />
-                                            </div>
-                                            <p className="text-slate-300 font-medium">API Ingestion</p>
-                                            <p className="text-slate-500 text-xs mt-1">Fetch from sources</p>
-                                        </div>
-                                        <div className="text-center">
-                                            <div className="bg-cyan-500/20 rounded-lg p-3 mb-2">
-                                                <Code className="w-6 h-6 mx-auto text-cyan-400" />
-                                            </div>
-                                            <p className="text-slate-300 font-medium">Lambda Processing</p>
-                                            <p className="text-slate-500 text-xs mt-1">Parse & normalize</p>
-                                        </div>
-                                        <div className="text-center">
-                                            <div className="bg-orange-500/20 rounded-lg p-3 mb-2">
-                                                <Shield className="w-6 h-6 mx-auto text-orange-400" />
-                                            </div>
-                                            <p className="text-slate-300 font-medium">Caching Layer</p>
-                                            <p className="text-slate-500 text-xs mt-1">15-min TTL</p>
-                                        </div>
-                                        <div className="text-center">
-                                            <div className="bg-green-500/20 rounded-lg p-3 mb-2">
-                                                <Activity className="w-6 h-6 mx-auto text-green-400" />
-                                            </div>
-                                            <p className="text-slate-300 font-medium">Live Dashboard</p>
-                                            <p className="text-slate-500 text-xs mt-1">Real-time updates</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* How It Works Section */}
-                                <div className="bg-gradient-to-br from-slate-900 to-slate-950 rounded-xl p-6 border border-purple-500/30 mb-6">
-                                    <h4 className="text-xl font-bold text-purple-300 mb-6 flex items-center gap-2">
-                                        <Activity className="w-6 h-6" />
-                                        How the Threat Dashboard Works
-                                    </h4>
-
-                                    <div className="space-y-6">
-                                        {/* Step 1 */}
-                                        <div className="flex gap-4">
-                                            <div className="flex-shrink-0">
-                                                <div className="w-10 h-10 rounded-full bg-purple-500/20 border-2 border-purple-500 flex items-center justify-center">
-                                                    <span className="text-purple-300 font-bold">1</span>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <h5 className="font-semibold text-white mb-2">API Request from Frontend</h5>
-                                                <p className="text-slate-400 text-sm">
-                                                    React application sends GET request to AWS API Gateway endpoint when dashboard loads
-                                                </p>
-                                                <code className="block mt-2 px-3 py-2 bg-slate-950 border border-slate-700 rounded text-xs text-cyan-400 font-mono break-all">
-                                                    fetch(VITE_THREAT_INTEL_API)
-                                                </code>
-                                            </div>
-                                        </div>
-
-                                        {/* Step 2 */}
-                                        <div className="flex gap-4">
-                                            <div className="flex-shrink-0">
-                                                <div className="w-10 h-10 rounded-full bg-cyan-500/20 border-2 border-cyan-500 flex items-center justify-center">
-                                                    <span className="text-cyan-300 font-bold">2</span>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <h5 className="font-semibold text-white mb-2">Lambda Function Execution</h5>
-                                                <p className="text-slate-400 text-sm mb-2">
-                                                    Python Lambda function checks cache, then fetches from three threat intelligence APIs:
-                                                </p>
-                                                <div className="grid grid-cols-3 gap-2 mt-2">
-                                                    <div className="px-2 py-1 bg-orange-500/10 border border-orange-500/30 rounded text-xs text-orange-300 text-center">
-                                                        URLhaus API
-                                                    </div>
-                                                    <div className="px-2 py-1 bg-red-500/10 border border-red-500/30 rounded text-xs text-red-300 text-center">
-                                                        Feodo Tracker
-                                                    </div>
-                                                    <div className="px-2 py-1 bg-cyan-500/10 border border-cyan-500/30 rounded text-xs text-cyan-300 text-center">
-                                                        AlienVault OTX
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {/* Step 3 */}
-                                        <div className="flex gap-4">
-                                            <div className="flex-shrink-0">
-                                                <div className="w-10 h-10 rounded-full bg-orange-500/20 border-2 border-orange-500 flex items-center justify-center">
-                                                    <span className="text-orange-300 font-bold">3</span>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <h5 className="font-semibold text-white mb-2">Data Processing & Normalization</h5>
-                                                <p className="text-slate-400 text-sm">
-                                                    Lambda parses responses, filters by threat type, and normalizes data structure
-                                                </p>
-                                                <div className="mt-2 text-xs text-slate-500 space-y-1">
-                                                    <div className="flex items-center gap-2">
-                                                        <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
-                                                        <span>Malware URLs → malwareUrls[]</span>
-                                                    </div>
-                                                    <div className="flex items-center gap-2">
-                                                        <div className="w-2 h-2 bg-red-400 rounded-full"></div>
-                                                        <span>C2 Servers → c2Servers[]</span>
-                                                    </div>
-                                                    <div className="flex items-center gap-2">
-                                                        <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
-                                                        <span>OTX Pulses → otxIntelligence[]</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {/* Step 4 */}
-                                        <div className="flex gap-4">
-                                            <div className="flex-shrink-0">
-                                                <div className="w-10 h-10 rounded-full bg-green-500/20 border-2 border-green-500 flex items-center justify-center">
-                                                    <span className="text-green-300 font-bold">4</span>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <h5 className="font-semibold text-white mb-2">Caching & Response</h5>
-                                                <p className="text-slate-400 text-sm">
-                                                    Data cached for 15 minutes (900s TTL), then returned as JSON to frontend
-                                                </p>
-                                                <div className="mt-2 px-3 py-2 bg-slate-950 border border-green-500/30 rounded text-xs">
-                                                    <div className="flex items-center justify-between text-green-400">
-                                                        <span>Cache Hit Rate:</span>
-                                                        <span className="font-bold">~85%</span>
-                                                    </div>
-                                                    <div className="flex items-center justify-between text-green-400 mt-1">
-                                                        <span>Response Time:</span>
-                                                        <span className="font-bold">&lt;200ms</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {/* Step 5 */}
-                                        <div className="flex gap-4">
-                                            <div className="flex-shrink-0">
-                                                <div className="w-10 h-10 rounded-full bg-blue-500/20 border-2 border-blue-500 flex items-center justify-center">
-                                                    <span className="text-blue-300 font-bold">5</span>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <h5 className="font-semibold text-white mb-2">Frontend Rendering</h5>
-                                                <p className="text-slate-400 text-sm">
-                                                    React components display threats in categorized tabs with real-time updates
-                                                </p>
-                                                <div className="mt-2 grid grid-cols-2 gap-2">
-                                                    <div className="px-2 py-1 bg-slate-950 border border-slate-700 rounded text-xs text-slate-400">
-                                                        📊 Overview Stats
-                                                    </div>
-                                                    <div className="px-2 py-1 bg-slate-950 border border-slate-700 rounded text-xs text-slate-400">
-                                                        🟠 Malware URLs
-                                                    </div>
-                                                    <div className="px-2 py-1 bg-slate-950 border border-slate-700 rounded text-xs text-slate-400">
-                                                        🔴 C2 Servers
-                                                    </div>
-                                                    <div className="px-2 py-1 bg-slate-950 border border-slate-700 rounded text-xs text-slate-400">
-                                                        🔵 Threat Intel
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* Key Features */}
-                                    <div className="mt-6 pt-6 border-t border-slate-700">
-                                        <h5 className="font-semibold text-white mb-3">Key Features</h5>
-                                        <div className="grid sm:grid-cols-2 grid-cols-2 gap-3">
-                                            <div className="flex items-start gap-2">
-                                                <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
-                                                <span className="text-slate-300 text-sm">Serverless architecture - zero maintenance</span>
-                                            </div>
-                                            <div className="flex items-start gap-2">
-                                                <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
-                                                <span className="text-slate-300 text-sm">15-minute cache reduces API calls by 85%</span>
-                                            </div>
-                                            <div className="flex items-start gap-2">
-                                                <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
-                                                <span className="text-slate-300 text-sm">Real-time data from 3 threat sources</span>
-                                            </div>
-                                            <div className="flex items-start gap-2">
-                                                <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
-                                                <span className="text-slate-300 text-sm">Automatic fallback to mock data on errors</span>
-                                            </div>
-                                            <div className="flex items-start gap-2">
-                                                <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
-                                                <span className="text-slate-300 text-sm">Color-coded severity indicators</span>
-                                            </div>
-                                            <div className="flex items-start gap-2">
-                                                <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
-                                                <span className="text-slate-300 text-sm">Direct links to threat source pages</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Launch Dashboard Button */}
-                                <div className="text-center">
-                                    <button
-                                        onClick={() => {
-                                            setShowTechStack(false);
-                                            setShowThreatIntel(true);
-                                        }}
-                                        className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-500 to-cyan-600 hover:from-purple-600 hover:to-cyan-700 text-white rounded-xl font-bold text-lg transition-all hover:shadow-lg hover:shadow-purple-500/50 hover:scale-105">
-                                        <Activity className="w-6 h-6" />
-                                        Launch Threat Dashboard
-                                        <ArrowRight className="w-5 h-5" />
-                                    </button>
-                                    <p className="text-slate-400 text-sm mt-3">
-                                        Experience the live dashboard with real-time threat data
-                                    </p>
-                                </div>
-                            </div>
-
                             {/* Security & Monitoring Section */}
                             <div className="bg-gradient-to-br from-red-900/20 to-orange-900/20 backdrop-blur-sm rounded-2xl border border-red-700/50 p-6 md:p-8 mb-6">
                                 <div className="flex items-center gap-3 mb-6">
@@ -1221,7 +915,7 @@ export default function App() {
                                     Interactive threat simulation environment demonstrating AWS security monitoring capabilities.
                                     This sandbox allows for controlled security testing while monitoring events across multiple AWS services.
                                 </p>
-                                <div className="grid sm:grid-cols-2 grid-cols-3 gap-6 mb-6">
+                                <div className="grid md:grid-cols-3 gap-6 mb-6">
                                     <div className="bg-slate-900/50 rounded-lg p-6 border border-red-700/30">
                                         <h4 className="text-lg font-semibold text-red-400 mb-3">CloudWatch</h4>
                                         <p className="text-slate-300 mb-4">Centralized logging and monitoring</p>
@@ -1255,7 +949,7 @@ export default function App() {
                                 </div>
                                 <div className="bg-slate-900/30 rounded-lg p-6 border border-red-700/30">
                                     <h4 className="text-lg font-semibold text-red-300 mb-4">Simulated Threat Types</h4>
-                                    <div className="grid sm:grid-cols-2 grid-cols-2 gap-4">
+                                    <div className="grid md:grid-cols-2 gap-4">
                                         <div className="flex items-start gap-3">
                                             <div className="w-2 h-2 bg-red-400 rounded-full mt-2"></div>
                                             <div>
@@ -1308,7 +1002,7 @@ export default function App() {
                                     <GraduationCap className="w-8 h-8 text-purple-400" />
                                     <h3 className="text-2xl font-bold">Key Features Implemented</h3>
                                 </div>
-                                <div className="grid sm:grid-cols-2 grid-cols-2 gap-4">
+                                <div className="grid md:grid-cols-2 gap-4">
                                     <div className="flex items-start gap-3 bg-slate-900/50 rounded-lg p-4 border border-slate-700/30">
                                         <div className="w-2 h-2 bg-purple-400 rounded-full mt-2"></div>
                                         <div>
@@ -1390,7 +1084,7 @@ export default function App() {
                                     <ArrowRight className="w-8 h-8 text-green-400" />
                                     <h3 className="text-2xl font-bold">Future Enhancements</h3>
                                 </div>
-                                <div className="grid sm:grid-cols-2 grid-cols-3 gap-6">
+                                <div className="grid md:grid-cols-3 gap-6">
                                     <div className="bg-gradient-to-br from-blue-900/30 to-cyan-900/30 rounded-lg p-6 border border-blue-500/30 hover:border-blue-500/60 transition-all">
                                         <div className="flex items-center gap-2 mb-4">
                                             <Cloud className="w-6 h-6 text-blue-400" />
@@ -1463,7 +1157,6 @@ export default function App() {
                     <div className="flex gap-6">
                         <a href="#about" className="hover:text-cyan-400 transition-colors">About</a>
                         <a href="#projects" className="hover:text-cyan-400 transition-colors">Projects</a>
-                        <a href="#architecture" className="hover:text-cyan-400 transition-colors">Architecture</a>
                         <a href="#contact" className="hover:text-cyan-400 transition-colors">Contact</a>
                     </div>
                 </div>
@@ -1607,7 +1300,7 @@ export default function App() {
             <section id="about" className="py-20 px-6">
                 <div className="max-w-6xl mx-auto">
                     <h3 className="text-4xl font-bold text-center mb-12">What I Do</h3>
-                    <div className="grid sm:grid-cols-2 grid-cols-3 gap-8">
+                    <div className="grid md:grid-cols-3 gap-8">
                         {skills.map((skill, index) => {
                             const Icon = skill.icon;
                             return (
@@ -1669,69 +1362,6 @@ export default function App() {
             </section>
 
             {/* Contact Section */}
-
-            {/* Technical Architecture Section */}
-            <section id="architecture" className="py-20 px-6">
-                <div className="container mx-auto max-w-6xl">
-                    <div className="text-center mb-12">
-                        <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent">
-                            Technical Architecture
-                        </h2>
-                        <div className="w-20 h-1 bg-gradient-to-r from-orange-400 to-red-500 mx-auto rounded-full"></div>
-                    </div>
-
-                    <div className="bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-700 rounded-2xl p-8">
-                        <p className="text-slate-300 text-lg text-center mb-8">
-                            A comprehensive overview of the technologies, services, and integrations powering this portfolio.
-                        </p>
-
-                        <button
-                            onClick={() => setShowTechStack(true)}
-                            className="mx-auto flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white rounded-xl font-bold text-lg transition-all hover:shadow-lg hover:shadow-orange-500/50 hover:scale-105">
-                            <Cloud className="w-6 h-6" />
-                            Explore Full Architecture
-                            <ArrowRight className="w-5 h-5" />
-                        </button>
-
-                        {/* Quick Overview Cards */}
-                        <div className="grid md:grid-cols-3 gap-6 mt-12">
-                            <div className="bg-slate-950 border border-slate-700 rounded-xl p-6 hover:border-cyan-500/50 transition-all">
-                                <Code className="w-10 h-10 text-cyan-400 mb-4" />
-                                <h3 className="text-xl font-bold text-white mb-2">Frontend</h3>
-                                <p className="text-slate-400 text-sm mb-4">Modern React application with real-time threat data visualization</p>
-                                <div className="flex flex-wrap gap-2">
-                                    <span className="px-2 py-1 bg-cyan-500/10 text-cyan-400 rounded text-xs">React 19</span>
-                                    <span className="px-2 py-1 bg-cyan-500/10 text-cyan-400 rounded text-xs">Tailwind CSS</span>
-                                    <span className="px-2 py-1 bg-cyan-500/10 text-cyan-400 rounded text-xs">Vite</span>
-                                </div>
-                            </div>
-
-                            <div className="bg-slate-950 border border-slate-700 rounded-xl p-6 hover:border-orange-500/50 transition-all">
-                                <Cloud className="w-10 h-10 text-orange-400 mb-4" />
-                                <h3 className="text-xl font-bold text-white mb-2">AWS Infrastructure</h3>
-                                <p className="text-slate-400 text-sm mb-4">Serverless architecture with scalable cloud services</p>
-                                <div className="flex flex-wrap gap-2">
-                                    <span className="px-2 py-1 bg-orange-500/10 text-orange-400 rounded text-xs">S3</span>
-                                    <span className="px-2 py-1 bg-orange-500/10 text-orange-400 rounded text-xs">Lambda</span>
-                                    <span className="px-2 py-1 bg-orange-500/10 text-orange-400 rounded text-xs">API Gateway</span>
-                                </div>
-                            </div>
-
-                            <div className="bg-slate-950 border border-slate-700 rounded-xl p-6 hover:border-purple-500/50 transition-all">
-                                <Database className="w-10 h-10 text-purple-400 mb-4" />
-                                <h3 className="text-xl font-bold text-white mb-2">Threat Intelligence</h3>
-                                <p className="text-slate-400 text-sm mb-4">Real-time data from multiple security sources</p>
-                                <div className="flex flex-wrap gap-2">
-                                    <span className="px-2 py-1 bg-purple-500/10 text-purple-400 rounded text-xs">URLhaus</span>
-                                    <span className="px-2 py-1 bg-purple-500/10 text-purple-400 rounded text-xs">Feodo</span>
-                                    <span className="px-2 py-1 bg-purple-500/10 text-purple-400 rounded text-xs">OTX</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
             <section id="contact" className="py-20 px-6">
                 <div className="max-w-4xl mx-auto text-center">
                     <h3 className="text-4xl font-bold mb-6">Let's Get In Touch!</h3>
@@ -1775,10 +1405,7 @@ const ThreatIntelDashboard = ({ onClose }) => {
         },
         topMalware: [],
         threatActors: [],
-        vulnerabilities: [],
-        malwareUrls: [],
-        c2Servers: [],
-        otxIntelligence: []
+        vulnerabilities: []
     });
     const [ipLookup, setIpLookup] = useState('');
     const [ipResult, setIpResult] = useState(null);
@@ -1795,19 +1422,9 @@ const ThreatIntelDashboard = ({ onClose }) => {
                 const data = await response.json();
                 console.log('✅ Threat data received:', data);
 
-                // Separate different threat types
-                const malwareUrls = data.recentThreats?.filter(t => t.type === 'Malware URL') || [];
-                const c2Servers = data.recentThreats?.filter(t => t.type === 'C2 Server') || [];
-                const otxIntelligence = data.recentThreats?.filter(t => t.type === 'Threat Intelligence') || [];
-
                 // Validate data structure
                 if (data && data.stats && data.recentThreats !== undefined) {
-                    setThreatData({
-                        ...data,
-                        malwareUrls,
-                        c2Servers,
-                        otxIntelligence
-                    });
+                    setThreatData(data);
                 } else {
                     console.warn('⚠️ Invalid data structure, using mock data');
                     loadMockData();
@@ -1980,250 +1597,375 @@ const ThreatIntelDashboard = ({ onClose }) => {
         return `${Math.floor(diff / 86400)}d ago`;
     };
 
-    const getSeverityColor = (severity) => {
-        const severityLower = severity?.toLowerCase() || 'medium';
-        if (severityLower === 'critical') return 'bg-red-500/20 text-red-300 border-red-500/50';
-        if (severityLower === 'high') return 'bg-orange-500/20 text-orange-300 border-orange-500/50';
-        if (severityLower === 'medium') return 'bg-yellow-500/20 text-yellow-300 border-yellow-500/50';
-        return 'bg-blue-500/20 text-blue-300 border-blue-500/50';
-    };
-
     return (
         <div className="fixed inset-0 bg-black/95 backdrop-blur-xl z-50 overflow-y-auto">
-            <div className="min-h-screen p-2 sm:p-4 md:p-8">
-                <div className="max-w-7xl mx-auto mb-4 md:mb-6">
-                    <div className="flex items-center justify-between mb-4 gap-2">
-                        <div className="flex items-center gap-2 sm:gap-4 flex-1 min-w-0">
-                            <div className="relative flex-shrink-0">
-                                <Shield className="w-8 h-8 sm:w-10 sm:h-10 text-cyan-400" />
-                                <div className="absolute -top-1 -right-1 w-2 h-2 sm:w-3 sm:h-3 bg-red-500 rounded-full animate-pulse" />
+            <div className="min-h-screen p-4 md:p-8">
+                <div className="max-w-7xl mx-auto mb-6">
+                    <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center gap-4">
+                            <div className="relative">
+                                <Shield className="w-10 h-10 text-cyan-400" />
+                                <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse" />
                             </div>
-                            <div className="min-w-0 flex-1">
-                                <h2 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-500 truncate">
+                            <div>
+                                <h2 className="text-3xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-500">
                                     THREAT INTELLIGENCE
                                 </h2>
-                                <p className="text-slate-400 text-xs sm:text-sm font-mono hidden sm:block">Real-time global threat monitoring</p>
+                                <p className="text-slate-400 text-sm font-mono">Real-time global threat monitoring</p>
                             </div>
                         </div>
                         <button
                             onClick={onClose}
-                            className="p-2 sm:p-3 hover:bg-slate-800 rounded-lg transition-colors text-slate-400 hover:text-white flex-shrink-0"
+                            className="p-2 hover:bg-slate-800 rounded-lg transition-colors text-slate-400 hover:text-white"
                         >
-                            <X className="w-5 h-5 sm:w-6 sm:h-6" />
+                            <X className="w-6 h-6" />
                         </button>
                     </div>
 
+                    {/* Stats Grid */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                        <div className="bg-gradient-to-br from-slate-900 to-slate-800 border border-cyan-500/30 rounded-xl p-4 relative overflow-hidden group hover:border-cyan-400/50 transition-all">
+                            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                            <div className="relative">
+                                <Database className="w-5 h-5 text-cyan-400 mb-2" />
+                                <div className="text-2xl font-black text-white mb-1">{threatData.stats.totalThreats.toLocaleString()}</div>
+                                <div className="text-xs text-slate-400 uppercase tracking-wider font-mono">Total Threats</div>
+                            </div>
+                        </div>
+
+                        <div className="bg-gradient-to-br from-slate-900 to-slate-800 border border-red-500/30 rounded-xl p-4 relative overflow-hidden group hover:border-red-400/50 transition-all">
+                            <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                            <div className="relative">
+                                <AlertTriangle className="w-5 h-5 text-red-400 mb-2" />
+                                <div className="text-2xl font-black text-white mb-1">{threatData.stats.criticalThreats}</div>
+                                <div className="text-xs text-slate-400 uppercase tracking-wider font-mono">Critical</div>
+                            </div>
+                        </div>
+
+                        <div className="bg-gradient-to-br from-slate-900 to-slate-800 border border-purple-500/30 rounded-xl p-4 relative overflow-hidden group hover:border-purple-400/50 transition-all">
+                            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                            <div className="relative">
+                                <Ban className="w-5 h-5 text-purple-400 mb-2" />
+                                <div className="text-2xl font-black text-white mb-1">{threatData.stats.blockedIPs.toLocaleString()}</div>
+                                <div className="text-xs text-slate-400 uppercase tracking-wider font-mono">Blocked IPs</div>
+                            </div>
+                        </div>
+
+                        <div className="bg-gradient-to-br from-slate-900 to-slate-800 border border-orange-500/30 rounded-xl p-4 relative overflow-hidden group hover:border-orange-400/50 transition-all">
+                            <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                            <div className="relative">
+                                <Zap className="w-5 h-5 text-orange-400 mb-2" />
+                                <div className="text-2xl font-black text-white mb-1">{threatData.stats.activeCampaigns}</div>
+                                <div className="text-xs text-slate-400 uppercase tracking-wider font-mono">Active Campaigns</div>
+                            </div>
+                        </div>
+                    </div>
 
                     {/* Tabs */}
-                    <div className="border-b border-slate-700 mb-4 md:mb-6 -mx-2 sm:mx-0">
-                        <div className="flex gap-2 sm:gap-4 overflow-x-auto px-2 sm:px-0 pb-px scrollbar-hide">
-                            {[
-                                { id: 'overview', label: 'Overview', shortLabel: 'Overview', icon: Activity },
-                                { id: 'malware', label: 'Malware URLs', shortLabel: 'Malware', icon: AlertTriangle, count: threatData.malwareUrls?.length },
-                                { id: 'c2', label: 'C2 Servers', shortLabel: 'C2', icon: Globe, count: threatData.c2Servers?.length },
-                                { id: 'intelligence', label: 'Threat Intel', shortLabel: 'Intel', icon: Database, count: threatData.otxIntelligence?.length },
-                                { id: 'vulnerabilities', label: 'Vulnerabilities', shortLabel: 'CVEs', icon: Shield, count: threatData.vulnerabilities?.length }
-                            ].map((tab) => (
-                                <button
-                                    key={tab.id}
-                                    onClick={() => setActiveTab(tab.id)}
-                                    className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-3 border-b-2 transition-all whitespace-nowrap flex-shrink-0 ${activeTab === tab.id
-                                        ? 'border-cyan-500 text-cyan-400'
-                                        : 'border-transparent text-slate-400 hover:text-slate-300'
-                                        }`}>
-                                    <tab.icon className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
-                                    <span className="text-xs sm:text-sm md:text-base">
-                                        <span className="hidden md:inline">{tab.label}</span>
-                                        <span className="md:hidden">{tab.shortLabel}</span>
-                                    </span>
-                                    {tab.count !== undefined && (
-                                        <span className="px-1.5 sm:px-2 py-0.5 bg-slate-700 rounded text-xs flex-shrink-0">{tab.count}</span>
-                                    )}
-                                </button>
-                            ))}
-                        </div>
+                    <div className="flex gap-2 border-b border-slate-700 mb-6 overflow-x-auto">
+                        {['overview', 'lookup', 'malware', 'actors', 'vulnerabilities', 'intelligence'].map((tab) => (
+                            <button
+                                key={tab}
+                                onClick={() => setActiveTab(tab)}
+                                className={`px-4 py-2 font-mono text-sm uppercase tracking-wider transition-all whitespace-nowrap ${activeTab === tab
+                                    ? 'text-cyan-400 border-b-2 border-cyan-400'
+                                    : 'text-slate-500 hover:text-slate-300'
+                                    }`}
+                            >
+                                {tab}
+                            </button>
+                        ))}
                     </div>
                 </div>
 
                 {/* Content */}
                 <div className="max-w-7xl mx-auto">
                     {activeTab === 'overview' && (
-                        <div className="space-y-4 sm:space-y-6">
-                            <div className="bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-700 rounded-xl p-4 sm:p-6 md:p-8">
-                                <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-4 sm:mb-6 flex items-center gap-2">
-                                    <Activity className="w-5 h-5 sm:w-6 sm:h-6 text-cyan-400 flex-shrink-0" />
-                                    <span>Threat Intelligence Overview</span>
+                        <div className="space-y-4">
+                            <div className="flex items-center justify-between mb-4">
+                                <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                                    <Activity className="w-5 h-5 text-cyan-400" />
+                                    Recent Threat Activity
                                 </h3>
-                                <p className="text-slate-300 text-sm sm:text-base md:text-lg">
-                                    This dashboard aggregates real-time threat intelligence from multiple sources.
-                                    Use the tabs above to explore different threat categories.
-                                </p>
+                                <button
+                                    onClick={fetchThreatData}
+                                    disabled={loading}
+                                    className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors text-sm text-slate-300 disabled:opacity-50"
+                                >
+                                    <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+                                    Refresh
+                                </button>
+                            </div>
 
-                                <div className="mt-6 sm:mt-8 grid gap-4 sm:gap-6 md:grid-cols-2">
-                                    <div className="p-4 sm:p-6 bg-slate-950 border border-slate-700 rounded-lg">
-                                        <h4 className="text-base sm:text-lg font-semibold text-white mb-3">Data Sources</h4>
-                                        <ul className="space-y-2 text-slate-300 text-sm sm:text-base">
-                                            <li className="flex items-center gap-2">
-                                                <div className="w-2 h-2 bg-orange-400 rounded-full flex-shrink-0"></div>
-                                                <span>URLhaus - Malware distribution URLs</span>
-                                            </li>
-                                            <li className="flex items-center gap-2">
-                                                <div className="w-2 h-2 bg-red-400 rounded-full flex-shrink-0"></div>
-                                                <span>Feodo Tracker - C2 infrastructure</span>
-                                            </li>
-                                            <li className="flex items-center gap-2">
-                                                <div className="w-2 h-2 bg-cyan-400 rounded-full flex-shrink-0"></div>
-                                                <span>AlienVault OTX - Threat intelligence pulses</span>
-                                            </li>
-                                            <li className="flex items-center gap-2">
-                                                <div className="w-2 h-2 bg-purple-400 rounded-full flex-shrink-0"></div>
-                                                <span>NVD - Vulnerability database</span>
-                                            </li>
-                                        </ul>
+                            {/* Recent Vulnerabilities Summary Card */}
+                            {threatData.vulnerabilities && threatData.vulnerabilities.length > 0 && (
+                                <div className="bg-gradient-to-br from-yellow-900/20 to-red-900/20 border border-yellow-500/30 rounded-xl p-6 mb-6">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <h4 className="text-lg font-bold text-white flex items-center gap-2">
+                                            <Zap className="w-5 h-5 text-yellow-400" />
+                                            Critical Vulnerabilities (Last 7 Days)
+                                        </h4>
+                                        <button
+                                            onClick={() => setActiveTab('vulnerabilities')}
+                                            className="flex items-center gap-2 px-4 py-2 bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-300 border border-yellow-500/50 rounded-lg transition-all text-sm font-medium"
+                                        >
+                                            View All
+                                            <ArrowRight className="w-4 h-4" />
+                                        </button>
                                     </div>
 
-                                    <div className="p-4 sm:p-6 bg-slate-950 border border-slate-700 rounded-lg">
-                                        <h4 className="text-base sm:text-lg font-semibold text-white mb-3">Quick Actions</h4>
-                                        <div className="space-y-2 sm:space-y-3">
-                                            <button
-                                                onClick={() => setActiveTab('malware')}
-                                                className="w-full flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-3 bg-orange-500/10 hover:bg-orange-500/20 text-orange-300 border border-orange-500/30 rounded-lg transition-all text-sm sm:text-base">
-                                                <AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
-                                                <span>View Malware URLs</span>
-                                            </button>
-                                            <button
-                                                onClick={() => setActiveTab('c2')}
-                                                className="w-full flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-3 bg-red-500/10 hover:bg-red-500/20 text-red-300 border border-red-500/30 rounded-lg transition-all text-sm sm:text-base">
-                                                <Globe className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
-                                                <span>View C2 Servers</span>
-                                            </button>
-                                            <button
-                                                onClick={() => setActiveTab('intelligence')}
-                                                className="w-full flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-3 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 rounded-lg transition-all text-sm sm:text-base">
-                                                <Database className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
-                                                <span className="hidden sm:inline">View Threat Intelligence</span>
-                                                <span className="sm:hidden">View Threat Intel</span>
-                                            </button>
+                                    <div className="space-y-3">
+                                        {threatData.vulnerabilities.slice(0, 3).map((vuln, idx) => (
+                                            <div
+                                                key={idx}
+                                                onClick={() => setActiveTab('vulnerabilities')}
+                                                className="p-4 bg-slate-950/50 border border-slate-700 rounded-lg hover:border-yellow-500/50 transition-all cursor-pointer group"
+                                            >
+                                                <div className="flex items-center justify-between mb-2">
+                                                    <div className="flex items-center gap-3">
+                                                        <code className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-cyan-400 font-mono text-sm">
+                                                            {vuln.cve}
+                                                        </code>
+                                                        <span className={`px-2 py-1 rounded text-xs font-bold ${vuln.severity >= 9 ? 'bg-red-500/20 text-red-300 border border-red-500/50' :
+                                                            vuln.severity >= 7 ? 'bg-orange-500/20 text-orange-300 border border-orange-500/50' :
+                                                                'bg-yellow-500/20 text-yellow-300 border border-yellow-500/50'
+                                                            }`}>
+                                                            CVSS {vuln.severity}
+                                                        </span>
+                                                        {vuln.exploited && (
+                                                            <span className="px-2 py-1 bg-red-500/20 text-red-300 border border-red-500/50 rounded text-xs font-bold uppercase flex items-center gap-1">
+                                                                <AlertTriangle className="w-3 h-3" />
+                                                                Exploited
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                    <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-yellow-400 transition-colors" />
+                                                </div>
+                                                <div className="text-white text-sm font-medium mb-1">{vuln.product}</div>
+                                                <div className="text-slate-400 text-xs line-clamp-2">
+                                                    {vuln.description}
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    {threatData.vulnerabilities.length > 3 && (
+                                        <div className="mt-3 text-center">
                                             <button
                                                 onClick={() => setActiveTab('vulnerabilities')}
-                                                className="w-full flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-3 bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 border border-purple-500/30 rounded-lg transition-all text-sm sm:text-base">
-                                                <Shield className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
-                                                <span>View Vulnerabilities</span>
+                                                className="text-sm text-yellow-400 hover:text-yellow-300 font-medium transition-colors"
+                                            >
+                                                +{threatData.vulnerabilities.length - 3} more vulnerabilities
                                             </button>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+
+                            {threatData.recentThreats.map((threat) => (
+                                <div
+                                    key={threat.id}
+                                    className="bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-700 rounded-xl p-6 hover:border-slate-600 transition-all group"
+                                >
+                                    <div className="flex items-start justify-between mb-4">
+                                        <div className="flex-1">
+                                            <div className="flex items-center gap-3 mb-2">
+                                                <span className={`px-3 py-1 rounded-full text-xs font-bold border ${getSeverityBadge(threat.severity)} uppercase`}>
+                                                    {threat.severity}
+                                                </span>
+                                                <span className="px-3 py-1 rounded-full text-xs font-mono bg-slate-700/50 text-slate-300 border border-slate-600">
+                                                    {threat.type}
+                                                </span>
+                                                <span className="text-xs text-slate-500 font-mono flex items-center gap-1">
+                                                    <Clock className="w-3 h-3" />
+                                                    {formatTimestamp(threat.timestamp)}
+                                                </span>
+                                            </div>
+                                            <h4 className="text-lg font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">
+                                                {threat.name}
+                                            </h4>
+                                            <p className="text-slate-400 text-sm mb-3">{threat.description}</p>
+
+                                            <div className="flex flex-wrap gap-2 mb-3">
+                                                {threat.indicators.slice(0, 3).map((indicator, idx) => (
+                                                    <code key={idx} className="px-2 py-1 bg-slate-950 rounded text-xs text-cyan-400 font-mono border border-slate-700">
+                                                        {indicator}
+                                                    </code>
+                                                ))}
+                                                {threat.indicators.length > 3 && (
+                                                    <span className="px-2 py-1 text-xs text-slate-500 font-mono">
+                                                        +{threat.indicators.length - 3} more
+                                                    </span>
+                                                )}
+                                            </div>
+
+                                            <div className="flex items-center gap-4 text-xs text-slate-500">
+                                                <span className="flex items-center gap-1">
+                                                    <Globe className="w-3 h-3" />
+                                                    {threat.countries.join(', ')}
+                                                </span>
+                                                <span className="flex items-center gap-1">
+                                                    <Database className="w-3 h-3" />
+                                                    {threat.source}
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                            ))}
+                        </div>
+                    )}
+
+                    {activeTab === 'lookup' && (
+                        <div className="max-w-3xl mx-auto">
+                            <div className="bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-700 rounded-xl p-8">
+                                <h3 className="text-2xl font-bold text-white mb-2 flex items-center gap-2">
+                                    <Search className="w-6 h-6 text-cyan-400" />
+                                    IP Address Threat Lookup
+                                </h3>
+                                <p className="text-slate-400 mb-6">Check any IP address against global threat intelligence databases</p>
+
+                                <div className="flex gap-3 mb-6">
+                                    <input
+                                        type="text"
+                                        value={ipLookup}
+                                        onChange={(e) => setIpLookup(e.target.value)}
+                                        onKeyPress={(e) => e.key === 'Enter' && lookupIP()}
+                                        placeholder="Enter IP address (e.g., 192.168.1.1)"
+                                        className="flex-1 px-4 py-3 bg-slate-950 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 font-mono"
+                                    />
+                                    <button
+                                        onClick={lookupIP}
+                                        disabled={ipLoading}
+                                        className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg font-bold text-white hover:shadow-lg hover:shadow-cyan-500/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                                    >
+                                        {ipLoading ? (
+                                            <>
+                                                <RefreshCw className="w-5 h-5 animate-spin" />
+                                                Scanning...
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Eye className="w-5 h-5" />
+                                                Lookup
+                                            </>
+                                        )}
+                                    </button>
+                                </div>
+
+                                {ipResult && !ipResult.error && (
+                                    <div className="border border-slate-700 rounded-xl p-6 bg-slate-950">
+                                        <div className="flex items-start justify-between mb-6">
+                                            <div>
+                                                <div className="text-sm text-slate-500 mb-1 uppercase tracking-wider font-mono">Target IP</div>
+                                                <div className="text-2xl font-mono font-bold text-white">{ipResult.ip}</div>
+                                            </div>
+                                            <div className={`px-4 py-2 rounded-lg font-bold text-sm ${ipResult.is_malicious
+                                                ? 'bg-red-500/20 text-red-300 border border-red-500/50'
+                                                : 'bg-green-500/20 text-green-300 border border-green-500/50'
+                                                }`}>
+                                                {ipResult.is_malicious ? (
+                                                    <span className="flex items-center gap-2">
+                                                        <AlertTriangle className="w-4 h-4" />
+                                                        MALICIOUS
+                                                    </span>
+                                                ) : (
+                                                    <span className="flex items-center gap-2">
+                                                        <CheckCircle className="w-4 h-4" />
+                                                        CLEAN
+                                                    </span>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        <div className="grid grid-cols-2 gap-4 mb-6">
+                                            <div>
+                                                <div className="text-xs text-slate-500 mb-1 uppercase tracking-wider font-mono">Threat Score</div>
+                                                <div className="flex items-center gap-3">
+                                                    <div className="flex-1 h-2 bg-slate-800 rounded-full overflow-hidden">
+                                                        <div
+                                                            className={`h-full transition-all ${ipResult.threat_score > 70 ? 'bg-red-500' :
+                                                                ipResult.threat_score > 40 ? 'bg-yellow-500' :
+                                                                    'bg-green-500'
+                                                                }`}
+                                                            style={{ width: `${ipResult.threat_score}%` }}
+                                                        />
+                                                    </div>
+                                                    <span className="text-white font-bold font-mono">{ipResult.threat_score}/100</span>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div className="text-xs text-slate-500 mb-1 uppercase tracking-wider font-mono">Last Seen</div>
+                                                <div className="text-white font-mono">{formatTimestamp(ipResult.last_seen)}</div>
+                                            </div>
+                                        </div>
+
+                                        <div className="grid md:grid-cols-2 gap-6 mb-6">
+                                            <div>
+                                                <div className="text-xs text-slate-500 mb-2 uppercase tracking-wider font-mono">Location</div>
+                                                <div className="space-y-1">
+                                                    <div className="flex items-center gap-2 text-white">
+                                                        <MapPin className="w-4 h-4 text-cyan-400" />
+                                                        {ipResult.city}, {ipResult.country}
+                                                    </div>
+                                                    <div className="text-sm text-slate-400 font-mono">{ipResult.asn}</div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div className="text-xs text-slate-500 mb-2 uppercase tracking-wider font-mono">Threat Categories</div>
+                                                <div className="flex flex-wrap gap-2">
+                                                    {ipResult.categories.map((cat, idx) => (
+                                                        <span key={idx} className="px-2 py-1 bg-red-500/20 text-red-300 border border-red-500/50 rounded text-xs font-mono">
+                                                            {cat}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <div className="text-xs text-slate-500 mb-2 uppercase tracking-wider font-mono">Intelligence Sources</div>
+                                            <div className="flex flex-wrap gap-2">
+                                                {ipResult.sources.map((source, idx) => (
+                                                    <span key={idx} className="px-3 py-1 bg-slate-800 border border-slate-700 rounded text-xs text-slate-300 font-mono">
+                                                        {source}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     )}
 
                     {activeTab === 'malware' && (
-                        <div className="max-w-5xl mx-auto px-2 sm:px-0">
-                            <div className="bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-700 rounded-xl p-4 sm:p-6 md:p-8">
-                                <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-4 sm:mb-6 flex items-center gap-2">
-                                    <AlertTriangle className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0 text-orange-400" />
-                                    URLhaus Malware Distribution URLs
+                        <div className="max-w-4xl mx-auto">
+                            <div className="bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-700 rounded-xl p-8">
+                                <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+                                    <AlertTriangle className="w-6 h-6 text-red-400" />
+                                    Top Malware Families
                                 </h3>
 
                                 <div className="space-y-4">
-                                    {(threatData.malwareUrls || []).map((threat, idx) => (
-                                        <div key={threat.id || idx} className="p-4 sm:p-6 bg-slate-950 border border-slate-700 rounded-lg hover:border-orange-500/50 transition-all">
-                                            <div className="flex items-start justify-between mb-3">
-                                                <div className="flex-1">
-                                                    {/* Header with Severity Badge */}
-                                                    <div className="flex items-center gap-2 sm:gap-3 flex-wrap mb-3">
-                                                        <span className={`px-3 py-1 rounded text-xs font-bold uppercase border ${getSeverityColor(threat.severity)}`}>
-                                                            {threat.severity || 'medium'}
-                                                        </span>
-                                                        <span className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-xs sm:text-sm text-orange-400 font-mono">
-                                                            {threat.type}
-                                                        </span>
-                                                        {threat.source && (
-                                                            <span className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-xs sm:text-sm text-purple-400 font-mono">
-                                                                {threat.source}
-                                                            </span>
-                                                        )}
-                                                        {threat.timestamp && (
-                                                            <span className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-xs sm:text-sm text-slate-400 font-mono flex items-center gap-1">
-                                                                <Clock className="w-3 h-3" />
-                                                                {formatTimestamp(threat.timestamp)}
-                                                            </span>
-                                                        )}
+                                    {threatData.topMalware.map((malware, idx) => (
+                                        <div key={idx} className="flex items-center gap-4 p-4 bg-slate-950 border border-slate-700 rounded-lg hover:border-slate-600 transition-all">
+                                            <div className="text-2xl font-bold text-slate-600 font-mono w-8">#{idx + 1}</div>
+                                            <div className="flex-1">
+                                                <div className="font-bold text-white mb-1">{malware.name}</div>
+                                                <div className="flex items-center gap-2">
+                                                    <div className="flex-1 h-2 bg-slate-800 rounded-full overflow-hidden">
+                                                        <div className="h-full bg-gradient-to-r from-red-500 to-orange-500" style={{ width: `${(malware.count / 234) * 100}%` }} />
                                                     </div>
-
-                                                    {/* Threat Name */}
-                                                    <div className="text-white font-semibold mb-2 break-words">{threat.name}</div>
-
-                                                    {/* Description */}
-                                                    {threat.description && (
-                                                        <div className="text-slate-300 text-sm mb-3 pl-3 border-l-2 border-orange-500/50">
-                                                            {threat.description}
-                                                        </div>
-                                                    )}
-
-                                                    {/* Malicious URLs Display */}
-                                                    {threat.indicators && threat.indicators.length > 0 && (
-                                                        <div className="mb-4">
-                                                            <div className="text-xs text-slate-500 mb-2 uppercase tracking-wider font-mono">
-                                                                Malicious URL{threat.indicators.length > 1 ? 's' : ''} ({threat.indicators.length})
-                                                            </div>
-                                                            <div className="space-y-2">
-                                                                {threat.indicators.map((url, i) => (
-                                                                    <code key={i} className="block p-3 bg-slate-900 border border-red-500/30 rounded text-sm text-red-300 font-mono break-all">
-                                                                        {url}
-                                                                    </code>
-                                                                ))}
-                                                            </div>
-                                                        </div>
-                                                    )}
-
-                                                    {/* Details Grid */}
-                                                    <div className="grid md:grid-cols-3 gap-4 mb-4">
-                                                        {threat.countries && threat.countries.length > 0 && (
-                                                            <div>
-                                                                <div className="text-xs text-slate-500 mb-1 uppercase tracking-wider font-mono">Affected Regions</div>
-                                                                <div className="flex flex-wrap gap-2">
-                                                                    {threat.countries.map((country, i) => (
-                                                                        <span key={i} className="px-2 py-1 bg-slate-800 border border-slate-700 rounded text-xs text-slate-300 flex items-center gap-1">
-                                                                            <MapPin className="w-3 h-3 text-red-400" />
-                                                                            {country}
-                                                                        </span>
-                                                                    ))}
-                                                                </div>
-                                                            </div>
-                                                        )}
-
-                                                        {threat.id && (
-                                                            <div>
-                                                                <div className="text-xs text-slate-500 mb-1 uppercase tracking-wider font-mono">URLhaus ID</div>
-                                                                <div className="text-sm text-cyan-400 font-mono">{threat.id.replace('urlhaus_', '')}</div>
-                                                            </div>
-                                                        )}
-
-                                                        {threat.timestamp && (
-                                                            <div>
-                                                                <div className="text-xs text-slate-500 mb-1 uppercase tracking-wider font-mono">First Seen</div>
-                                                                <div className="text-sm text-slate-300 flex items-center gap-2">
-                                                                    <Clock className="w-4 h-4 text-orange-400" />
-                                                                    {formatTimestamp(threat.timestamp)}
-                                                                </div>
-                                                            </div>
-                                                        )}
-                                                    </div>
-
-                                                    {/* URLhaus Link */}
-                                                    {threat.id && (
-                                                        <a
-                                                            href={`https://urlhaus.abuse.ch/url/${threat.id.replace('urlhaus_', '')}/`}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            className="inline-flex items-center gap-2 px-4 py-2 bg-orange-500/20 hover:bg-orange-500/30 text-orange-300 border border-orange-500/50 rounded-lg text-sm font-medium transition-all hover:border-orange-400">
-                                                            <Globe className="w-4 h-4" />
-                                                            View on URLhaus
-                                                            <ArrowRight className="w-4 h-4" />
-                                                        </a>
-                                                    )}
+                                                    <span className="text-sm text-slate-400 font-mono">{malware.count} detections</span>
                                                 </div>
+                                            </div>
+                                            <div className={`flex items-center gap-1 text-sm font-mono ${malware.trend === 'up' ? 'text-red-400' :
+                                                malware.trend === 'down' ? 'text-green-400' :
+                                                    'text-slate-400'
+                                                }`}>
+                                                <TrendingUp className={`w-4 h-4 ${malware.trend === 'down' ? 'rotate-180' : malware.trend === 'stable' ? 'rotate-90' : ''}`} />
+                                                {malware.trend}
                                             </div>
                                         </div>
                                     ))}
@@ -2232,92 +1974,28 @@ const ThreatIntelDashboard = ({ onClose }) => {
                         </div>
                     )}
 
-                    {activeTab === 'c2' && (
-                        <div className="max-w-5xl mx-auto px-2 sm:px-0">
+                    {activeTab === 'actors' && (
+                        <div className="max-w-4xl mx-auto">
                             <div className="bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-700 rounded-xl p-8">
                                 <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-                                    <Globe className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0 text-red-400" />
-                                    Feodo Tracker C2 Infrastructure
+                                    <Shield className="w-6 h-6 text-purple-400" />
+                                    Active Threat Actors
                                 </h3>
 
-                                <div className="space-y-4">
-                                    {(threatData.c2Servers || []).map((server, idx) => (
-                                        <div key={server.id || idx} className="p-6 bg-slate-950 border border-slate-700 rounded-lg hover:border-red-500/50 transition-all">
+                                <div className="grid gap-4">
+                                    {threatData.threatActors.map((actor, idx) => (
+                                        <div key={idx} className="p-6 bg-slate-950 border border-slate-700 rounded-lg hover:border-purple-500/50 transition-all group">
                                             <div className="flex items-start justify-between mb-3">
-                                                <div className="flex-1">
-                                                    {/* Header with Severity Badge */}
-                                                    <div className="flex items-center gap-2 sm:gap-3 flex-wrap mb-3">
-                                                        <span className={`px-3 py-1 rounded text-xs font-bold uppercase border ${getSeverityColor(server.severity)}`}>
-                                                            {server.severity || 'critical'}
-                                                        </span>
-                                                        <span className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-xs sm:text-sm text-red-400 font-mono">
-                                                            {server.type}
-                                                        </span>
-                                                        {server.timestamp && (
-                                                            <span className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-xs sm:text-sm text-slate-400 font-mono flex items-center gap-1">
-                                                                <Clock className="w-3 h-3" />
-                                                                {formatTimestamp(server.timestamp)}
-                                                            </span>
-                                                        )}
-                                                    </div>
-
-                                                    {/* Server Name */}
-                                                    <div className="text-white font-semibold mb-3">{server.name}</div>
-
-                                                    {/* Server Details Grid */}
-                                                    <div className="grid md:grid-cols-3 gap-4 mb-4">
-                                                        {server.ipAddress && (
-                                                            <div>
-                                                                <div className="text-xs text-slate-500 mb-1 uppercase tracking-wider font-mono">IP Address</div>
-                                                                <code className="text-sm text-cyan-400 font-mono break-all">{server.ipAddress}</code>
-                                                            </div>
-                                                        )}
-                                                        {server.port && (
-                                                            <div>
-                                                                <div className="text-xs text-slate-500 mb-1 uppercase tracking-wider font-mono">Port</div>
-                                                                <code className="text-sm text-slate-300 font-mono break-all">{server.port}</code>
-                                                            </div>
-                                                        )}
-                                                        {server.country && (
-                                                            <div>
-                                                                <div className="text-xs text-slate-500 mb-1 uppercase tracking-wider font-mono">Location</div>
-                                                                <div className="text-sm text-slate-300 flex items-center gap-1">
-                                                                    <MapPin className="w-3 h-3 text-red-400" />
-                                                                    {server.country}
-                                                                </div>
-                                                            </div>
-                                                        )}
-                                                        {server.malwareFamily && (
-                                                            <div>
-                                                                <div className="text-xs text-slate-500 mb-1 uppercase tracking-wider font-mono">Malware Family</div>
-                                                                <div className="text-sm text-slate-300">{server.malwareFamily}</div>
-                                                            </div>
-                                                        )}
-                                                        {server.status && (
-                                                            <div>
-                                                                <div className="text-xs text-slate-500 mb-1 uppercase tracking-wider font-mono">Status</div>
-                                                                <span className={`px-2 py-1 rounded text-xs font-medium ${server.status === 'online' ? 'bg-red-500/20 text-red-400' :
-                                                                    'bg-slate-700 text-slate-400'
-                                                                    }`}>
-                                                                    {server.status}
-                                                                </span>
-                                                            </div>
-                                                        )}
-                                                        {server.lastSeen && (
-                                                            <div>
-                                                                <div className="text-xs text-slate-500 mb-1 uppercase tracking-wider font-mono">Last Seen</div>
-                                                                <div className="text-sm text-slate-300">{formatTimestamp(server.lastSeen)}</div>
-                                                            </div>
-                                                        )}
-                                                    </div>
-
-                                                    {/* Description */}
-                                                    {server.description && (
-                                                        <div className="text-slate-300 text-sm leading-relaxed pl-3 border-l-2 border-red-500/50">
-                                                            {server.description}
-                                                        </div>
-                                                    )}
-                                                </div>
+                                                <h4 className="font-bold text-lg text-white group-hover:text-purple-400 transition-colors">{actor.name}</h4>
+                                                <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${actor.activity === 'high' ? 'bg-red-500/20 text-red-300 border border-red-500/50' :
+                                                    'bg-yellow-500/20 text-yellow-300 border border-yellow-500/50'
+                                                    }`}>
+                                                    {actor.activity} activity
+                                                </span>
+                                            </div>
+                                            <div className="flex items-center gap-2 text-slate-400 text-sm">
+                                                <span className="font-mono">Targets:</span>
+                                                <span>{actor.targets}</span>
                                             </div>
                                         </div>
                                     ))}
@@ -2327,10 +2005,10 @@ const ThreatIntelDashboard = ({ onClose }) => {
                     )}
 
                     {activeTab === 'vulnerabilities' && (
-                        <div className="max-w-5xl mx-auto px-2 sm:px-0">
+                        <div className="max-w-5xl mx-auto">
                             <div className="bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-700 rounded-xl p-8">
                                 <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-                                    <Zap className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0 text-yellow-400" />
+                                    <Zap className="w-6 h-6 text-yellow-400" />
                                     Recent Critical Vulnerabilities (Last 7 Days)
                                 </h3>
 
@@ -2340,7 +2018,7 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                             <div className="flex items-start justify-between mb-3">
                                                 <div className="flex-1">
                                                     <div className="flex items-center gap-3 mb-2">
-                                                        <code className="px-3 py-1 bg-slate-900 border border-slate-700 rounded text-cyan-400 font-mono break-all text-sm">
+                                                        <code className="px-3 py-1 bg-slate-900 border border-slate-700 rounded text-cyan-400 font-mono text-sm">
                                                             {vuln.cve}
                                                         </code>
                                                         <span className={`px-2 py-1 rounded text-xs font-bold ${vuln.severity >= 9 ? 'bg-red-500/20 text-red-300 border border-red-500/50' :
@@ -2386,10 +2064,10 @@ const ThreatIntelDashboard = ({ onClose }) => {
                     )}
 
                     {activeTab === 'intelligence' && (
-                        <div className="max-w-5xl mx-auto px-2 sm:px-0">
+                        <div className="max-w-5xl mx-auto">
                             <div className="bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-700 rounded-xl p-8">
                                 <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-                                    <Database className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0 text-cyan-400" />
+                                    <Database className="w-6 h-6 text-cyan-400" />
                                     AlienVault OTX Threat Intelligence Pulses
                                 </h3>
 
@@ -2404,21 +2082,20 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                                 <div className="flex items-start justify-between mb-3">
                                                     <div className="flex-1">
                                                         {/* Header with Severity Badge */}
-                                                        <div className="flex items-center gap-2 sm:gap-3 flex-wrap mb-3">
-                                                            <span className={`px-3 py-1 rounded text-xs font-bold uppercase border ${getSeverityColor(pulse.severity)}`}>
+                                                        <div className="flex items-center gap-3 mb-2">
+                                                            <span className={`px-3 py-1 rounded text-xs font-bold uppercase ${pulse.severity === 'critical' ? 'bg-red-500/20 text-red-300 border border-red-500/50' :
+                                                                pulse.severity === 'high' ? 'bg-orange-500/20 text-orange-300 border border-orange-500/50' :
+                                                                    'bg-yellow-500/20 text-yellow-300 border border-yellow-500/50'
+                                                                }`}>
                                                                 {pulse.severity || 'medium'}
                                                             </span>
-                                                            <span className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-xs sm:text-sm text-cyan-400 font-mono">
-                                                                {pulse.type || 'Threat Intelligence'}
-                                                            </span>
                                                             {pulse.source && (
-                                                                <span className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-xs sm:text-sm text-purple-400 font-mono">
+                                                                <span className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-sm text-purple-400 font-mono">
                                                                     {pulse.source}
                                                                 </span>
                                                             )}
                                                             {pulse.timestamp && (
-                                                                <span className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-xs sm:text-sm text-slate-400 font-mono flex items-center gap-1">
-                                                                    <Clock className="w-3 h-3" />
+                                                                <span className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-sm text-slate-400 font-mono">
                                                                     {formatTimestamp(pulse.timestamp)}
                                                                 </span>
                                                             )}
@@ -2452,16 +2129,9 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                                                 </div>
                                                             )}
                                                             {pulse.countries && pulse.countries.length > 0 && (
-                                                                <div className="md:col-span-2">
+                                                                <div>
                                                                     <div className="text-xs text-slate-500 mb-1 uppercase tracking-wider font-mono">Targeted Countries</div>
-                                                                    <div className="flex flex-wrap gap-2">
-                                                                        {pulse.countries.map((country, i) => (
-                                                                            <span key={i} className="px-2 py-1 bg-slate-800 border border-slate-700 rounded text-xs text-slate-300 flex items-center gap-1">
-                                                                                <MapPin className="w-3 h-3 text-cyan-400" />
-                                                                                {country}
-                                                                            </span>
-                                                                        ))}
-                                                                    </div>
+                                                                    <div className="text-sm text-slate-300">{pulse.countries.join(', ')}</div>
                                                                 </div>
                                                             )}
                                                         </div>
@@ -2469,15 +2139,18 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                                         {/* Indicators (if available) */}
                                                         {pulse.indicators && pulse.indicators.length > 0 && (
                                                             <div className="mb-4">
-                                                                <div className="text-xs text-slate-500 mb-2 uppercase tracking-wider font-mono">
-                                                                    Indicators of Compromise ({pulse.indicators.length})
-                                                                </div>
-                                                                <div className="grid md:grid-cols-2 gap-2">
-                                                                    {pulse.indicators.map((indicator, i) => (
-                                                                        <code key={i} className="px-3 py-2 bg-slate-900 border border-cyan-500/30 rounded text-xs text-cyan-300 font-mono break-all">
+                                                                <div className="text-xs text-slate-500 mb-2 uppercase tracking-wider font-mono">Indicators</div>
+                                                                <div className="flex flex-wrap gap-2">
+                                                                    {pulse.indicators.slice(0, 5).map((indicator, i) => (
+                                                                        <code key={i} className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-xs text-cyan-400 font-mono">
                                                                             {indicator}
                                                                         </code>
                                                                     ))}
+                                                                    {pulse.indicators.length > 5 && (
+                                                                        <span className="px-2 py-1 text-xs text-slate-500">
+                                                                            +{pulse.indicators.length - 5} more
+                                                                        </span>
+                                                                    )}
                                                                 </div>
                                                             </div>
                                                         )}
