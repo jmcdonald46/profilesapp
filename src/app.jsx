@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Github, Linkedin, Mail, ArrowRight, Code, Cloud, GraduationCap, Camera, X, RefreshCw, ChevronLeft, ChevronRight, Shield, AlertTriangle, Activity, Lock, Database, Zap, Globe, Search, TrendingUp, MapPin, Clock, Eye, Ban, CheckCircle } from 'lucide-react';
+import { Github, Linkedin, Mail, ArrowRight, Code, Cloud, GraduationCap, Camera, X, RefreshCw, ChevronLeft, ChevronRight, Shield, AlertTriangle, Activity, Lock, Database, Zap, Globe, Search, TrendingUp, MapPin, Clock, Eye, Ban, CheckCircle, Loader, AlertCircle, Info } from 'lucide-react';
 // Profile image: Replace the URL below with your Imgur URL after uploading
 import profileImage from './assets/IMGpfp.jpeg';
 
@@ -414,7 +414,7 @@ export default function App() {
                 </button>
             )
         },
-                {
+        {
             title: "Photo Gallery",
             description: "AWS S3 powered photo gallery with cloud storage",
             tech: ["AWS S3", "React", "REST API"],
@@ -898,7 +898,7 @@ export default function App() {
                                 <p className="text-slate-300 mb-6">
                                     Real-time cybersecurity threat monitoring powered by multiple open-source intelligence feeds.
                                 </p>
-                                
+
                                 <div className="grid md:grid-cols-3 gap-6 mb-6">
                                     {/* URLhaus */}
                                     <div className="bg-slate-900/50 rounded-lg p-6 border border-orange-500/30">
@@ -1026,7 +1026,7 @@ export default function App() {
                                         <Activity className="w-6 h-6" />
                                         How the Threat Dashboard Works
                                     </h4>
-                                    
+
                                     <div className="space-y-6">
                                         {/* Step 1 */}
                                         <div className="flex gap-4">
@@ -1664,7 +1664,7 @@ export default function App() {
             </section>
 
             {/* Contact Section */}
-            
+
             {/* Technical Architecture Section */}
             <section id="architecture" className="py-20 px-6">
                 <div className="container mx-auto max-w-6xl">
@@ -1779,6 +1779,13 @@ const ThreatIntelDashboard = ({ onClose }) => {
     const [ipResult, setIpResult] = useState(null);
     const [ipLoading, setIpLoading] = useState(false);
 
+    // IP Lookup state
+    const [ipSearchQuery, setIpSearchQuery] = useState('');
+    const [ipLookupResult, setIpLookupResult] = useState(null);
+    const [ipLookupLoading, setIpLookupLoading] = useState(false);
+    const [ipLookupError, setIpLookupError] = useState(null);
+    const [recentSearches, setRecentSearches] = useState([]);
+
     const fetchThreatData = async () => {
         setLoading(true);
         try {
@@ -1787,32 +1794,39 @@ const ThreatIntelDashboard = ({ onClose }) => {
             console.log('📡 Response status:', response.status, response.statusText);
 
             if (response.ok) {
-                const data = await response.json();
-                console.log('✅ Threat data received:', data);
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    const data = await response.json();
+                    console.log('✅ Threat data received:', data);
 
-                // Separate different threat types
-                const malwareUrls = data.recentThreats?.filter(t => t.type === 'Malware URL') || [];
-                const c2Servers = data.recentThreats?.filter(t => t.type === 'C2 Server') || [];
-                const otxIntelligence = data.recentThreats?.filter(t => t.type === 'Threat Intelligence') || [];
+                    // Separate different threat types
+                    const malwareUrls = data.recentThreats?.filter(t => t.type === 'Malware URL') || [];
+                    const c2Servers = data.recentThreats?.filter(t => t.type === 'C2 Server') || [];
+                    const otxIntelligence = data.recentThreats?.filter(t => t.type === 'Threat Intelligence') || [];
 
-                // Validate data structure
-                if (data && data.stats && data.recentThreats !== undefined) {
-                    setThreatData({
-                        ...data,
-                        malwareUrls,
-                        c2Servers,
-                        otxIntelligence
-                    });
+                    // Validate data structure
+                    if (data && data.stats && data.recentThreats !== undefined) {
+                        setThreatData({
+                            ...data,
+                            malwareUrls,
+                            c2Servers,
+                            otxIntelligence
+                        });
+                    } else {
+                        console.warn('⚠️ Invalid data structure, using mock data');
+                        loadMockData();
+                    }
                 } else {
-                    console.warn('⚠️ Invalid data structure, using mock data');
+                    console.warn('⚠️ API returned non-JSON response (got', contentType, '), using mock data');
                     loadMockData();
                 }
             } else {
-                console.warn('⚠️ API returned non-OK status, using mock data');
+                console.warn('⚠️ API returned non-OK status:', response.status, 'using mock data');
                 loadMockData();
             }
         } catch (error) {
-            console.error('❌ Error fetching threat data:', error);
+            console.error('❌ Error fetching threat data:', error.message);
+            console.warn('⚠️ Using mock data instead');
             loadMockData();
         } finally {
             setLoading(false);
@@ -1954,6 +1968,86 @@ const ThreatIntelDashboard = ({ onClose }) => {
         return () => clearInterval(interval);
     }, []);
 
+    // Load recent IP searches from localStorage
+    useEffect(() => {
+        const saved = localStorage.getItem('recentIpSearches');
+        if (saved) {
+            try {
+                setRecentSearches(JSON.parse(saved));
+            } catch (e) {
+                console.error('Failed to load recent searches:', e);
+            }
+        }
+    }, []);
+
+    // IP Lookup Functions
+    const validateIP = (ip) => {
+        const ipv4Regex = /^(\d{1,3}\.){3}\d{1,3}$/;
+        if (!ipv4Regex.test(ip)) return false;
+
+        const parts = ip.split('.');
+        return parts.every(part => {
+            const num = parseInt(part, 10);
+            return num >= 0 && num <= 255;
+        });
+    };
+
+    const handleIPLookup = async (ip = ipSearchQuery) => {
+        const searchIP = ip.trim();
+
+        if (!searchIP) {
+            setIpLookupError('Please enter an IP address');
+            return;
+        }
+
+        if (!validateIP(searchIP)) {
+            setIpLookupError('Please enter a valid IPv4 address (e.g., 8.8.8.8)');
+            return;
+        }
+
+        setIpLookupLoading(true);
+        setIpLookupError(null);
+        setIpLookupResult(null);
+
+        try {
+            const API_ENDPOINT = `${import.meta.env.VITE_THREAT_INTEL_API}/lookup-ip?ip=${encodeURIComponent(searchIP)}`;
+            console.log('🔍 Looking up IP:', searchIP);
+
+            const response = await fetch(API_ENDPOINT);
+
+            if (!response.ok) {
+                throw new Error(`API returned ${response.status}: ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            console.log('✅ IP Lookup result:', data);
+
+            setIpLookupResult(data);
+
+            // Add to recent searches (max 5)
+            const updatedSearches = [
+                { ip: searchIP, timestamp: new Date().toISOString(), threat_score: data.threat_score },
+                ...recentSearches.filter(s => s.ip !== searchIP)
+            ].slice(0, 5);
+
+            setRecentSearches(updatedSearches);
+            localStorage.setItem('recentIpSearches', JSON.stringify(updatedSearches));
+
+        } catch (err) {
+            console.error('❌ Error looking up IP:', err);
+            setIpLookupError(`Failed to lookup IP: ${err.message}`);
+        } finally {
+            setIpLookupLoading(false);
+        }
+    };
+
+    const getThreatLevel = (score) => {
+        if (score >= 75) return { level: 'CRITICAL', color: 'text-red-400', bgColor: 'bg-red-500/20', borderColor: 'border-red-500' };
+        if (score >= 50) return { level: 'HIGH', color: 'text-orange-400', bgColor: 'bg-orange-500/20', borderColor: 'border-orange-500' };
+        if (score >= 25) return { level: 'MEDIUM', color: 'text-yellow-400', bgColor: 'bg-yellow-500/20', borderColor: 'border-yellow-500' };
+        return { level: 'LOW', color: 'text-green-400', bgColor: 'bg-green-500/20', borderColor: 'border-green-500' };
+    };
+
     const getSeverityBadge = (severity) => {
         const colors = {
             critical: 'bg-red-500/20 text-red-300 border-red-500/50',
@@ -2014,6 +2108,7 @@ const ThreatIntelDashboard = ({ onClose }) => {
                         <div className="flex gap-4 overflow-x-auto">
                             {[
                                 { id: 'overview', label: 'Overview', icon: Activity },
+                                { id: 'iplookup', label: 'IP Lookup', icon: Search },
                                 { id: 'malware', label: 'Malware URLs', icon: AlertTriangle, count: threatData.malwareUrls?.length },
                                 { id: 'c2', label: 'C2 Servers', icon: Globe, count: threatData.c2Servers?.length },
                                 { id: 'intelligence', label: 'Threat Intelligence', icon: Database, count: threatData.otxIntelligence?.length },
@@ -2023,8 +2118,8 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                     key={tab.id}
                                     onClick={() => setActiveTab(tab.id)}
                                     className={`flex items-center gap-2 px-4 py-3 border-b-2 transition-all whitespace-nowrap ${activeTab === tab.id
-                                            ? 'border-cyan-500 text-cyan-400'
-                                            : 'border-transparent text-slate-400 hover:text-slate-300'
+                                        ? 'border-cyan-500 text-cyan-400'
+                                        : 'border-transparent text-slate-400 hover:text-slate-300'
                                         }`}>
                                     <tab.icon className="w-4 h-4" />
                                     {tab.label}
@@ -2050,7 +2145,7 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                     This dashboard aggregates real-time threat intelligence from multiple sources.
                                     Use the tabs above to explore different threat categories.
                                 </p>
-                                
+
                                 <div className="mt-8 grid md:grid-cols-2 gap-6">
                                     <div className="p-6 bg-slate-950 border border-slate-700 rounded-lg">
                                         <h4 className="text-lg font-semibold text-white mb-3">Data Sources</h4>
@@ -2073,7 +2168,7 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                             </li>
                                         </ul>
                                     </div>
-                                    
+
                                     <div className="p-6 bg-slate-950 border border-slate-700 rounded-lg">
                                         <h4 className="text-lg font-semibold text-white mb-3">Quick Actions</h4>
                                         <div className="space-y-3">
@@ -2104,6 +2199,218 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {activeTab === 'iplookup' && (
+                        <div className="max-w-5xl mx-auto">
+                            <div className="bg-gradient-to-br from-slate-900 to-slate-800 border border-cyan-500/30 rounded-xl p-6 shadow-2xl">
+                                <div className="flex items-center gap-3 mb-6">
+                                    <Search className="w-6 h-6 text-cyan-400" />
+                                    <h3 className="text-2xl font-bold text-white">IP Address Threat Lookup</h3>
+                                </div>
+
+                                {/* Search Bar */}
+                                <div className="flex gap-3 mb-4">
+                                    <div className="flex-1 relative">
+                                        <input
+                                            type="text"
+                                            value={ipSearchQuery}
+                                            onChange={(e) => setIpSearchQuery(e.target.value)}
+                                            onKeyPress={(e) => e.key === 'Enter' && handleIPLookup()}
+                                            placeholder="Enter IP address (e.g., 8.8.8.8)"
+                                            className="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-colors font-mono"
+                                            disabled={ipLookupLoading}
+                                        />
+                                        {ipSearchQuery && (
+                                            <button
+                                                onClick={() => setIpSearchQuery('')}
+                                                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors"
+                                            >
+                                                <X className="w-4 h-4" />
+                                            </button>
+                                        )}
+                                    </div>
+                                    <button
+                                        onClick={() => handleIPLookup()}
+                                        disabled={ipLookupLoading}
+                                        className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 disabled:from-slate-700 disabled:to-slate-600 disabled:cursor-not-allowed rounded-lg font-semibold transition-all flex items-center gap-2"
+                                    >
+                                        {ipLookupLoading ? (
+                                            <>
+                                                <Loader className="w-5 h-5 animate-spin" />
+                                                Searching...
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Search className="w-5 h-5" />
+                                                Lookup
+                                            </>
+                                        )}
+                                    </button>
+                                </div>
+
+                                {/* Recent Searches */}
+                                {recentSearches.length > 0 && !ipLookupResult && (
+                                    <div className="mb-4">
+                                        <div className="text-xs text-slate-400 mb-2 uppercase tracking-wider font-mono">Recent Searches</div>
+                                        <div className="flex flex-wrap gap-2">
+                                            {recentSearches.map((search, idx) => {
+                                                const threat = getThreatLevel(search.threat_score);
+                                                return (
+                                                    <button
+                                                        key={idx}
+                                                        onClick={() => {
+                                                            setIpSearchQuery(search.ip);
+                                                            handleIPLookup(search.ip);
+                                                        }}
+                                                        className={`px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border ${threat.borderColor} rounded-lg text-sm font-mono transition-all flex items-center gap-2`}
+                                                    >
+                                                        <span className="text-slate-300">{search.ip}</span>
+                                                        <span className={`text-xs ${threat.color}`}>{threat.level}</span>
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Error Display */}
+                                {ipLookupError && (
+                                    <div className="p-4 bg-red-500/10 border border-red-500/50 rounded-lg flex items-start gap-3">
+                                        <AlertCircle className="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" />
+                                        <div>
+                                            <div className="font-semibold text-red-400">Error</div>
+                                            <div className="text-sm text-red-300">{ipLookupError}</div>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Results Display */}
+                                {ipLookupResult && (
+                                    <div className="space-y-4 animate-fadeIn">
+                                        {/* Threat Score Header */}
+                                        <div className={`p-6 ${getThreatLevel(ipLookupResult.threat_score).bgColor} border-2 ${getThreatLevel(ipLookupResult.threat_score).borderColor} rounded-xl`}>
+                                            <div className="flex items-center justify-between mb-4">
+                                                <div>
+                                                    <div className="text-sm text-slate-400 mb-1 font-mono">IP ADDRESS</div>
+                                                    <div className="text-3xl font-bold font-mono">{ipLookupResult.ip}</div>
+                                                </div>
+                                                <div className="text-right">
+                                                    <div className="text-sm text-slate-400 mb-1 font-mono">THREAT SCORE</div>
+                                                    <div className={`text-5xl font-bold ${getThreatLevel(ipLookupResult.threat_score).color}`}>
+                                                        {ipLookupResult.threat_score}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                {ipLookupResult.is_malicious ? (
+                                                    <>
+                                                        <Ban className="w-5 h-5 text-red-400" />
+                                                        <span className="text-red-400 font-semibold">Malicious Activity Detected</span>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <CheckCircle className="w-5 h-5 text-green-400" />
+                                                        <span className="text-green-400 font-semibold">No Malicious Activity Detected</span>
+                                                    </>
+                                                )}
+                                                <span className={`ml-auto px-3 py-1 ${getThreatLevel(ipLookupResult.threat_score).bgColor} border ${getThreatLevel(ipLookupResult.threat_score).borderColor} rounded-full text-sm font-bold`}>
+                                                    {getThreatLevel(ipLookupResult.threat_score).level}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        {/* Details Grid */}
+                                        <div className="grid md:grid-cols-2 gap-4">
+                                            {/* Location Info */}
+                                            <div className="p-5 bg-slate-950 border border-slate-700 rounded-lg">
+                                                <div className="flex items-center gap-2 mb-3">
+                                                    <MapPin className="w-5 h-5 text-cyan-400" />
+                                                    <div className="text-sm font-mono text-slate-400 uppercase tracking-wider">Location</div>
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <div>
+                                                        <div className="text-xs text-slate-500 mb-0.5">Country</div>
+                                                        <div className="text-white font-medium">{ipLookupResult.country || 'Unknown'}</div>
+                                                    </div>
+                                                    {ipLookupResult.city && (
+                                                        <div>
+                                                            <div className="text-xs text-slate-500 mb-0.5">City</div>
+                                                            <div className="text-white font-medium">{ipLookupResult.city}</div>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+
+                                            {/* Network Info */}
+                                            <div className="p-5 bg-slate-950 border border-slate-700 rounded-lg">
+                                                <div className="flex items-center gap-2 mb-3">
+                                                    <Globe className="w-5 h-5 text-cyan-400" />
+                                                    <div className="text-sm font-mono text-slate-400 uppercase tracking-wider">Network</div>
+                                                </div>
+                                                <div>
+                                                    <div className="text-xs text-slate-500 mb-0.5">ASN</div>
+                                                    <div className="text-white font-medium font-mono text-sm">{ipLookupResult.asn || 'Unknown'}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Categories */}
+                                        {ipLookupResult.categories && ipLookupResult.categories.length > 0 && (
+                                            <div className="p-5 bg-slate-950 border border-slate-700 rounded-lg">
+                                                <div className="flex items-center gap-2 mb-3">
+                                                    <AlertTriangle className="w-5 h-5 text-orange-400" />
+                                                    <div className="text-sm font-mono text-slate-400 uppercase tracking-wider">Threat Categories</div>
+                                                </div>
+                                                <div className="flex flex-wrap gap-2">
+                                                    {ipLookupResult.categories.map((category, idx) => (
+                                                        <span key={idx} className="px-3 py-1.5 bg-orange-500/20 border border-orange-500/50 rounded-lg text-orange-300 text-sm font-medium">
+                                                            {category}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* Data Sources */}
+                                        <div className="p-5 bg-slate-950 border border-slate-700 rounded-lg">
+                                            <div className="flex items-center gap-2 mb-3">
+                                                <Database className="w-5 h-5 text-purple-400" />
+                                                <div className="text-sm font-mono text-slate-400 uppercase tracking-wider">Data Sources</div>
+                                            </div>
+                                            <div className="flex flex-wrap gap-2">
+                                                {ipLookupResult.sources && ipLookupResult.sources.length > 0 ? (
+                                                    ipLookupResult.sources.map((source, idx) => (
+                                                        <span key={idx} className="px-3 py-1.5 bg-purple-500/20 border border-purple-500/50 rounded-lg text-purple-300 text-sm font-medium">
+                                                            {source}
+                                                        </span>
+                                                    ))
+                                                ) : (
+                                                    <span className="text-slate-500 text-sm">No sources available</span>
+                                                )}
+                                            </div>
+                                            {ipLookupResult.cache_hit && (
+                                                <div className="mt-3 flex items-center gap-2 text-xs text-slate-500">
+                                                    <Info className="w-3 h-3" />
+                                                    <span>Cached result</span>
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        {/* Last Seen */}
+                                        {ipLookupResult.last_seen && (
+                                            <div className="p-5 bg-slate-950 border border-slate-700 rounded-lg">
+                                                <div className="flex items-center gap-2 mb-3">
+                                                    <Clock className="w-5 h-5 text-cyan-400" />
+                                                    <div className="text-sm font-mono text-slate-400 uppercase tracking-wider">Last Seen</div>
+                                                </div>
+                                                <div className="text-white font-mono">{new Date(ipLookupResult.last_seen).toLocaleString()}</div>
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     )}
@@ -2183,7 +2490,7 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                                                 </div>
                                                             </div>
                                                         )}
-                                                        
+
                                                         {threat.id && (
                                                             <div>
                                                                 <div className="text-xs text-slate-500 mb-1 uppercase tracking-wider font-mono">URLhaus ID</div>
@@ -2288,7 +2595,7 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                                             <div>
                                                                 <div className="text-xs text-slate-500 mb-1 uppercase tracking-wider font-mono">Status</div>
                                                                 <span className={`px-2 py-1 rounded text-xs font-medium ${server.status === 'online' ? 'bg-red-500/20 text-red-400' :
-                                                                        'bg-slate-700 text-slate-400'
+                                                                    'bg-slate-700 text-slate-400'
                                                                     }`}>
                                                                     {server.status}
                                                                 </span>
