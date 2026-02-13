@@ -1786,6 +1786,66 @@ const ThreatIntelDashboard = ({ onClose }) => {
     const [ipLookupError, setIpLookupError] = useState(null);
     const [recentSearches, setRecentSearches] = useState([]);
 
+    // Malicious IP list - curated examples for testing
+    const maliciousIPList = [
+        {
+            ip: '185.220.101.1',
+            description: 'Known Tor exit node - frequently used for anonymous malicious activity',
+            threatTypes: ['Anonymization', 'Potential C2'],
+            severity: 'high',
+            lastSeen: '2026-02-10'
+        },
+        {
+            ip: '45.142.214.208',
+            description: 'Active botnet C2 server - associated with Emotet campaigns',
+            threatTypes: ['C2 Server', 'Malware Distribution'],
+            severity: 'critical',
+            lastSeen: '2026-02-11'
+        },
+        {
+            ip: '103.75.201.2',
+            description: 'Brute force attacks targeting SSH and RDP services',
+            threatTypes: ['Brute Force', 'SSH Attack'],
+            severity: 'high',
+            lastSeen: '2026-02-12'
+        },
+        {
+            ip: '194.180.48.100',
+            description: 'Cryptocurrency mining malware distribution',
+            threatTypes: ['Cryptojacking', 'Malware'],
+            severity: 'medium',
+            lastSeen: '2026-02-09'
+        },
+        {
+            ip: '91.229.77.64',
+            description: 'Port scanning and network reconnaissance activity',
+            threatTypes: ['Port Scan', 'Reconnaissance'],
+            severity: 'medium',
+            lastSeen: '2026-02-12'
+        },
+        {
+            ip: '5.188.10.180',
+            description: 'Phishing campaign infrastructure - credential harvesting',
+            threatTypes: ['Phishing', 'Credential Theft'],
+            severity: 'critical',
+            lastSeen: '2026-02-11'
+        },
+        {
+            ip: '185.56.80.65',
+            description: 'DDoS botnet participant - multiple attack campaigns',
+            threatTypes: ['DDoS', 'Botnet'],
+            severity: 'high',
+            lastSeen: '2026-02-10'
+        },
+        {
+            ip: '167.172.248.53',
+            description: 'Ransomware delivery and command infrastructure',
+            threatTypes: ['Ransomware', 'C2 Server'],
+            severity: 'critical',
+            lastSeen: '2026-02-12'
+        }
+    ];
+
     const fetchThreatData = async () => {
         setLoading(true);
         try {
@@ -2411,6 +2471,90 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                         )}
                                     </div>
                                 )}
+                            </div>
+
+                            {/* Malicious IP Reference List */}
+                            <div className="mt-6 bg-gradient-to-br from-slate-900 to-slate-800 border border-red-500/30 rounded-xl p-6 shadow-2xl">
+                                <div className="flex items-center gap-3 mb-6">
+                                    <AlertTriangle className="w-6 h-6 text-red-400" />
+                                    <div>
+                                        <h3 className="text-2xl font-bold text-white">Known Malicious IPs</h3>
+                                        <p className="text-sm text-slate-400">Click any IP to test the lookup tool</p>
+                                    </div>
+                                </div>
+
+                                <div className="grid md:grid-cols-2 gap-4">
+                                    {maliciousIPList.map((item, idx) => {
+                                        const severityColors = {
+                                            critical: { bg: 'bg-red-500/10', border: 'border-red-500/50', text: 'text-red-400', badge: 'bg-red-500/20 border-red-500' },
+                                            high: { bg: 'bg-orange-500/10', border: 'border-orange-500/50', text: 'text-orange-400', badge: 'bg-orange-500/20 border-orange-500' },
+                                            medium: { bg: 'bg-yellow-500/10', border: 'border-yellow-500/50', text: 'text-yellow-400', badge: 'bg-yellow-500/20 border-yellow-500' }
+                                        };
+                                        const colors = severityColors[item.severity];
+
+                                        return (
+                                            <button
+                                                key={idx}
+                                                onClick={() => {
+                                                    setIpSearchQuery(item.ip);
+                                                    handleIPLookup(item.ip);
+                                                }}
+                                                className={`p-5 ${colors.bg} border ${colors.border} rounded-lg text-left hover:scale-[1.02] transition-all group`}
+                                            >
+                                                <div className="flex items-start justify-between mb-3">
+                                                    <div className="flex items-center gap-2">
+                                                        <Globe className={`w-5 h-5 ${colors.text}`} />
+                                                        <code className={`text-lg font-bold font-mono ${colors.text}`}>
+                                                            {item.ip}
+                                                        </code>
+                                                    </div>
+                                                    <span className={`px-2 py-1 ${colors.badge} border rounded text-xs font-bold uppercase`}>
+                                                        {item.severity}
+                                                    </span>
+                                                </div>
+
+                                                <p className="text-sm text-slate-300 mb-3 leading-relaxed">
+                                                    {item.description}
+                                                </p>
+
+                                                <div className="flex flex-wrap gap-2 mb-3">
+                                                    {item.threatTypes.map((type, typeIdx) => (
+                                                        <span
+                                                            key={typeIdx}
+                                                            className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-xs text-slate-400 font-mono"
+                                                        >
+                                                            {type}
+                                                        </span>
+                                                    ))}
+                                                </div>
+
+                                                <div className="flex items-center justify-between text-xs text-slate-500">
+                                                    <div className="flex items-center gap-1">
+                                                        <Clock className="w-3 h-3" />
+                                                        <span>Last seen: {item.lastSeen}</span>
+                                                    </div>
+                                                    <div className={`flex items-center gap-1 ${colors.text} opacity-0 group-hover:opacity-100 transition-opacity`}>
+                                                        <Search className="w-3 h-3" />
+                                                        <span className="font-medium">Click to lookup</span>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+
+                                <div className="mt-6 p-4 bg-slate-950 border border-slate-700 rounded-lg">
+                                    <div className="flex items-start gap-3">
+                                        <Info className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
+                                        <div className="text-sm text-slate-300">
+                                            <p className="font-semibold text-blue-400 mb-1">About This List</p>
+                                            <p>
+                                                These IPs are curated examples of known malicious infrastructure for testing and demonstration purposes.
+                                                Click any IP to see detailed threat intelligence data from VirusTotal, AbuseIPDB, and AlienVault OTX.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     )}
