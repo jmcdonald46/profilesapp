@@ -3,6 +3,11 @@ import { Github, Linkedin, Mail, ArrowRight, Code, Cloud, GraduationCap, Camera,
 // Profile image: Replace the URL below with your Imgur URL after uploading
 import profileImage from './assets/IMGpfp.jpeg';
 
+<style>
+    .scrollbar-hide::-webkit-scrollbar {display: none; }
+    .scrollbar-hide {-ms - overflow - style: none; scrollbar-width: none; }
+</style>
+
 export default function App() {
     const [scrollY, setScrollY] = useState(0);
     const [showDocument, setShowDocument] = useState(false);
@@ -825,7 +830,7 @@ export default function App() {
                                     <Code className="w-8 h-8 text-cyan-400" />
                                     <h3 className="text-2xl font-bold">Frontend Architecture</h3>
                                 </div>
-                                <div className="grid md:grid-cols-2 gap-6">
+                                <div className="grid sm:grid-cols-2 grid-cols-2 gap-6">
                                     <div className="bg-slate-900/50 rounded-lg p-6 border border-slate-700/30">
                                         <h4 className="text-lg font-semibold text-cyan-400 mb-3">React 19</h4>
                                         <p className="text-slate-300 mb-4">Modern React with hooks for state management and component architecture</p>
@@ -855,7 +860,7 @@ export default function App() {
                                     <Cloud className="w-8 h-8 text-orange-400" />
                                     <h3 className="text-2xl font-bold">AWS Cloud Services</h3>
                                 </div>
-                                <div className="grid md:grid-cols-3 gap-6">
+                                <div className="grid sm:grid-cols-2 grid-cols-3 gap-6">
                                     <div className="bg-slate-900/50 rounded-lg p-6 border border-slate-700/30">
                                         <h4 className="text-lg font-semibold text-orange-400 mb-3">S3 Storage</h4>
                                         <p className="text-slate-300 mb-4">Object storage for images and assets</p>
@@ -899,7 +904,7 @@ export default function App() {
                                     Real-time cybersecurity threat monitoring powered by multiple open-source intelligence feeds.
                                 </p>
 
-                                <div className="grid md:grid-cols-3 gap-6 mb-6">
+                                <div className="grid sm:grid-cols-2 grid-cols-3 gap-6 mb-6">
                                     {/* URLhaus */}
                                     <div className="bg-slate-900/50 rounded-lg p-6 border border-orange-500/30">
                                         <div className="flex items-center gap-2 mb-3">
@@ -988,7 +993,7 @@ export default function App() {
                                         <Activity className="w-5 h-5" />
                                         Data Processing Pipeline
                                     </h4>
-                                    <div className="grid md:grid-cols-4 gap-4 text-sm">
+                                    <div className="grid sm:grid-cols-2 grid-cols-4 gap-4 text-sm">
                                         <div className="text-center">
                                             <div className="bg-purple-500/20 rounded-lg p-3 mb-2">
                                                 <Database className="w-6 h-6 mx-auto text-purple-400" />
@@ -1159,7 +1164,7 @@ export default function App() {
                                     {/* Key Features */}
                                     <div className="mt-6 pt-6 border-t border-slate-700">
                                         <h5 className="font-semibold text-white mb-3">Key Features</h5>
-                                        <div className="grid md:grid-cols-2 gap-3">
+                                        <div className="grid sm:grid-cols-2 grid-cols-2 gap-3">
                                             <div className="flex items-start gap-2">
                                                 <CheckCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
                                                 <span className="text-slate-300 text-sm">Serverless architecture - zero maintenance</span>
@@ -1216,7 +1221,7 @@ export default function App() {
                                     Interactive threat simulation environment demonstrating AWS security monitoring capabilities.
                                     This sandbox allows for controlled security testing while monitoring events across multiple AWS services.
                                 </p>
-                                <div className="grid md:grid-cols-3 gap-6 mb-6">
+                                <div className="grid sm:grid-cols-2 grid-cols-3 gap-6 mb-6">
                                     <div className="bg-slate-900/50 rounded-lg p-6 border border-red-700/30">
                                         <h4 className="text-lg font-semibold text-red-400 mb-3">CloudWatch</h4>
                                         <p className="text-slate-300 mb-4">Centralized logging and monitoring</p>
@@ -1250,7 +1255,7 @@ export default function App() {
                                 </div>
                                 <div className="bg-slate-900/30 rounded-lg p-6 border border-red-700/30">
                                     <h4 className="text-lg font-semibold text-red-300 mb-4">Simulated Threat Types</h4>
-                                    <div className="grid md:grid-cols-2 gap-4">
+                                    <div className="grid sm:grid-cols-2 grid-cols-2 gap-4">
                                         <div className="flex items-start gap-3">
                                             <div className="w-2 h-2 bg-red-400 rounded-full mt-2"></div>
                                             <div>
@@ -1303,7 +1308,7 @@ export default function App() {
                                     <GraduationCap className="w-8 h-8 text-purple-400" />
                                     <h3 className="text-2xl font-bold">Key Features Implemented</h3>
                                 </div>
-                                <div className="grid md:grid-cols-2 gap-4">
+                                <div className="grid sm:grid-cols-2 grid-cols-2 gap-4">
                                     <div className="flex items-start gap-3 bg-slate-900/50 rounded-lg p-4 border border-slate-700/30">
                                         <div className="w-2 h-2 bg-purple-400 rounded-full mt-2"></div>
                                         <div>
@@ -1385,7 +1390,7 @@ export default function App() {
                                     <ArrowRight className="w-8 h-8 text-green-400" />
                                     <h3 className="text-2xl font-bold">Future Enhancements</h3>
                                 </div>
-                                <div className="grid md:grid-cols-3 gap-6">
+                                <div className="grid sm:grid-cols-2 grid-cols-3 gap-6">
                                     <div className="bg-gradient-to-br from-blue-900/30 to-cyan-900/30 rounded-lg p-6 border border-blue-500/30 hover:border-blue-500/60 transition-all">
                                         <div className="flex items-center gap-2 mb-4">
                                             <Cloud className="w-6 h-6 text-blue-400" />
@@ -1602,7 +1607,7 @@ export default function App() {
             <section id="about" className="py-20 px-6">
                 <div className="max-w-6xl mx-auto">
                     <h3 className="text-4xl font-bold text-center mb-12">What I Do</h3>
-                    <div className="grid md:grid-cols-3 gap-8">
+                    <div className="grid sm:grid-cols-2 grid-cols-3 gap-8">
                         {skills.map((skill, index) => {
                             const Icon = skill.icon;
                             return (
@@ -1985,51 +1990,54 @@ const ThreatIntelDashboard = ({ onClose }) => {
 
     return (
         <div className="fixed inset-0 bg-black/95 backdrop-blur-xl z-50 overflow-y-auto">
-            <div className="min-h-screen p-4 md:p-8">
-                <div className="max-w-7xl mx-auto mb-6">
-                    <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center gap-4">
-                            <div className="relative">
-                                <Shield className="w-10 h-10 text-cyan-400" />
-                                <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse" />
+            <div className="min-h-screen p-2 sm:p-4 md:p-8">
+                <div className="max-w-7xl mx-auto mb-4 md:mb-6">
+                    <div className="flex items-center justify-between mb-4 gap-2">
+                        <div className="flex items-center gap-2 sm:gap-4 flex-1 min-w-0">
+                            <div className="relative flex-shrink-0">
+                                <Shield className="w-8 h-8 sm:w-10 sm:h-10 text-cyan-400" />
+                                <div className="absolute -top-1 -right-1 w-2 h-2 sm:w-3 sm:h-3 bg-red-500 rounded-full animate-pulse" />
                             </div>
-                            <div>
-                                <h2 className="text-3xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-500">
+                            <div className="min-w-0 flex-1">
+                                <h2 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-500 truncate">
                                     THREAT INTELLIGENCE
                                 </h2>
-                                <p className="text-slate-400 text-sm font-mono">Real-time global threat monitoring</p>
+                                <p className="text-slate-400 text-xs sm:text-sm font-mono hidden sm:block">Real-time global threat monitoring</p>
                             </div>
                         </div>
                         <button
                             onClick={onClose}
-                            className="p-2 hover:bg-slate-800 rounded-lg transition-colors text-slate-400 hover:text-white"
+                            className="p-2 sm:p-3 hover:bg-slate-800 rounded-lg transition-colors text-slate-400 hover:text-white flex-shrink-0"
                         >
-                            <X className="w-6 h-6" />
+                            <X className="w-5 h-5 sm:w-6 sm:h-6" />
                         </button>
                     </div>
 
 
                     {/* Tabs */}
-                    <div className="border-b border-slate-700 mb-6">
-                        <div className="flex gap-4 overflow-x-auto">
+                    <div className="border-b border-slate-700 mb-4 md:mb-6 -mx-2 sm:mx-0">
+                        <div className="flex gap-2 sm:gap-4 overflow-x-auto px-2 sm:px-0 pb-px scrollbar-hide">
                             {[
-                                { id: 'overview', label: 'Overview', icon: Activity },
-                                { id: 'malware', label: 'Malware URLs', icon: AlertTriangle, count: threatData.malwareUrls?.length },
-                                { id: 'c2', label: 'C2 Servers', icon: Globe, count: threatData.c2Servers?.length },
-                                { id: 'intelligence', label: 'Threat Intelligence', icon: Database, count: threatData.otxIntelligence?.length },
-                                { id: 'vulnerabilities', label: 'Vulnerabilities', icon: Shield, count: threatData.vulnerabilities?.length }
+                                { id: 'overview', label: 'Overview', shortLabel: 'Overview', icon: Activity },
+                                { id: 'malware', label: 'Malware URLs', shortLabel: 'Malware', icon: AlertTriangle, count: threatData.malwareUrls?.length },
+                                { id: 'c2', label: 'C2 Servers', shortLabel: 'C2', icon: Globe, count: threatData.c2Servers?.length },
+                                { id: 'intelligence', label: 'Threat Intel', shortLabel: 'Intel', icon: Database, count: threatData.otxIntelligence?.length },
+                                { id: 'vulnerabilities', label: 'Vulnerabilities', shortLabel: 'CVEs', icon: Shield, count: threatData.vulnerabilities?.length }
                             ].map((tab) => (
                                 <button
                                     key={tab.id}
                                     onClick={() => setActiveTab(tab.id)}
-                                    className={`flex items-center gap-2 px-4 py-3 border-b-2 transition-all whitespace-nowrap ${activeTab === tab.id
+                                    className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-3 border-b-2 transition-all whitespace-nowrap flex-shrink-0 ${activeTab === tab.id
                                         ? 'border-cyan-500 text-cyan-400'
                                         : 'border-transparent text-slate-400 hover:text-slate-300'
                                         }`}>
-                                    <tab.icon className="w-4 h-4" />
-                                    {tab.label}
+                                    <tab.icon className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
+                                    <span className="text-xs sm:text-sm md:text-base">
+                                        <span className="hidden md:inline">{tab.label}</span>
+                                        <span className="md:hidden">{tab.shortLabel}</span>
+                                    </span>
                                     {tab.count !== undefined && (
-                                        <span className="px-2 py-0.5 bg-slate-700 rounded text-xs">{tab.count}</span>
+                                        <span className="px-1.5 sm:px-2 py-0.5 bg-slate-700 rounded text-xs flex-shrink-0">{tab.count}</span>
                                     )}
                                 </button>
                             ))}
@@ -2040,66 +2048,67 @@ const ThreatIntelDashboard = ({ onClose }) => {
                 {/* Content */}
                 <div className="max-w-7xl mx-auto">
                     {activeTab === 'overview' && (
-                        <div className="space-y-6">
-                            <div className="bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-700 rounded-xl p-8">
-                                <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-                                    <Activity className="w-6 h-6 text-cyan-400" />
-                                    Threat Intelligence Overview
+                        <div className="space-y-4 sm:space-y-6">
+                            <div className="bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-700 rounded-xl p-4 sm:p-6 md:p-8">
+                                <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-4 sm:mb-6 flex items-center gap-2">
+                                    <Activity className="w-5 h-5 sm:w-6 sm:h-6 text-cyan-400 flex-shrink-0" />
+                                    <span>Threat Intelligence Overview</span>
                                 </h3>
-                                <p className="text-slate-300 text-lg">
+                                <p className="text-slate-300 text-sm sm:text-base md:text-lg">
                                     This dashboard aggregates real-time threat intelligence from multiple sources.
                                     Use the tabs above to explore different threat categories.
                                 </p>
 
-                                <div className="mt-8 grid md:grid-cols-2 gap-6">
-                                    <div className="p-6 bg-slate-950 border border-slate-700 rounded-lg">
-                                        <h4 className="text-lg font-semibold text-white mb-3">Data Sources</h4>
-                                        <ul className="space-y-2 text-slate-300">
+                                <div className="mt-6 sm:mt-8 grid gap-4 sm:gap-6 md:grid-cols-2">
+                                    <div className="p-4 sm:p-6 bg-slate-950 border border-slate-700 rounded-lg">
+                                        <h4 className="text-base sm:text-lg font-semibold text-white mb-3">Data Sources</h4>
+                                        <ul className="space-y-2 text-slate-300 text-sm sm:text-base">
                                             <li className="flex items-center gap-2">
-                                                <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
-                                                URLhaus - Malware distribution URLs
+                                                <div className="w-2 h-2 bg-orange-400 rounded-full flex-shrink-0"></div>
+                                                <span>URLhaus - Malware distribution URLs</span>
                                             </li>
                                             <li className="flex items-center gap-2">
-                                                <div className="w-2 h-2 bg-red-400 rounded-full"></div>
-                                                Feodo Tracker - C2 infrastructure
+                                                <div className="w-2 h-2 bg-red-400 rounded-full flex-shrink-0"></div>
+                                                <span>Feodo Tracker - C2 infrastructure</span>
                                             </li>
                                             <li className="flex items-center gap-2">
-                                                <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
-                                                AlienVault OTX - Threat intelligence pulses
+                                                <div className="w-2 h-2 bg-cyan-400 rounded-full flex-shrink-0"></div>
+                                                <span>AlienVault OTX - Threat intelligence pulses</span>
                                             </li>
                                             <li className="flex items-center gap-2">
-                                                <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
-                                                NVD - Vulnerability database
+                                                <div className="w-2 h-2 bg-purple-400 rounded-full flex-shrink-0"></div>
+                                                <span>NVD - Vulnerability database</span>
                                             </li>
                                         </ul>
                                     </div>
 
-                                    <div className="p-6 bg-slate-950 border border-slate-700 rounded-lg">
-                                        <h4 className="text-lg font-semibold text-white mb-3">Quick Actions</h4>
-                                        <div className="space-y-3">
+                                    <div className="p-4 sm:p-6 bg-slate-950 border border-slate-700 rounded-lg">
+                                        <h4 className="text-base sm:text-lg font-semibold text-white mb-3">Quick Actions</h4>
+                                        <div className="space-y-2 sm:space-y-3">
                                             <button
                                                 onClick={() => setActiveTab('malware')}
-                                                className="w-full flex items-center gap-2 px-4 py-3 bg-orange-500/10 hover:bg-orange-500/20 text-orange-300 border border-orange-500/30 rounded-lg transition-all">
-                                                <AlertTriangle className="w-5 h-5" />
-                                                View Malware URLs
+                                                className="w-full flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-3 bg-orange-500/10 hover:bg-orange-500/20 text-orange-300 border border-orange-500/30 rounded-lg transition-all text-sm sm:text-base">
+                                                <AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+                                                <span>View Malware URLs</span>
                                             </button>
                                             <button
                                                 onClick={() => setActiveTab('c2')}
-                                                className="w-full flex items-center gap-2 px-4 py-3 bg-red-500/10 hover:bg-red-500/20 text-red-300 border border-red-500/30 rounded-lg transition-all">
-                                                <Globe className="w-5 h-5" />
-                                                View C2 Servers
+                                                className="w-full flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-3 bg-red-500/10 hover:bg-red-500/20 text-red-300 border border-red-500/30 rounded-lg transition-all text-sm sm:text-base">
+                                                <Globe className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+                                                <span>View C2 Servers</span>
                                             </button>
                                             <button
                                                 onClick={() => setActiveTab('intelligence')}
-                                                className="w-full flex items-center gap-2 px-4 py-3 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 rounded-lg transition-all">
-                                                <Database className="w-5 h-5" />
-                                                View Threat Intelligence
+                                                className="w-full flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-3 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 rounded-lg transition-all text-sm sm:text-base">
+                                                <Database className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+                                                <span className="hidden sm:inline">View Threat Intelligence</span>
+                                                <span className="sm:hidden">View Threat Intel</span>
                                             </button>
                                             <button
                                                 onClick={() => setActiveTab('vulnerabilities')}
-                                                className="w-full flex items-center gap-2 px-4 py-3 bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 border border-purple-500/30 rounded-lg transition-all">
-                                                <Shield className="w-5 h-5" />
-                                                View Vulnerabilities
+                                                className="w-full flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-3 bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 border border-purple-500/30 rounded-lg transition-all text-sm sm:text-base">
+                                                <Shield className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+                                                <span>View Vulnerabilities</span>
                                             </button>
                                         </div>
                                     </div>
@@ -2110,19 +2119,19 @@ const ThreatIntelDashboard = ({ onClose }) => {
 
                     {activeTab === 'malware' && (
                         <div className="max-w-5xl mx-auto">
-                            <div className="bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-700 rounded-xl p-8">
-                                <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-                                    <AlertTriangle className="w-6 h-6 text-orange-400" />
+                            <div className="bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-700 rounded-xl p-4 sm:p-6 md:p-8">
+                                <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-4 sm:mb-6 flex items-center gap-2">
+                                    <AlertTriangle className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0 text-orange-400" />
                                     URLhaus Malware Distribution URLs
                                 </h3>
 
                                 <div className="space-y-4">
                                     {(threatData.malwareUrls || []).map((threat, idx) => (
-                                        <div key={threat.id || idx} className="p-6 bg-slate-950 border border-slate-700 rounded-lg hover:border-orange-500/50 transition-all">
+                                        <div key={threat.id || idx} className="p-4 sm:p-6 bg-slate-950 border border-slate-700 rounded-lg hover:border-orange-500/50 transition-all">
                                             <div className="flex items-start justify-between mb-3">
                                                 <div className="flex-1">
                                                     {/* Header with Severity Badge */}
-                                                    <div className="flex items-center gap-3 mb-3">
+                                                    <div className="flex items-center gap-2 sm:gap-3 flex-wrap mb-3">
                                                         <span className={`px-3 py-1 rounded text-xs font-bold uppercase border ${getSeverityColor(threat.severity)}`}>
                                                             {threat.severity || 'medium'}
                                                         </span>
@@ -2237,7 +2246,7 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                             <div className="flex items-start justify-between mb-3">
                                                 <div className="flex-1">
                                                     {/* Header with Severity Badge */}
-                                                    <div className="flex items-center gap-3 mb-3">
+                                                    <div className="flex items-center gap-2 sm:gap-3 flex-wrap mb-3">
                                                         <span className={`px-3 py-1 rounded text-xs font-bold uppercase border ${getSeverityColor(server.severity)}`}>
                                                             {server.severity || 'critical'}
                                                         </span>
@@ -2395,7 +2404,7 @@ const ThreatIntelDashboard = ({ onClose }) => {
                                                 <div className="flex items-start justify-between mb-3">
                                                     <div className="flex-1">
                                                         {/* Header with Severity Badge */}
-                                                        <div className="flex items-center gap-3 mb-3">
+                                                        <div className="flex items-center gap-2 sm:gap-3 flex-wrap mb-3">
                                                             <span className={`px-3 py-1 rounded text-xs font-bold uppercase border ${getSeverityColor(pulse.severity)}`}>
                                                                 {pulse.severity || 'medium'}
                                                             </span>
